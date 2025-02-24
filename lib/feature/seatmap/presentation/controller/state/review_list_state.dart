@@ -16,7 +16,8 @@ class ReviewListState with _$ReviewListState {
     required AsyncValue<List<Review>> reviews,
     @Default(ReviewSortType.defaultSort) ReviewSortType sortType,
     required AsyncValue<List<SeatInfo>> seatInfo,
-    String? selectedSection,
+    String? selectedFloor,
+    String? selectedRow,
   }) = _ReviewListState;
 }
 

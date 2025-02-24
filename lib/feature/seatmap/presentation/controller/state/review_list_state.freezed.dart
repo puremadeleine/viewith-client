@@ -21,7 +21,8 @@ mixin _$ReviewListState {
   AsyncValue<List<Review>> get reviews => throw _privateConstructorUsedError;
   ReviewSortType get sortType => throw _privateConstructorUsedError;
   AsyncValue<List<SeatInfo>> get seatInfo => throw _privateConstructorUsedError;
-  String? get selectedSection => throw _privateConstructorUsedError;
+  String? get selectedFloor => throw _privateConstructorUsedError;
+  String? get selectedRow => throw _privateConstructorUsedError;
 
   /// Create a copy of ReviewListState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,7 +43,8 @@ abstract class $ReviewListStateCopyWith<$Res> {
       AsyncValue<List<Review>> reviews,
       ReviewSortType sortType,
       AsyncValue<List<SeatInfo>> seatInfo,
-      String? selectedSection});
+      String? selectedFloor,
+      String? selectedRow});
 }
 
 /// @nodoc
@@ -65,7 +67,8 @@ class _$ReviewListStateCopyWithImpl<$Res, $Val extends ReviewListState>
     Object? reviews = null,
     Object? sortType = null,
     Object? seatInfo = null,
-    Object? selectedSection = freezed,
+    Object? selectedFloor = freezed,
+    Object? selectedRow = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -88,9 +91,13 @@ class _$ReviewListStateCopyWithImpl<$Res, $Val extends ReviewListState>
           ? _value.seatInfo
           : seatInfo // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<SeatInfo>>,
-      selectedSection: freezed == selectedSection
-          ? _value.selectedSection
-          : selectedSection // ignore: cast_nullable_to_non_nullable
+      selectedFloor: freezed == selectedFloor
+          ? _value.selectedFloor
+          : selectedFloor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedRow: freezed == selectedRow
+          ? _value.selectedRow
+          : selectedRow // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -110,7 +117,8 @@ abstract class _$$ReviewListStateImplCopyWith<$Res>
       AsyncValue<List<Review>> reviews,
       ReviewSortType sortType,
       AsyncValue<List<SeatInfo>> seatInfo,
-      String? selectedSection});
+      String? selectedFloor,
+      String? selectedRow});
 }
 
 /// @nodoc
@@ -131,7 +139,8 @@ class __$$ReviewListStateImplCopyWithImpl<$Res>
     Object? reviews = null,
     Object? sortType = null,
     Object? seatInfo = null,
-    Object? selectedSection = freezed,
+    Object? selectedFloor = freezed,
+    Object? selectedRow = freezed,
   }) {
     return _then(_$ReviewListStateImpl(
       id: null == id
@@ -154,9 +163,13 @@ class __$$ReviewListStateImplCopyWithImpl<$Res>
           ? _value.seatInfo
           : seatInfo // ignore: cast_nullable_to_non_nullable
               as AsyncValue<List<SeatInfo>>,
-      selectedSection: freezed == selectedSection
-          ? _value.selectedSection
-          : selectedSection // ignore: cast_nullable_to_non_nullable
+      selectedFloor: freezed == selectedFloor
+          ? _value.selectedFloor
+          : selectedFloor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedRow: freezed == selectedRow
+          ? _value.selectedRow
+          : selectedRow // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -171,7 +184,8 @@ class _$ReviewListStateImpl implements _ReviewListState {
       required this.reviews,
       this.sortType = ReviewSortType.defaultSort,
       required this.seatInfo,
-      this.selectedSection});
+      this.selectedFloor,
+      this.selectedRow});
 
   @override
   final String id;
@@ -185,11 +199,13 @@ class _$ReviewListStateImpl implements _ReviewListState {
   @override
   final AsyncValue<List<SeatInfo>> seatInfo;
   @override
-  final String? selectedSection;
+  final String? selectedFloor;
+  @override
+  final String? selectedRow;
 
   @override
   String toString() {
-    return 'ReviewListState(id: $id, venueInfo: $venueInfo, reviews: $reviews, sortType: $sortType, seatInfo: $seatInfo, selectedSection: $selectedSection)';
+    return 'ReviewListState(id: $id, venueInfo: $venueInfo, reviews: $reviews, sortType: $sortType, seatInfo: $seatInfo, selectedFloor: $selectedFloor, selectedRow: $selectedRow)';
   }
 
   @override
@@ -205,13 +221,15 @@ class _$ReviewListStateImpl implements _ReviewListState {
                 other.sortType == sortType) &&
             (identical(other.seatInfo, seatInfo) ||
                 other.seatInfo == seatInfo) &&
-            (identical(other.selectedSection, selectedSection) ||
-                other.selectedSection == selectedSection));
+            (identical(other.selectedFloor, selectedFloor) ||
+                other.selectedFloor == selectedFloor) &&
+            (identical(other.selectedRow, selectedRow) ||
+                other.selectedRow == selectedRow));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, venueInfo, reviews, sortType, seatInfo, selectedSection);
+  int get hashCode => Object.hash(runtimeType, id, venueInfo, reviews, sortType,
+      seatInfo, selectedFloor, selectedRow);
 
   /// Create a copy of ReviewListState
   /// with the given fields replaced by the non-null parameter values.
@@ -230,7 +248,8 @@ abstract class _ReviewListState implements ReviewListState {
       required final AsyncValue<List<Review>> reviews,
       final ReviewSortType sortType,
       required final AsyncValue<List<SeatInfo>> seatInfo,
-      final String? selectedSection}) = _$ReviewListStateImpl;
+      final String? selectedFloor,
+      final String? selectedRow}) = _$ReviewListStateImpl;
 
   @override
   String get id;
@@ -243,7 +262,9 @@ abstract class _ReviewListState implements ReviewListState {
   @override
   AsyncValue<List<SeatInfo>> get seatInfo;
   @override
-  String? get selectedSection;
+  String? get selectedFloor;
+  @override
+  String? get selectedRow;
 
   /// Create a copy of ReviewListState
   /// with the given fields replaced by the non-null parameter values.

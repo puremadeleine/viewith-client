@@ -4,7 +4,22 @@ import 'package:viewith/ui/app_design.dart';
 class FloorRowSelector extends StatefulWidget {
   final Map<String, List<int>> seats;
 
-  const FloorRowSelector({super.key, required this.seats});
+  final Function(String floor) onFloorSelected;
+
+  final Function(String row) onRowSelected;
+
+  final String? initialFloor;
+
+  final String? initialRow;
+
+  const FloorRowSelector({
+    super.key,
+    required this.seats,
+    required this.onFloorSelected,
+    required this.onRowSelected,
+    this.initialFloor,
+    this.initialRow,
+  });
 
   @override
   State<FloorRowSelector> createState() => _FloorRowSelectorState();
@@ -15,9 +30,19 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
   String? selectedRow;
 
   List<String> floors = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    floors = widget.seats.keys.toList();
+    selectedFloor = widget.initialFloor;
+    selectedRow = widget.initialRow;
+    print('selectedFloor $selectedFloor');
+  }
+
   @override
   Widget build(BuildContext context) {
-    floors = widget.seats.keys.toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -31,6 +56,7 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
               setState(() {
                 selectedFloor = value;
                 selectedRow = null;
+                widget.onFloorSelected.call(value);
               });
             },
           ),
@@ -47,6 +73,7 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
                     onSelected: (value) {
                       setState(() {
                         selectedRow = value;
+                        widget.onRowSelected.call(value);
                       });
                     },
                   ),
@@ -102,18 +129,18 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: AppDesign.typo.body1(),
               ),
             ),
             ...options.map((option) {
               return ListTile(
-                title: Text('$option'),
+                title: Text(option),
                 onTap: () {
-                  onSelected('$option');
+                  onSelected(option);
                   Navigator.pop(context); // 선택 후 닫기
                 },
               );
-            }).toList(),
+            }),
             AppDesign.spacing.h24,
           ],
         );

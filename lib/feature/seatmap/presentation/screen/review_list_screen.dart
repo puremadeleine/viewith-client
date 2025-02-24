@@ -121,7 +121,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         maxChildSize: 1.0,
         builder: (BuildContext context, ScrollController scrollController) {
           return _isFilterMode
-              ? _buildFilterScreen(value.seats)
+              ? _buildFilterScreen(value.seats, value.selectedFloor, value.selectedRow)
               : _buildReviews(
                   value.reviews.value ?? [],
                   scrollController,
@@ -173,7 +173,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildFilterScreen(Map<String, List<int>> seats) {
+  Widget _buildFilterScreen(Map<String, List<int>> seats, String? initialFloor, String? initialRow) {
     return Container(
       decoration: BoxDecoration(
         color: AppDesign.colors.white,
@@ -198,9 +198,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
               children: [
                 _buildSortOptions(),
                 AppDesign.spacing.h8,
-                _buildSeatOptions(seats),
-                AppDesign.spacing.h32,
-                _buildBottomButtons(),
+                _buildSeatOptions(seats, initialFloor, initialRow),
+                // _buildBottomButtons(),
               ],
             ),
           )
@@ -245,7 +244,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildSeatOptions(Map<String, List<int>> seats) {
+  Widget _buildSeatOptions(Map<String, List<int>> seats, String? initialFloor, String? initialRow) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -256,11 +255,22 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           color: AppDesign.colors.gray200,
         ),
         AppDesign.spacing.h8,
-        FloorRowSelector(seats: seats),
+        FloorRowSelector(
+          seats: seats,
+          onFloorSelected: (String floor) {
+            ref.read(reviewListControllerProvider(widget.id).notifier).setFloor(floor);
+          },
+          onRowSelected: (String row) {
+            ref.read(reviewListControllerProvider(widget.id).notifier).setRow(row);
+          },
+          initialFloor: initialFloor,
+          initialRow: initialRow,
+        ),
       ],
     );
   }
 
+  // 기능 필요 시 추가
   Widget _buildBottomButtons() {
     Widget buildResetButton() {
       return Container(
