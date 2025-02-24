@@ -14,15 +14,25 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ReviewParams _$ReviewParamsFromJson(Map<String, dynamic> json) {
+  return _ReviewParams.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ReviewParams {
   int get page => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sort_type')
   ReviewSortType get sortType => throw _privateConstructorUsedError;
-  String get floor => throw _privateConstructorUsedError;
+  String? get floor => throw _privateConstructorUsedError;
   String? get section => throw _privateConstructorUsedError;
-  int? get seatRow => throw _privateConstructorUsedError;
+  @JsonKey(name: 'seat_row')
+  int? get row => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_summary')
   bool get isSummary => throw _privateConstructorUsedError;
+
+  /// Serializes this ReviewParams to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of ReviewParams
   /// with the given fields replaced by the non-null parameter values.
@@ -40,11 +50,11 @@ abstract class $ReviewParamsCopyWith<$Res> {
   $Res call(
       {int page,
       int size,
-      ReviewSortType sortType,
-      String floor,
+      @JsonKey(name: 'sort_type') ReviewSortType sortType,
+      String? floor,
       String? section,
-      int? seatRow,
-      bool isSummary});
+      @JsonKey(name: 'seat_row') int? row,
+      @JsonKey(name: 'is_summary') bool isSummary});
 }
 
 /// @nodoc
@@ -65,9 +75,9 @@ class _$ReviewParamsCopyWithImpl<$Res, $Val extends ReviewParams>
     Object? page = null,
     Object? size = null,
     Object? sortType = null,
-    Object? floor = null,
+    Object? floor = freezed,
     Object? section = freezed,
-    Object? seatRow = freezed,
+    Object? row = freezed,
     Object? isSummary = null,
   }) {
     return _then(_value.copyWith(
@@ -83,17 +93,17 @@ class _$ReviewParamsCopyWithImpl<$Res, $Val extends ReviewParams>
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as ReviewSortType,
-      floor: null == floor
+      floor: freezed == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       section: freezed == section
           ? _value.section
           : section // ignore: cast_nullable_to_non_nullable
               as String?,
-      seatRow: freezed == seatRow
-          ? _value.seatRow
-          : seatRow // ignore: cast_nullable_to_non_nullable
+      row: freezed == row
+          ? _value.row
+          : row // ignore: cast_nullable_to_non_nullable
               as int?,
       isSummary: null == isSummary
           ? _value.isSummary
@@ -114,11 +124,11 @@ abstract class _$$ReviewParamsImplCopyWith<$Res>
   $Res call(
       {int page,
       int size,
-      ReviewSortType sortType,
-      String floor,
+      @JsonKey(name: 'sort_type') ReviewSortType sortType,
+      String? floor,
       String? section,
-      int? seatRow,
-      bool isSummary});
+      @JsonKey(name: 'seat_row') int? row,
+      @JsonKey(name: 'is_summary') bool isSummary});
 }
 
 /// @nodoc
@@ -137,9 +147,9 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
     Object? page = null,
     Object? size = null,
     Object? sortType = null,
-    Object? floor = null,
+    Object? floor = freezed,
     Object? section = freezed,
-    Object? seatRow = freezed,
+    Object? row = freezed,
     Object? isSummary = null,
   }) {
     return _then(_$ReviewParamsImpl(
@@ -155,17 +165,17 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as ReviewSortType,
-      floor: null == floor
+      floor: freezed == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       section: freezed == section
           ? _value.section
           : section // ignore: cast_nullable_to_non_nullable
               as String?,
-      seatRow: freezed == seatRow
-          ? _value.seatRow
-          : seatRow // ignore: cast_nullable_to_non_nullable
+      row: freezed == row
+          ? _value.row
+          : row // ignore: cast_nullable_to_non_nullable
               as int?,
       isSummary: null == isSummary
           ? _value.isSummary
@@ -176,16 +186,19 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ReviewParamsImpl implements _ReviewParams {
   const _$ReviewParamsImpl(
       {this.page = 1,
       this.size = 10,
-      this.sortType = ReviewSortType.latest,
-      this.floor = '1',
+      @JsonKey(name: 'sort_type') this.sortType = ReviewSortType.latest,
+      this.floor,
       this.section,
-      this.seatRow,
-      this.isSummary = false});
+      @JsonKey(name: 'seat_row') this.row,
+      @JsonKey(name: 'is_summary') this.isSummary = false});
+
+  factory _$ReviewParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ReviewParamsImplFromJson(json);
 
   @override
   @JsonKey()
@@ -194,22 +207,22 @@ class _$ReviewParamsImpl implements _ReviewParams {
   @JsonKey()
   final int size;
   @override
-  @JsonKey()
+  @JsonKey(name: 'sort_type')
   final ReviewSortType sortType;
   @override
-  @JsonKey()
-  final String floor;
+  final String? floor;
   @override
   final String? section;
   @override
-  final int? seatRow;
+  @JsonKey(name: 'seat_row')
+  final int? row;
   @override
-  @JsonKey()
+  @JsonKey(name: 'is_summary')
   final bool isSummary;
 
   @override
   String toString() {
-    return 'ReviewParams(page: $page, size: $size, sortType: $sortType, floor: $floor, section: $section, seatRow: $seatRow, isSummary: $isSummary)';
+    return 'ReviewParams(page: $page, size: $size, sortType: $sortType, floor: $floor, section: $section, row: $row, isSummary: $isSummary)';
   }
 
   @override
@@ -223,14 +236,15 @@ class _$ReviewParamsImpl implements _ReviewParams {
                 other.sortType == sortType) &&
             (identical(other.floor, floor) || other.floor == floor) &&
             (identical(other.section, section) || other.section == section) &&
-            (identical(other.seatRow, seatRow) || other.seatRow == seatRow) &&
+            (identical(other.row, row) || other.row == row) &&
             (identical(other.isSummary, isSummary) ||
                 other.isSummary == isSummary));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, page, size, sortType, floor, section, seatRow, isSummary);
+      runtimeType, page, size, sortType, floor, section, row, isSummary);
 
   /// Create a copy of ReviewParams
   /// with the given fields replaced by the non-null parameter values.
@@ -239,31 +253,44 @@ class _$ReviewParamsImpl implements _ReviewParams {
   @pragma('vm:prefer-inline')
   _$$ReviewParamsImplCopyWith<_$ReviewParamsImpl> get copyWith =>
       __$$ReviewParamsImplCopyWithImpl<_$ReviewParamsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ReviewParamsImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ReviewParams implements ReviewParams {
   const factory _ReviewParams(
       {final int page,
       final int size,
-      final ReviewSortType sortType,
-      final String floor,
+      @JsonKey(name: 'sort_type') final ReviewSortType sortType,
+      final String? floor,
       final String? section,
-      final int? seatRow,
-      final bool isSummary}) = _$ReviewParamsImpl;
+      @JsonKey(name: 'seat_row') final int? row,
+      @JsonKey(name: 'is_summary') final bool isSummary}) = _$ReviewParamsImpl;
+
+  factory _ReviewParams.fromJson(Map<String, dynamic> json) =
+      _$ReviewParamsImpl.fromJson;
 
   @override
   int get page;
   @override
   int get size;
   @override
+  @JsonKey(name: 'sort_type')
   ReviewSortType get sortType;
   @override
-  String get floor;
+  String? get floor;
   @override
   String? get section;
   @override
-  int? get seatRow;
+  @JsonKey(name: 'seat_row')
+  int? get row;
   @override
+  @JsonKey(name: 'is_summary')
   bool get isSummary;
 
   /// Create a copy of ReviewParams

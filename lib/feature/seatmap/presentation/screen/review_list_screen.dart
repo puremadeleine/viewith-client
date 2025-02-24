@@ -315,6 +315,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
 
   void _closeFilterMode() {
     setState(() {
+      ref.read(reviewListControllerProvider(widget.id).notifier).fetchReviews();
       _isFilterMode = false;
     });
   }

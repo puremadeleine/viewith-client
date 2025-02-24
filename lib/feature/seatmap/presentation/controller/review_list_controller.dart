@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:viewith/core/result/base_error.dart';
 import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
 import 'package:viewith/data/venue/response/review.dart';
@@ -16,7 +17,7 @@ class ReviewListController extends _$ReviewListController {
   @override
   FutureOr<ReviewListState> build(String id) async {
     final venueResult = await ref.read(venueRepositoryProvider).fetchVenue(id);
-    final reviewsResult = await ref.read(venueRepositoryProvider).fetchReviews(const ReviewParams());
+    final reviewsResult = await fetchReviews();
     final seatsResult = await ref.read(venueRepositoryProvider).fetchSeatInfo(id);
     return Result.combine([
       venueResult,
@@ -36,6 +37,27 @@ class ReviewListController extends _$ReviewListController {
       },
       onFailure: (error) => throw error,
     );
+  }
+
+  Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchReviews() async {
+    final currentState = state.value;
+    final ReviewParams params;
+    if (currentState == null) {
+      params = const ReviewParams();
+    } else {
+      int? parsedSeatRow;
+      if (currentState.selectedFloor != null && currentState.selectedRow != null) {
+        parsedSeatRow = int.parse(currentState.selectedRow!);
+      }
+
+      params = ReviewParams(
+        sortType: currentState.sortType,
+        floor: currentState.selectedFloor,
+        row: parsedSeatRow,
+      );
+    }
+    final reviewsResult = await ref.read(venueRepositoryProvider).fetchReviews(params);
+    return reviewsResult;
   }
 
   void setSortOption(ReviewSortType option) {

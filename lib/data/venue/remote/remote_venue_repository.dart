@@ -38,16 +38,8 @@ class RemoteVenueRepository extends VenueRepository {
 
   @override
   Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchReviews(ReviewParams params) async {
-    final response = await _client.get('/v1/reviews/list', queryParameters: {
-      'page': params.page,
-      'size': params.size,
-      'sort_type': params.sortType.name.toUpperCase(),
-      'floor': params.floor,
-      if (params.section != null) 'section': params.section,
-      if (params.seatRow != null) 'seat_row': params.seatRow,
-      'is_summary': params.isSummary,
-    });
-
+    final queryParams = params.toJson();
+    final response = await _client.get('/v1/reviews/list', queryParameters: queryParams);
     return response.toPaginatedResult((json) => (json as List).map((e) => Review.fromJson(e)).toList());
   }
 
