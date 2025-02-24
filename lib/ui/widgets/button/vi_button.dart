@@ -4,11 +4,19 @@ import 'package:viewith/ui/widgets/button/rounded_button.dart';
 import 'package:viewith/ui/widgets/button/vi_button_type.dart';
 
 class VIButton extends StatelessWidget {
-  const VIButton({super.key, required this.onTap, required this.type, required this.text});
+  const VIButton({
+    super.key,
+    required this.onTap,
+    required this.type,
+    required this.text,
+    this.padding,
+  });
 
   final Function() onTap;
 
   final VIButtonType type;
+
+  final EdgeInsets? padding;
 
   Color get _backgroundColor {
     return switch (type) {
@@ -35,6 +43,7 @@ class VIButton extends StatelessWidget {
       text: text,
       backgroundColor: _backgroundColor,
       textColor: _textColor,
+      padding: padding,
     );
   }
 }

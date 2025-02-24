@@ -15,7 +15,8 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
           .map((e) => e as String)
           .toList(),
       userInfo: UserInfo.fromJson(json['user_info'] as Map<String, dynamic>),
-      seatInfo: SeatInfo.fromJson(json['seat_info'] as Map<String, dynamic>),
+      seatRawData:
+          SeatRawData.fromJson(json['seat_info'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
@@ -26,7 +27,7 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'create_time': instance.createTime,
       'image_list': instance.imageList,
       'user_info': instance.userInfo,
-      'seat_info': instance.seatInfo,
+      'seat_info': instance.seatRawData,
     };
 
 _$UserInfoImpl _$$UserInfoImplFromJson(Map<String, dynamic> json) =>
@@ -41,8 +42,8 @@ Map<String, dynamic> _$$UserInfoImplToJson(_$UserInfoImpl instance) =>
       'user_nickname': instance.userNickname,
     };
 
-_$SeatInfoImpl _$$SeatInfoImplFromJson(Map<String, dynamic> json) =>
-    _$SeatInfoImpl(
+_$SeatRawDataImpl _$$SeatRawDataImplFromJson(Map<String, dynamic> json) =>
+    _$SeatRawDataImpl(
       floor: json['floor'] as String,
       section: json['section'] as String,
       row: (json['seat_row'] as num).toInt(),
@@ -50,7 +51,7 @@ _$SeatInfoImpl _$$SeatInfoImplFromJson(Map<String, dynamic> json) =>
       block: json['block'] as String?,
     );
 
-Map<String, dynamic> _$$SeatInfoImplToJson(_$SeatInfoImpl instance) =>
+Map<String, dynamic> _$$SeatRawDataImplToJson(_$SeatRawDataImpl instance) =>
     <String, dynamic>{
       'floor': instance.floor,
       'section': instance.section,

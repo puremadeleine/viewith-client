@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
+import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
 
 import '../../../../../data/venue/response/review.dart';
@@ -10,9 +11,19 @@ part 'review_list_state.freezed.dart';
 @freezed
 class ReviewListState with _$ReviewListState {
   factory ReviewListState({
-    required AsyncValue<VenueDetail> seatInfo,
+    required String id,
+    required AsyncValue<VenueDetail> venueInfo,
     required AsyncValue<List<Review>> reviews,
     @Default(ReviewSortType.defaultSort) ReviewSortType sortType,
+    required AsyncValue<List<SeatInfo>> seatInfo,
     String? selectedSection,
   }) = _ReviewListState;
+}
+
+extension ReviewListStateX on ReviewListState {
+  Map<String, List<int>> get seats =>
+      Map.fromIterables(
+          seatInfo.value?.map((seat) => seat.floor) ?? [],
+          seatInfo.value?.map((seat) => seat.rows) ?? []
+      );
 }

@@ -15,7 +15,7 @@ class Review with _$Review {
     @JsonKey(name: 'create_time') required int createTime,
     @JsonKey(name: 'image_list') required List<String> imageList,
     @JsonKey(name: 'user_info') required UserInfo userInfo,
-    @JsonKey(name: 'seat_info') required SeatInfo seatInfo,
+    @JsonKey(name: 'seat_info') required SeatRawData seatRawData,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
@@ -32,16 +32,16 @@ class UserInfo with _$UserInfo {
 }
 
 @freezed
-class SeatInfo with _$SeatInfo {
-  const factory SeatInfo({
+class SeatRawData with _$SeatRawData {
+  const factory SeatRawData({
     @JsonKey(name: 'floor') required String floor,
     @JsonKey(name: 'section') required String section,
     @JsonKey(name: 'seat_row') required int row,
     @JsonKey(name: 'seat_column') required int column,
     @JsonKey(name: 'block') String? block,
-  }) = _SeatInfo;
+  }) = _SeatRawData;
 
-  factory SeatInfo.fromJson(Map<String, dynamic> json) => _$SeatInfoFromJson(json);
+  factory SeatRawData.fromJson(Map<String, dynamic> json) => _$SeatRawDataFromJson(json);
 }
 
 extension ReviewX on Review {
@@ -51,5 +51,5 @@ extension ReviewX on Review {
     return formattedDate;
   }
 
-  String get seatName => '${seatInfo.section}구역 ${seatInfo.row}열 ${seatInfo.column}번';
+  String get seatName => '${seatRawData.section}구역 ${seatRawData.row}열 ${seatRawData.column}번';
 }

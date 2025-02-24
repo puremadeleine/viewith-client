@@ -10,6 +10,7 @@ class RoundedButton extends StatelessWidget {
     this.textColor = Colors.black,
     this.backgroundColor = Colors.white,
     this.image,
+    this.padding,
   });
 
   final Function() onTap;
@@ -17,6 +18,7 @@ class RoundedButton extends StatelessWidget {
   final Color textColor;
   final Color backgroundColor;
   final SvgPicture? image;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class RoundedButton extends StatelessWidget {
         onTap.call();
       },
       child: Container(
-        padding: AppDesign.spacing.all16,
+        padding: padding ?? AppDesign.spacing.all16,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(32),

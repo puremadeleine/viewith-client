@@ -4,6 +4,7 @@ import 'package:viewith/core/result/paginated_response.dart';
 import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
 import 'package:viewith/data/venue/response/review.dart';
+import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/network/client.dart';
 
@@ -48,5 +49,11 @@ class RemoteVenueRepository extends VenueRepository {
     });
 
     return response.toPaginatedResult((json) => (json as List).map((e) => Review.fromJson(e)).toList());
+  }
+
+  @override
+  Future<Result<List<SeatInfo>, BaseError>> fetchSeatInfo(String id) async {
+    final response = await _client.get('/v1/venues/$id/filter');
+    return response.toResult(fromJson: (json) => (json['seat_infos'] as List).map((e) => SeatInfo.fromJson(e)).toList());
   }
 }

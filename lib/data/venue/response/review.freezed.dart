@@ -31,7 +31,7 @@ mixin _$Review {
   @JsonKey(name: 'user_info')
   UserInfo get userInfo => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_info')
-  SeatInfo get seatInfo => throw _privateConstructorUsedError;
+  SeatRawData get seatRawData => throw _privateConstructorUsedError;
 
   /// Serializes this Review to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,10 +54,10 @@ abstract class $ReviewCopyWith<$Res> {
       @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list') List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
-      @JsonKey(name: 'seat_info') SeatInfo seatInfo});
+      @JsonKey(name: 'seat_info') SeatRawData seatRawData});
 
   $UserInfoCopyWith<$Res> get userInfo;
-  $SeatInfoCopyWith<$Res> get seatInfo;
+  $SeatRawDataCopyWith<$Res> get seatRawData;
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
     Object? createTime = null,
     Object? imageList = null,
     Object? userInfo = null,
-    Object? seatInfo = null,
+    Object? seatRawData = null,
   }) {
     return _then(_value.copyWith(
       reviewId: null == reviewId
@@ -108,10 +108,10 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
           ? _value.userInfo
           : userInfo // ignore: cast_nullable_to_non_nullable
               as UserInfo,
-      seatInfo: null == seatInfo
-          ? _value.seatInfo
-          : seatInfo // ignore: cast_nullable_to_non_nullable
-              as SeatInfo,
+      seatRawData: null == seatRawData
+          ? _value.seatRawData
+          : seatRawData // ignore: cast_nullable_to_non_nullable
+              as SeatRawData,
     ) as $Val);
   }
 
@@ -129,9 +129,9 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $SeatInfoCopyWith<$Res> get seatInfo {
-    return $SeatInfoCopyWith<$Res>(_value.seatInfo, (value) {
-      return _then(_value.copyWith(seatInfo: value) as $Val);
+  $SeatRawDataCopyWith<$Res> get seatRawData {
+    return $SeatRawDataCopyWith<$Res>(_value.seatRawData, (value) {
+      return _then(_value.copyWith(seatRawData: value) as $Val);
     });
   }
 }
@@ -150,12 +150,12 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list') List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
-      @JsonKey(name: 'seat_info') SeatInfo seatInfo});
+      @JsonKey(name: 'seat_info') SeatRawData seatRawData});
 
   @override
   $UserInfoCopyWith<$Res> get userInfo;
   @override
-  $SeatInfoCopyWith<$Res> get seatInfo;
+  $SeatRawDataCopyWith<$Res> get seatRawData;
 }
 
 /// @nodoc
@@ -177,7 +177,7 @@ class __$$ReviewImplCopyWithImpl<$Res>
     Object? createTime = null,
     Object? imageList = null,
     Object? userInfo = null,
-    Object? seatInfo = null,
+    Object? seatRawData = null,
   }) {
     return _then(_$ReviewImpl(
       reviewId: null == reviewId
@@ -204,10 +204,10 @@ class __$$ReviewImplCopyWithImpl<$Res>
           ? _value.userInfo
           : userInfo // ignore: cast_nullable_to_non_nullable
               as UserInfo,
-      seatInfo: null == seatInfo
-          ? _value.seatInfo
-          : seatInfo // ignore: cast_nullable_to_non_nullable
-              as SeatInfo,
+      seatRawData: null == seatRawData
+          ? _value.seatRawData
+          : seatRawData // ignore: cast_nullable_to_non_nullable
+              as SeatRawData,
     ));
   }
 }
@@ -222,7 +222,7 @@ class _$ReviewImpl implements _Review {
       @JsonKey(name: 'create_time') required this.createTime,
       @JsonKey(name: 'image_list') required final List<String> imageList,
       @JsonKey(name: 'user_info') required this.userInfo,
-      @JsonKey(name: 'seat_info') required this.seatInfo})
+      @JsonKey(name: 'seat_info') required this.seatRawData})
       : _imageList = imageList;
 
   factory _$ReviewImpl.fromJson(Map<String, dynamic> json) =>
@@ -252,11 +252,11 @@ class _$ReviewImpl implements _Review {
   final UserInfo userInfo;
   @override
   @JsonKey(name: 'seat_info')
-  final SeatInfo seatInfo;
+  final SeatRawData seatRawData;
 
   @override
   String toString() {
-    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, createTime: $createTime, imageList: $imageList, userInfo: $userInfo, seatInfo: $seatInfo)';
+    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, createTime: $createTime, imageList: $imageList, userInfo: $userInfo, seatRawData: $seatRawData)';
   }
 
   @override
@@ -274,8 +274,8 @@ class _$ReviewImpl implements _Review {
                 .equals(other._imageList, _imageList) &&
             (identical(other.userInfo, userInfo) ||
                 other.userInfo == userInfo) &&
-            (identical(other.seatInfo, seatInfo) ||
-                other.seatInfo == seatInfo));
+            (identical(other.seatRawData, seatRawData) ||
+                other.seatRawData == seatRawData));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -288,7 +288,7 @@ class _$ReviewImpl implements _Review {
       createTime,
       const DeepCollectionEquality().hash(_imageList),
       userInfo,
-      seatInfo);
+      seatRawData);
 
   /// Create a copy of Review
   /// with the given fields replaced by the non-null parameter values.
@@ -314,7 +314,7 @@ abstract class _Review implements Review {
           @JsonKey(name: 'create_time') required final int createTime,
           @JsonKey(name: 'image_list') required final List<String> imageList,
           @JsonKey(name: 'user_info') required final UserInfo userInfo,
-          @JsonKey(name: 'seat_info') required final SeatInfo seatInfo}) =
+          @JsonKey(name: 'seat_info') required final SeatRawData seatRawData}) =
       _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
@@ -337,7 +337,7 @@ abstract class _Review implements Review {
   UserInfo get userInfo;
   @override
   @JsonKey(name: 'seat_info')
-  SeatInfo get seatInfo;
+  SeatRawData get seatRawData;
 
   /// Create a copy of Review
   /// with the given fields replaced by the non-null parameter values.
@@ -527,12 +527,12 @@ abstract class _UserInfo implements UserInfo {
       throw _privateConstructorUsedError;
 }
 
-SeatInfo _$SeatInfoFromJson(Map<String, dynamic> json) {
-  return _SeatInfo.fromJson(json);
+SeatRawData _$SeatRawDataFromJson(Map<String, dynamic> json) {
+  return _SeatRawData.fromJson(json);
 }
 
 /// @nodoc
-mixin _$SeatInfo {
+mixin _$SeatRawData {
   @JsonKey(name: 'floor')
   String get floor => throw _privateConstructorUsedError;
   @JsonKey(name: 'section')
@@ -544,20 +544,21 @@ mixin _$SeatInfo {
   @JsonKey(name: 'block')
   String? get block => throw _privateConstructorUsedError;
 
-  /// Serializes this SeatInfo to a JSON map.
+  /// Serializes this SeatRawData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of SeatInfo
+  /// Create a copy of SeatRawData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SeatInfoCopyWith<SeatInfo> get copyWith =>
+  $SeatRawDataCopyWith<SeatRawData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SeatInfoCopyWith<$Res> {
-  factory $SeatInfoCopyWith(SeatInfo value, $Res Function(SeatInfo) then) =
-      _$SeatInfoCopyWithImpl<$Res, SeatInfo>;
+abstract class $SeatRawDataCopyWith<$Res> {
+  factory $SeatRawDataCopyWith(
+          SeatRawData value, $Res Function(SeatRawData) then) =
+      _$SeatRawDataCopyWithImpl<$Res, SeatRawData>;
   @useResult
   $Res call(
       {@JsonKey(name: 'floor') String floor,
@@ -568,16 +569,16 @@ abstract class $SeatInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SeatInfoCopyWithImpl<$Res, $Val extends SeatInfo>
-    implements $SeatInfoCopyWith<$Res> {
-  _$SeatInfoCopyWithImpl(this._value, this._then);
+class _$SeatRawDataCopyWithImpl<$Res, $Val extends SeatRawData>
+    implements $SeatRawDataCopyWith<$Res> {
+  _$SeatRawDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SeatInfo
+  /// Create a copy of SeatRawData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -614,11 +615,11 @@ class _$SeatInfoCopyWithImpl<$Res, $Val extends SeatInfo>
 }
 
 /// @nodoc
-abstract class _$$SeatInfoImplCopyWith<$Res>
-    implements $SeatInfoCopyWith<$Res> {
-  factory _$$SeatInfoImplCopyWith(
-          _$SeatInfoImpl value, $Res Function(_$SeatInfoImpl) then) =
-      __$$SeatInfoImplCopyWithImpl<$Res>;
+abstract class _$$SeatRawDataImplCopyWith<$Res>
+    implements $SeatRawDataCopyWith<$Res> {
+  factory _$$SeatRawDataImplCopyWith(
+          _$SeatRawDataImpl value, $Res Function(_$SeatRawDataImpl) then) =
+      __$$SeatRawDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -630,14 +631,14 @@ abstract class _$$SeatInfoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SeatInfoImplCopyWithImpl<$Res>
-    extends _$SeatInfoCopyWithImpl<$Res, _$SeatInfoImpl>
-    implements _$$SeatInfoImplCopyWith<$Res> {
-  __$$SeatInfoImplCopyWithImpl(
-      _$SeatInfoImpl _value, $Res Function(_$SeatInfoImpl) _then)
+class __$$SeatRawDataImplCopyWithImpl<$Res>
+    extends _$SeatRawDataCopyWithImpl<$Res, _$SeatRawDataImpl>
+    implements _$$SeatRawDataImplCopyWith<$Res> {
+  __$$SeatRawDataImplCopyWithImpl(
+      _$SeatRawDataImpl _value, $Res Function(_$SeatRawDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SeatInfo
+  /// Create a copy of SeatRawData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -648,7 +649,7 @@ class __$$SeatInfoImplCopyWithImpl<$Res>
     Object? column = null,
     Object? block = freezed,
   }) {
-    return _then(_$SeatInfoImpl(
+    return _then(_$SeatRawDataImpl(
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -675,16 +676,16 @@ class __$$SeatInfoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SeatInfoImpl implements _SeatInfo {
-  const _$SeatInfoImpl(
+class _$SeatRawDataImpl implements _SeatRawData {
+  const _$SeatRawDataImpl(
       {@JsonKey(name: 'floor') required this.floor,
       @JsonKey(name: 'section') required this.section,
       @JsonKey(name: 'seat_row') required this.row,
       @JsonKey(name: 'seat_column') required this.column,
       @JsonKey(name: 'block') this.block});
 
-  factory _$SeatInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SeatInfoImplFromJson(json);
+  factory _$SeatRawDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SeatRawDataImplFromJson(json);
 
   @override
   @JsonKey(name: 'floor')
@@ -704,14 +705,14 @@ class _$SeatInfoImpl implements _SeatInfo {
 
   @override
   String toString() {
-    return 'SeatInfo(floor: $floor, section: $section, row: $row, column: $column, block: $block)';
+    return 'SeatRawData(floor: $floor, section: $section, row: $row, column: $column, block: $block)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SeatInfoImpl &&
+            other is _$SeatRawDataImpl &&
             (identical(other.floor, floor) || other.floor == floor) &&
             (identical(other.section, section) || other.section == section) &&
             (identical(other.row, row) || other.row == row) &&
@@ -724,32 +725,32 @@ class _$SeatInfoImpl implements _SeatInfo {
   int get hashCode =>
       Object.hash(runtimeType, floor, section, row, column, block);
 
-  /// Create a copy of SeatInfo
+  /// Create a copy of SeatRawData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$SeatInfoImplCopyWith<_$SeatInfoImpl> get copyWith =>
-      __$$SeatInfoImplCopyWithImpl<_$SeatInfoImpl>(this, _$identity);
+  _$$SeatRawDataImplCopyWith<_$SeatRawDataImpl> get copyWith =>
+      __$$SeatRawDataImplCopyWithImpl<_$SeatRawDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SeatInfoImplToJson(
+    return _$$SeatRawDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _SeatInfo implements SeatInfo {
-  const factory _SeatInfo(
+abstract class _SeatRawData implements SeatRawData {
+  const factory _SeatRawData(
       {@JsonKey(name: 'floor') required final String floor,
       @JsonKey(name: 'section') required final String section,
       @JsonKey(name: 'seat_row') required final int row,
       @JsonKey(name: 'seat_column') required final int column,
-      @JsonKey(name: 'block') final String? block}) = _$SeatInfoImpl;
+      @JsonKey(name: 'block') final String? block}) = _$SeatRawDataImpl;
 
-  factory _SeatInfo.fromJson(Map<String, dynamic> json) =
-      _$SeatInfoImpl.fromJson;
+  factory _SeatRawData.fromJson(Map<String, dynamic> json) =
+      _$SeatRawDataImpl.fromJson;
 
   @override
   @JsonKey(name: 'floor')
@@ -767,10 +768,10 @@ abstract class _SeatInfo implements SeatInfo {
   @JsonKey(name: 'block')
   String? get block;
 
-  /// Create a copy of SeatInfo
+  /// Create a copy of SeatRawData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SeatInfoImplCopyWith<_$SeatInfoImpl> get copyWith =>
+  _$$SeatRawDataImplCopyWith<_$SeatRawDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

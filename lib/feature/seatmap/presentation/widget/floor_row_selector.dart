@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:viewith/ui/app_design.dart';
 
 class FloorRowSelector extends StatefulWidget {
-  const FloorRowSelector({super.key});
+  final Map<String, List<int>> seats;
+
+  const FloorRowSelector({super.key, required this.seats});
 
   @override
   State<FloorRowSelector> createState() => _FloorRowSelectorState();
 }
 
 class _FloorRowSelectorState extends State<FloorRowSelector> {
-  String? selectedFloor; // 선택된 층
-  String? selectedRow; // 선택된 열
+  String? selectedFloor;
+  String? selectedRow;
 
-  // 예제 데이터
-  final List<String> floors = ['1층', '2층', '3층'];
-  final List<String> rows = ['1열', '2열', '3열', '4열', '5열'];
-
+  List<String> floors = [];
   @override
   Widget build(BuildContext context) {
+    floors = widget.seats.keys.toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -30,7 +30,7 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
             onSelected: (value) {
               setState(() {
                 selectedFloor = value;
-                selectedRow = null; // 층이 바뀌면 열 선택 초기화
+                selectedRow = null;
               });
             },
           ),
@@ -39,11 +39,11 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
         const SizedBox(width: 8),
         GestureDetector(
           onTap: selectedFloor == null
-              ? null // 층이 선택되지 않으면 비활성화
+              ? null
               : () => _showSelectionDialog(
                     context,
                     title: '열 선택',
-                    options: rows,
+                    options: widget.seats[selectedFloor!]?.map((e) => '$e').toList() ?? [],
                     onSelected: (value) {
                       setState(() {
                         selectedRow = value;
@@ -72,7 +72,7 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
       child: Row(
         children: [
           Text(text, style: AppDesign.typo.body2()),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Icon(
             Icons.arrow_drop_down,
             color: isDisabled ? Colors.grey.shade500 : Colors.black,
@@ -107,9 +107,9 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
             ),
             ...options.map((option) {
               return ListTile(
-                title: Text(option),
+                title: Text('$option'),
                 onTap: () {
-                  onSelected(option);
+                  onSelected('$option');
                   Navigator.pop(context); // 선택 후 닫기
                 },
               );

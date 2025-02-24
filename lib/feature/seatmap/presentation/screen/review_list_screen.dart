@@ -8,6 +8,8 @@ import 'package:viewith/feature/seatmap/presentation/controller/state/review_lis
 import 'package:viewith/feature/seatmap/presentation/widget/floor_row_selector.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/bottom_sheet.dart';
+import 'package:viewith/ui/widgets/button/vi_button.dart';
+import 'package:viewith/ui/widgets/button/vi_button_type.dart';
 
 import '../../../../core/utils/svg_util.dart';
 import '../../../../data/venue/response/review.dart';
@@ -107,6 +109,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
   }
 
   Widget _buildBottomSheet(AsyncValue<ReviewListState> state) {
+    final value = state.value;
+    if (value == null) return const SizedBox();
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -117,9 +121,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         maxChildSize: 1.0,
         builder: (BuildContext context, ScrollController scrollController) {
           return _isFilterMode
-              ? _buildFilterScreen()
+              ? _buildFilterScreen(value.seats)
               : _buildReviews(
-                  state.value?.reviews.value ?? [],
+                  value.reviews.value ?? [],
                   scrollController,
                 );
         },
@@ -169,7 +173,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildFilterScreen() {
+  Widget _buildFilterScreen(Map<String, List<int>> seats) {
     return Container(
       decoration: BoxDecoration(
         color: AppDesign.colors.white,
@@ -194,7 +198,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
               children: [
                 _buildSortOptions(),
                 AppDesign.spacing.h8,
-                _buildSeatOptions(),
+                _buildSeatOptions(seats),
+                AppDesign.spacing.h32,
+                _buildBottomButtons(),
               ],
             ),
           )
@@ -239,7 +245,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildSeatOptions() {
+  Widget _buildSeatOptions(Map<String, List<int>> seats) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -250,7 +256,43 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           color: AppDesign.colors.gray200,
         ),
         AppDesign.spacing.h8,
-        FloorRowSelector(),
+        FloorRowSelector(seats: seats),
+      ],
+    );
+  }
+
+  Widget _buildBottomButtons() {
+    Widget buildResetButton() {
+      return Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+              width: 2.0,
+            ),
+          ),
+        ),
+        child: Text(
+          '필터 초기화',
+          style: AppDesign.typo.body1Bold(),
+        ),
+      );
+    }
+
+    Widget buildSaveButton() {
+      return VIButton(
+        onTap: () {},
+        type: VIButtonType.primary,
+        text: '필터 저장하기',
+        padding: AppDesign.spacing.buttonPadding,
+      );
+    }
+
+    return Row(
+      children: [
+        buildResetButton(),
+        const Spacer(),
+        buildSaveButton(),
       ],
     );
   }
