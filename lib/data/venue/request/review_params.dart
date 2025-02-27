@@ -31,7 +31,7 @@ enum ReviewSortType {
   @JsonValue('RATING')
   rating;
 
-  String get type {
+  String get name {
     switch (this) {
       case ReviewSortType.defaultSort:
         return "기본순";

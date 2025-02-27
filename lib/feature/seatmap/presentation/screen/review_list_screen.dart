@@ -10,6 +10,7 @@ import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/bottom_sheet.dart';
 import 'package:viewith/ui/widgets/button/vi_button.dart';
 import 'package:viewith/ui/widgets/button/vi_button_type.dart';
+import 'package:viewith/ui/widgets/chip_list.dart';
 
 import '../../../../core/utils/svg_util.dart';
 import '../../../../data/venue/response/review.dart';
@@ -132,6 +133,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
   }
 
   Widget _buildReviews(List<Review> reviews, ScrollController scrollController) {
+    final reviewListState = ref.watch(reviewListControllerProvider(widget.id)).value;
+    final reviewListNotifier = ref.read(reviewListControllerProvider(widget.id).notifier);
+
     return VIBottomSheet<Review>(
       controller: scrollController,
       widget: widget,
@@ -140,6 +144,15 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       titleBuilder: (context) => Row(
         children: [
           _buildFilterButton(),
+          const SizedBox(width: 8),
+          Expanded(
+            child: ChipList(
+              chips: reviewListState?.filterChips ?? [],
+              onRemove: (chip) {
+                reviewListNotifier.removeFilterChip(chip);
+              },
+            ),
+          ),
         ],
       ),
       itemBuilder: (context, review) {
@@ -226,7 +239,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           children: ReviewSortType.values.map((option) {
             final color = option == sortOption ? AppDesign.colors.white : AppDesign.colors.gray900;
             return ChoiceChip(
-              label: Text(option.type, style: AppDesign.typo.body2(color: color)),
+              label: Text(option.name, style: AppDesign.typo.body2(color: color)),
               selected: option == sortOption,
               selectedColor: AppDesign.colors.gray900,
               checkmarkColor: color,

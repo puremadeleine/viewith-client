@@ -6,6 +6,7 @@ import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/state/review_list_state.dart';
+import 'package:viewith/ui/widgets/chip_list.dart';
 
 import '../../../../core/result/paginated_response.dart';
 import '../../../../data/venue/venue_repository_providers.dart';
@@ -79,6 +80,17 @@ class ReviewListController extends _$ReviewListController {
     final currentState = state.value;
     if (currentState == null) return;
     final newState = currentState.copyWith(selectedRow: row);
+    state = AsyncData(newState);
+  }
+
+  void removeFilterChip(FilterChipData chip) {
+    final currentState = state.value;
+    if (currentState == null) return;
+    final newState = currentState.copyWith(
+      sortType: chip.type == FilterType.sort ? ReviewSortType.defaultSort : currentState.sortType,
+      selectedFloor: chip.type == FilterType.seat ? null : currentState.selectedFloor,
+      selectedRow: chip.type == FilterType.seat ? null : currentState.selectedRow,
+    );
     state = AsyncData(newState);
   }
 }

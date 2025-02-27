@@ -144,6 +144,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/candlestick_light.svg
   SvgGenImage get candlestickLight => const SvgGenImage('assets/images/candlestick_light.svg');
 
+  /// File path: assets/images/close_fill_white.svg
+  SvgGenImage get closeFillWhite => const SvgGenImage('assets/images/close_fill_white.svg');
+
   /// File path: assets/images/info_light.svg
   SvgGenImage get infoLight => const SvgGenImage('assets/images/info_light.svg');
 
@@ -201,6 +204,7 @@ class $AssetsImagesGen {
         userAltFill,
         appLogo,
         candlestickLight,
+        closeFillWhite,
         infoLight,
         kakao,
         thumbDown,

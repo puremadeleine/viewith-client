@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
+import 'package:viewith/ui/widgets/chip_list.dart';
 
 import '../../../../../data/venue/response/review.dart';
 
@@ -27,4 +28,25 @@ extension ReviewListStateX on ReviewListState {
           seatInfo.value?.map((seat) => seat.floor) ?? [],
           seatInfo.value?.map((seat) => seat.rows) ?? []
       );
+
+  List<FilterChipData> get filterChips {
+    List<FilterChipData> chips = [];
+
+    if (sortType != ReviewSortType.defaultSort) {
+      chips.add(FilterChipData(
+        label: sortType.name,
+        type: FilterType.sort,
+      ));
+    }
+
+    if (selectedFloor != null) {
+      String seatLabel = selectedRow == null ? "$selectedFloor층" : "$selectedFloor층 $selectedRow열";
+      chips.add(FilterChipData(
+        label: seatLabel,
+        type: FilterType.seat,
+      ));
+    }
+
+    return chips;
+  }
 }
