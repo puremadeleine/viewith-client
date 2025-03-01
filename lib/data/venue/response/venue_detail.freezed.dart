@@ -26,6 +26,9 @@ mixin _$VenueDetail {
   String get seatmapUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'stages')
   List<Stage> get location => throw _privateConstructorUsedError;
+  @JsonKey(name: 'venue_review_infos')
+  List<SectionReviewCount> get sectionReviewCount =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this VenueDetail to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +49,9 @@ abstract class $VenueDetailCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'sections') List<String> sections,
       @JsonKey(name: 'venue_url') String seatmapUrl,
-      @JsonKey(name: 'stages') List<Stage> location});
+      @JsonKey(name: 'stages') List<Stage> location,
+      @JsonKey(name: 'venue_review_infos')
+      List<SectionReviewCount> sectionReviewCount});
 }
 
 /// @nodoc
@@ -67,6 +72,7 @@ class _$VenueDetailCopyWithImpl<$Res, $Val extends VenueDetail>
     Object? sections = null,
     Object? seatmapUrl = null,
     Object? location = null,
+    Object? sectionReviewCount = null,
   }) {
     return _then(_value.copyWith(
       sections: null == sections
@@ -81,6 +87,10 @@ class _$VenueDetailCopyWithImpl<$Res, $Val extends VenueDetail>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as List<Stage>,
+      sectionReviewCount: null == sectionReviewCount
+          ? _value.sectionReviewCount
+          : sectionReviewCount // ignore: cast_nullable_to_non_nullable
+              as List<SectionReviewCount>,
     ) as $Val);
   }
 }
@@ -96,7 +106,9 @@ abstract class _$$VenueDetailImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'sections') List<String> sections,
       @JsonKey(name: 'venue_url') String seatmapUrl,
-      @JsonKey(name: 'stages') List<Stage> location});
+      @JsonKey(name: 'stages') List<Stage> location,
+      @JsonKey(name: 'venue_review_infos')
+      List<SectionReviewCount> sectionReviewCount});
 }
 
 /// @nodoc
@@ -115,6 +127,7 @@ class __$$VenueDetailImplCopyWithImpl<$Res>
     Object? sections = null,
     Object? seatmapUrl = null,
     Object? location = null,
+    Object? sectionReviewCount = null,
   }) {
     return _then(_$VenueDetailImpl(
       sections: null == sections
@@ -129,6 +142,10 @@ class __$$VenueDetailImplCopyWithImpl<$Res>
           ? _value._location
           : location // ignore: cast_nullable_to_non_nullable
               as List<Stage>,
+      sectionReviewCount: null == sectionReviewCount
+          ? _value._sectionReviewCount
+          : sectionReviewCount // ignore: cast_nullable_to_non_nullable
+              as List<SectionReviewCount>,
     ));
   }
 }
@@ -139,9 +156,12 @@ class _$VenueDetailImpl implements _VenueDetail {
   _$VenueDetailImpl(
       {@JsonKey(name: 'sections') required final List<String> sections,
       @JsonKey(name: 'venue_url') this.seatmapUrl = "",
-      @JsonKey(name: 'stages') required final List<Stage> location})
+      @JsonKey(name: 'stages') required final List<Stage> location,
+      @JsonKey(name: 'venue_review_infos')
+      required final List<SectionReviewCount> sectionReviewCount})
       : _sections = sections,
-        _location = location;
+        _location = location,
+        _sectionReviewCount = sectionReviewCount;
 
   factory _$VenueDetailImpl.fromJson(Map<String, dynamic> json) =>
       _$$VenueDetailImplFromJson(json);
@@ -167,9 +187,19 @@ class _$VenueDetailImpl implements _VenueDetail {
     return EqualUnmodifiableListView(_location);
   }
 
+  final List<SectionReviewCount> _sectionReviewCount;
+  @override
+  @JsonKey(name: 'venue_review_infos')
+  List<SectionReviewCount> get sectionReviewCount {
+    if (_sectionReviewCount is EqualUnmodifiableListView)
+      return _sectionReviewCount;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sectionReviewCount);
+  }
+
   @override
   String toString() {
-    return 'VenueDetail(sections: $sections, seatmapUrl: $seatmapUrl, location: $location)';
+    return 'VenueDetail(sections: $sections, seatmapUrl: $seatmapUrl, location: $location, sectionReviewCount: $sectionReviewCount)';
   }
 
   @override
@@ -180,7 +210,9 @@ class _$VenueDetailImpl implements _VenueDetail {
             const DeepCollectionEquality().equals(other._sections, _sections) &&
             (identical(other.seatmapUrl, seatmapUrl) ||
                 other.seatmapUrl == seatmapUrl) &&
-            const DeepCollectionEquality().equals(other._location, _location));
+            const DeepCollectionEquality().equals(other._location, _location) &&
+            const DeepCollectionEquality()
+                .equals(other._sectionReviewCount, _sectionReviewCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -189,7 +221,8 @@ class _$VenueDetailImpl implements _VenueDetail {
       runtimeType,
       const DeepCollectionEquality().hash(_sections),
       seatmapUrl,
-      const DeepCollectionEquality().hash(_location));
+      const DeepCollectionEquality().hash(_location),
+      const DeepCollectionEquality().hash(_sectionReviewCount));
 
   /// Create a copy of VenueDetail
   /// with the given fields replaced by the non-null parameter values.
@@ -211,7 +244,9 @@ abstract class _VenueDetail implements VenueDetail {
   factory _VenueDetail(
           {@JsonKey(name: 'sections') required final List<String> sections,
           @JsonKey(name: 'venue_url') final String seatmapUrl,
-          @JsonKey(name: 'stages') required final List<Stage> location}) =
+          @JsonKey(name: 'stages') required final List<Stage> location,
+          @JsonKey(name: 'venue_review_infos')
+          required final List<SectionReviewCount> sectionReviewCount}) =
       _$VenueDetailImpl;
 
   factory _VenueDetail.fromJson(Map<String, dynamic> json) =
@@ -226,6 +261,9 @@ abstract class _VenueDetail implements VenueDetail {
   @override
   @JsonKey(name: 'stages')
   List<Stage> get location;
+  @override
+  @JsonKey(name: 'venue_review_infos')
+  List<SectionReviewCount> get sectionReviewCount;
 
   /// Create a copy of VenueDetail
   /// with the given fields replaced by the non-null parameter values.
@@ -430,5 +468,188 @@ abstract class _Stage implements Stage {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StageImplCopyWith<_$StageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SectionReviewCount _$SectionReviewCountFromJson(Map<String, dynamic> json) {
+  return _SectionReviewCount.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SectionReviewCount {
+  @JsonKey(name: 'section_key')
+  String get sectionKey => throw _privateConstructorUsedError;
+  @JsonKey(name: 'review_cnt')
+  int get reviewCount => throw _privateConstructorUsedError;
+
+  /// Serializes this SectionReviewCount to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SectionReviewCount
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SectionReviewCountCopyWith<SectionReviewCount> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SectionReviewCountCopyWith<$Res> {
+  factory $SectionReviewCountCopyWith(
+          SectionReviewCount value, $Res Function(SectionReviewCount) then) =
+      _$SectionReviewCountCopyWithImpl<$Res, SectionReviewCount>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'section_key') String sectionKey,
+      @JsonKey(name: 'review_cnt') int reviewCount});
+}
+
+/// @nodoc
+class _$SectionReviewCountCopyWithImpl<$Res, $Val extends SectionReviewCount>
+    implements $SectionReviewCountCopyWith<$Res> {
+  _$SectionReviewCountCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SectionReviewCount
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sectionKey = null,
+    Object? reviewCount = null,
+  }) {
+    return _then(_value.copyWith(
+      sectionKey: null == sectionKey
+          ? _value.sectionKey
+          : sectionKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      reviewCount: null == reviewCount
+          ? _value.reviewCount
+          : reviewCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SectionReviewCountImplCopyWith<$Res>
+    implements $SectionReviewCountCopyWith<$Res> {
+  factory _$$SectionReviewCountImplCopyWith(_$SectionReviewCountImpl value,
+          $Res Function(_$SectionReviewCountImpl) then) =
+      __$$SectionReviewCountImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'section_key') String sectionKey,
+      @JsonKey(name: 'review_cnt') int reviewCount});
+}
+
+/// @nodoc
+class __$$SectionReviewCountImplCopyWithImpl<$Res>
+    extends _$SectionReviewCountCopyWithImpl<$Res, _$SectionReviewCountImpl>
+    implements _$$SectionReviewCountImplCopyWith<$Res> {
+  __$$SectionReviewCountImplCopyWithImpl(_$SectionReviewCountImpl _value,
+      $Res Function(_$SectionReviewCountImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SectionReviewCount
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sectionKey = null,
+    Object? reviewCount = null,
+  }) {
+    return _then(_$SectionReviewCountImpl(
+      sectionKey: null == sectionKey
+          ? _value.sectionKey
+          : sectionKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      reviewCount: null == reviewCount
+          ? _value.reviewCount
+          : reviewCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SectionReviewCountImpl implements _SectionReviewCount {
+  const _$SectionReviewCountImpl(
+      {@JsonKey(name: 'section_key') required this.sectionKey,
+      @JsonKey(name: 'review_cnt') required this.reviewCount});
+
+  factory _$SectionReviewCountImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SectionReviewCountImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'section_key')
+  final String sectionKey;
+  @override
+  @JsonKey(name: 'review_cnt')
+  final int reviewCount;
+
+  @override
+  String toString() {
+    return 'SectionReviewCount(sectionKey: $sectionKey, reviewCount: $reviewCount)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SectionReviewCountImpl &&
+            (identical(other.sectionKey, sectionKey) ||
+                other.sectionKey == sectionKey) &&
+            (identical(other.reviewCount, reviewCount) ||
+                other.reviewCount == reviewCount));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, sectionKey, reviewCount);
+
+  /// Create a copy of SectionReviewCount
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SectionReviewCountImplCopyWith<_$SectionReviewCountImpl> get copyWith =>
+      __$$SectionReviewCountImplCopyWithImpl<_$SectionReviewCountImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SectionReviewCountImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SectionReviewCount implements SectionReviewCount {
+  const factory _SectionReviewCount(
+          {@JsonKey(name: 'section_key') required final String sectionKey,
+          @JsonKey(name: 'review_cnt') required final int reviewCount}) =
+      _$SectionReviewCountImpl;
+
+  factory _SectionReviewCount.fromJson(Map<String, dynamic> json) =
+      _$SectionReviewCountImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'section_key')
+  String get sectionKey;
+  @override
+  @JsonKey(name: 'review_cnt')
+  int get reviewCount;
+
+  /// Create a copy of SectionReviewCount
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SectionReviewCountImplCopyWith<_$SectionReviewCountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -13,7 +13,7 @@ _$ReviewParamsImpl _$$ReviewParamsImplFromJson(Map<String, dynamic> json) =>
       sortType:
           $enumDecodeNullable(_$ReviewSortTypeEnumMap, json['sort_type']) ??
               ReviewSortType.latest,
-      floor: json['floor'] as String?,
+      floor: json['floor'] as String? ?? "1",
       section: json['section'] as String?,
       row: (json['seat_row'] as num?)?.toInt(),
       isSummary: json['is_summary'] as bool? ?? false,
@@ -24,9 +24,9 @@ Map<String, dynamic> _$$ReviewParamsImplToJson(_$ReviewParamsImpl instance) =>
       'page': instance.page,
       'size': instance.size,
       'sort_type': _$ReviewSortTypeEnumMap[instance.sortType]!,
-      'floor': instance.floor,
-      'section': instance.section,
-      'seat_row': instance.row,
+      if (instance.floor case final value?) 'floor': value,
+      if (instance.section case final value?) 'section': value,
+      if (instance.row case final value?) 'seat_row': value,
       'is_summary': instance.isSummary,
     };
 

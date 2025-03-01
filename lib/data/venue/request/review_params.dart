@@ -8,12 +8,19 @@ class ReviewParams with _$ReviewParams {
   const factory ReviewParams({
     @Default(1) int page,
     @Default(10) int size,
+
     @JsonKey(name: 'sort_type')
     @Default(ReviewSortType.latest) ReviewSortType sortType,
-    String? floor,
+
+    @JsonKey(name: 'floor', includeIfNull: false)
+    @Default("1") String? floor,
+
+    @JsonKey(name: 'section', includeIfNull: false)
     String? section,
-    @JsonKey(name: 'seat_row')
+
+    @JsonKey(name: 'seat_row', includeIfNull: false)
     int? row,
+
     @JsonKey(name: 'is_summary')
     @Default(false) bool isSummary,
   }) = _ReviewParams;

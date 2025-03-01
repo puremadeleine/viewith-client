@@ -24,9 +24,11 @@ mixin _$ReviewParams {
   int get size => throw _privateConstructorUsedError;
   @JsonKey(name: 'sort_type')
   ReviewSortType get sortType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'floor', includeIfNull: false)
   String? get floor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'section', includeIfNull: false)
   String? get section => throw _privateConstructorUsedError;
-  @JsonKey(name: 'seat_row')
+  @JsonKey(name: 'seat_row', includeIfNull: false)
   int? get row => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_summary')
   bool get isSummary => throw _privateConstructorUsedError;
@@ -51,9 +53,9 @@ abstract class $ReviewParamsCopyWith<$Res> {
       {int page,
       int size,
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
-      String? floor,
-      String? section,
-      @JsonKey(name: 'seat_row') int? row,
+      @JsonKey(name: 'floor', includeIfNull: false) String? floor,
+      @JsonKey(name: 'section', includeIfNull: false) String? section,
+      @JsonKey(name: 'seat_row', includeIfNull: false) int? row,
       @JsonKey(name: 'is_summary') bool isSummary});
 }
 
@@ -125,9 +127,9 @@ abstract class _$$ReviewParamsImplCopyWith<$Res>
       {int page,
       int size,
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
-      String? floor,
-      String? section,
-      @JsonKey(name: 'seat_row') int? row,
+      @JsonKey(name: 'floor', includeIfNull: false) String? floor,
+      @JsonKey(name: 'section', includeIfNull: false) String? section,
+      @JsonKey(name: 'seat_row', includeIfNull: false) int? row,
       @JsonKey(name: 'is_summary') bool isSummary});
 }
 
@@ -192,9 +194,9 @@ class _$ReviewParamsImpl implements _ReviewParams {
       {this.page = 1,
       this.size = 10,
       @JsonKey(name: 'sort_type') this.sortType = ReviewSortType.latest,
-      this.floor,
-      this.section,
-      @JsonKey(name: 'seat_row') this.row,
+      @JsonKey(name: 'floor', includeIfNull: false) this.floor = "1",
+      @JsonKey(name: 'section', includeIfNull: false) this.section,
+      @JsonKey(name: 'seat_row', includeIfNull: false) this.row,
       @JsonKey(name: 'is_summary') this.isSummary = false});
 
   factory _$ReviewParamsImpl.fromJson(Map<String, dynamic> json) =>
@@ -210,11 +212,13 @@ class _$ReviewParamsImpl implements _ReviewParams {
   @JsonKey(name: 'sort_type')
   final ReviewSortType sortType;
   @override
+  @JsonKey(name: 'floor', includeIfNull: false)
   final String? floor;
   @override
+  @JsonKey(name: 'section', includeIfNull: false)
   final String? section;
   @override
-  @JsonKey(name: 'seat_row')
+  @JsonKey(name: 'seat_row', includeIfNull: false)
   final int? row;
   @override
   @JsonKey(name: 'is_summary')
@@ -267,9 +271,9 @@ abstract class _ReviewParams implements ReviewParams {
       {final int page,
       final int size,
       @JsonKey(name: 'sort_type') final ReviewSortType sortType,
-      final String? floor,
-      final String? section,
-      @JsonKey(name: 'seat_row') final int? row,
+      @JsonKey(name: 'floor', includeIfNull: false) final String? floor,
+      @JsonKey(name: 'section', includeIfNull: false) final String? section,
+      @JsonKey(name: 'seat_row', includeIfNull: false) final int? row,
       @JsonKey(name: 'is_summary') final bool isSummary}) = _$ReviewParamsImpl;
 
   factory _ReviewParams.fromJson(Map<String, dynamic> json) =
@@ -283,11 +287,13 @@ abstract class _ReviewParams implements ReviewParams {
   @JsonKey(name: 'sort_type')
   ReviewSortType get sortType;
   @override
+  @JsonKey(name: 'floor', includeIfNull: false)
   String? get floor;
   @override
+  @JsonKey(name: 'section', includeIfNull: false)
   String? get section;
   @override
-  @JsonKey(name: 'seat_row')
+  @JsonKey(name: 'seat_row', includeIfNull: false)
   int? get row;
   @override
   @JsonKey(name: 'is_summary')

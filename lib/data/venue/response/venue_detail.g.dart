@@ -14,6 +14,9 @@ _$VenueDetailImpl _$$VenueDetailImplFromJson(Map<String, dynamic> json) =>
       location: (json['stages'] as List<dynamic>)
           .map((e) => Stage.fromJson(e as Map<String, dynamic>))
           .toList(),
+      sectionReviewCount: (json['venue_review_infos'] as List<dynamic>)
+          .map((e) => SectionReviewCount.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$VenueDetailImplToJson(_$VenueDetailImpl instance) =>
@@ -21,6 +24,7 @@ Map<String, dynamic> _$$VenueDetailImplToJson(_$VenueDetailImpl instance) =>
       'sections': instance.sections,
       'venue_url': instance.seatmapUrl,
       'stages': instance.location,
+      'venue_review_infos': instance.sectionReviewCount,
     };
 
 _$StageImpl _$$StageImplFromJson(Map<String, dynamic> json) => _$StageImpl(
@@ -34,4 +38,18 @@ Map<String, dynamic> _$$StageImplToJson(_$StageImpl instance) =>
       'stage_id': instance.stageId,
       'name': instance.name,
       'svg_url': instance.url,
+    };
+
+_$SectionReviewCountImpl _$$SectionReviewCountImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SectionReviewCountImpl(
+      sectionKey: json['section_key'] as String,
+      reviewCount: (json['review_cnt'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$SectionReviewCountImplToJson(
+        _$SectionReviewCountImpl instance) =>
+    <String, dynamic>{
+      'section_key': instance.sectionKey,
+      'review_cnt': instance.reviewCount,
     };

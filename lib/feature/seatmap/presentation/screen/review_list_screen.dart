@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
+import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/review_list_controller.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/state/review_list_state.dart';
 import 'package:viewith/feature/seatmap/presentation/widget/floor_row_selector.dart';
@@ -61,7 +62,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       backgroundColor: AppDesign.colors.white,
       body: state.when(
         data: (data) => Stack(
-          children: [_buildSeatMap(), _buildBottomSheet(state)],
+          children: [_buildSeatMap(data.venueInfo), _buildBottomSheet(data)],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
@@ -94,14 +95,23 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildSeatMap() {
+  Widget _buildSeatMap(AsyncValue<VenueDetail> venueDetail) {
+    final value = venueDetail.value;
+    if (venueDetail.isLoading) {
+      return const CircularProgressIndicator();
+    }
+
+    if (value == null) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: SeatMap(
-        seatmapSource: 'https://viewith-bucket.s3.ap-northeast-2.amazonaws.com/svg/kspo.svg',
+        seatmapSource: value.seatmapUrl,
         stageSource: 'assets/seatmap/kspo-t.svg',
         sourceType: SvgSource.url,
-        mode: const SeatMapReadOnly(reviewCount: {'SEAT_17': 5}),
+        mode: SeatMapReadOnly(reviewCount: value.sectionReviewCountMap),
         onSectionSelected: (id) {
           print(id);
         },
@@ -109,9 +119,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildBottomSheet(AsyncValue<ReviewListState> state) {
-    final value = state.value;
-    if (value == null) return const SizedBox();
+  Widget _buildBottomSheet(ReviewListState state) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -122,11 +130,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         maxChildSize: 1.0,
         builder: (BuildContext context, ScrollController scrollController) {
           return _isFilterMode
-              ? _buildFilterScreen(value.seats, value.selectedFloor, value.selectedRow)
-              : _buildReviews(
-                  value.reviews.value ?? [],
-                  scrollController,
-                );
+              ? _buildFilterScreen(state.seats, state.selectedFloor, state.selectedRow)
+              : _buildReviews(state.reviews.value ?? [], scrollController);
         },
       ),
     );
@@ -204,7 +209,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          IconButton(icon: Icon(Icons.arrow_back), onPressed: _closeFilterMode),
+          IconButton(icon: const Icon(Icons.arrow_back), onPressed: _closeFilterMode),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
