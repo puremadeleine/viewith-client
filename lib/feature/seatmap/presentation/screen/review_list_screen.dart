@@ -145,7 +145,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       controller: scrollController,
       widget: widget,
       items: reviews,
-      onItemSelected: (item) {},
+      onItemSelected: (item) {
+        context.pushNamed(AppRoute.reviewDetail.name);
+      },
       titleBuilder: (context) => Row(
         children: [
           _buildFilterButton(),

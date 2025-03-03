@@ -81,6 +81,7 @@ class VIBottomSheet<T> extends StatelessWidget {
             onTap: () {
               onItemSelected(items[index]);
             },
+            behavior: HitTestBehavior.opaque,
             child: itemBuilder(context, items[index]),
           );
         },
