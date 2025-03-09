@@ -1,7 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'client.dart';
-
 class TokenHandler {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
@@ -26,7 +24,7 @@ class TokenHandler {
 
   Future<void> saveTokens({
     required String accessToken,
-    required String refreshToken,
+    String? refreshToken,
   }) async {
     _accessToken = accessToken;
     _refreshToken = refreshToken;

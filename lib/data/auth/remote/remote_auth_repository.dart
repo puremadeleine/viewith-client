@@ -1,20 +1,21 @@
 import 'dart:developer';
 
 import 'package:viewith/core/result/api_response_parser.dart';
-import 'package:flutter/services.dart';
 import 'package:viewith/core/result/base_error.dart';
 import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/auth/response/auth_response.dart';
 import 'package:viewith/feature/auth/presentation/entity/User.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:viewith/network/client.dart';
+import 'package:viewith/network/token_handler.dart';
 
 import '../auth_repository.dart';
 
 class RemoteAuthRepository extends AuthRepository {
   final Client _client;
+  final TokenHandler _tokenHandler;
 
-  RemoteAuthRepository(this._client);
+  RemoteAuthRepository(this._client, this._tokenHandler);
 
   @override
   Stream<User?> authStateChanges() {
@@ -46,14 +47,15 @@ class RemoteAuthRepository extends AuthRepository {
         },
         requiresAuth: false,
       );
-
+      final accessToken = response.data['access_token'];
+      final refreshToken = response.data['refresh_token'];
+      _tokenHandler.saveTokens(accessToken: accessToken, refreshToken: refreshToken);
       return response.toResult(fromJson: AuthResponse.fromJson);
     } catch (e, stackTrace) {
       log('Kakao sign-in failed: $e\n$stackTrace');
       return Failure(UnknownError());
     }
   }
-
 
   Future<kakao.OAuthToken> _signInWithKakaoWeb() async {
     try {

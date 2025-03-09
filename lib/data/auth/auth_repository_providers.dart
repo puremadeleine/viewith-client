@@ -9,5 +9,5 @@ part 'auth_repository_providers.g.dart';
 
 @riverpod
 AuthRepository authRepository(Ref ref) {
-  return RemoteAuthRepository(client(ref));
+  return RemoteAuthRepository(client(ref), ref.read(tokenHandlerProvider));
 }
