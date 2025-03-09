@@ -46,7 +46,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("2구역 5열 03번", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        title: Text("2구역 5열 03번", style: AppDesign.typo.title2bold()),
       ),
       body: SingleChildScrollView(
         child: Padding(

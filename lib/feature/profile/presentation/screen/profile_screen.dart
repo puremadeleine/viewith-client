@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/profile/presentation/model/profile_enum.dart';
 import 'package:viewith/ui/app_design.dart';
 
@@ -16,11 +18,11 @@ class ProfileScreen extends StatelessWidget {
         )),
         backgroundColor: AppDesign.colors.gray800,
       ),
-      body: _buildBody(),
+      body: _buildBody(context),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Column(
       children: [
         _buildBackground(children: [
@@ -32,7 +34,14 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Expanded(child: _buildCounterContainer('내가 작성한\n좌석 후기', 50)),
                 AppDesign.spacing.w12,
-                Expanded(child: _buildCounterContainer('즐겨찾기 한\n좌석 후기', 30)),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoute.bookmarkedReviews.name);
+                    },
+                    child: _buildCounterContainer('즐겨찾기 한\n좌석 후기', 30),
+                  ),
+                ),
               ],
             ),
           )
@@ -125,7 +134,10 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildItem(String text) {
     return Padding(
       padding: AppDesign.spacing.vertical16,
-      child: Text(text, style: AppDesign.typo.body2(),),
+      child: Text(
+        text,
+        style: AppDesign.typo.body2(),
+      ),
     );
   }
 }

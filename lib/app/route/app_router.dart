@@ -6,6 +6,7 @@ import 'package:viewith/feature/auth/presentation/screen/sign_in_screen.dart';
 import 'package:viewith/feature/help/presentation/help_detail_screen.dart';
 import 'package:viewith/feature/help/presentation/help_list_screen.dart';
 import 'package:viewith/feature/home/presentation/screen/home_screen.dart';
+import 'package:viewith/feature/profile/presentation/screen/bookmark_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/profile_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_detail_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_list_screen.dart';
@@ -41,6 +42,13 @@ final router = GoRouter(
             path: AppRoute.profile.path,
             name: AppRoute.profile.name,
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              GoRoute(
+                path: AppRoute.bookmarkedReviews.path,
+                name: AppRoute.bookmarkedReviews.name,
+                builder: (context, state) => const BookmarkScreen(),
+              )
+            ],
           ),
         ]),
       ],
@@ -99,12 +107,11 @@ final router = GoRouter(
           ),
         ]),
     GoRoute(
-      path: '${AppRoute.reviewDetail.path}/:id',
-      name: AppRoute.reviewDetail.name,
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return ReviewDetailScreen(id: int.parse(id));
-      }
-    )
+        path: '${AppRoute.reviewDetail.path}/:id',
+        name: AppRoute.reviewDetail.name,
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ReviewDetailScreen(id: int.parse(id));
+        })
   ],
 );

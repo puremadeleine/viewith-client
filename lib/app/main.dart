@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Pretendard',
         appBarTheme: AppBarTheme(backgroundColor: AppDesign.colors.white),
         scaffoldBackgroundColor: AppDesign.colors.white,
+        tabBarTheme: const TabBarTheme(
+          overlayColor: WidgetStatePropertyAll(Colors.transparent),
+        ),
         colorScheme: ThemeData().colorScheme.copyWith(primary: AppDesign.colors.gray900),
         canvasColor: AppDesign.colors.white,
       ),
