@@ -32,6 +32,8 @@ mixin _$Review {
   UserInfo get userInfo => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_info')
   SeatRawData get seatRawData => throw _privateConstructorUsedError;
+  @JsonKey(name: 'seat_bookmark_info')
+  BookmarkData? get bookmarkInfo => throw _privateConstructorUsedError;
 
   /// Serializes this Review to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,10 +56,12 @@ abstract class $ReviewCopyWith<$Res> {
       @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list') List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
-      @JsonKey(name: 'seat_info') SeatRawData seatRawData});
+      @JsonKey(name: 'seat_info') SeatRawData seatRawData,
+      @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo});
 
   $UserInfoCopyWith<$Res> get userInfo;
   $SeatRawDataCopyWith<$Res> get seatRawData;
+  $BookmarkDataCopyWith<$Res>? get bookmarkInfo;
 }
 
 /// @nodoc
@@ -82,6 +86,7 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
     Object? imageList = null,
     Object? userInfo = null,
     Object? seatRawData = null,
+    Object? bookmarkInfo = freezed,
   }) {
     return _then(_value.copyWith(
       reviewId: null == reviewId
@@ -112,6 +117,10 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
           ? _value.seatRawData
           : seatRawData // ignore: cast_nullable_to_non_nullable
               as SeatRawData,
+      bookmarkInfo: freezed == bookmarkInfo
+          ? _value.bookmarkInfo
+          : bookmarkInfo // ignore: cast_nullable_to_non_nullable
+              as BookmarkData?,
     ) as $Val);
   }
 
@@ -134,6 +143,20 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
       return _then(_value.copyWith(seatRawData: value) as $Val);
     });
   }
+
+  /// Create a copy of Review
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $BookmarkDataCopyWith<$Res>? get bookmarkInfo {
+    if (_value.bookmarkInfo == null) {
+      return null;
+    }
+
+    return $BookmarkDataCopyWith<$Res>(_value.bookmarkInfo!, (value) {
+      return _then(_value.copyWith(bookmarkInfo: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -150,12 +173,15 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list') List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
-      @JsonKey(name: 'seat_info') SeatRawData seatRawData});
+      @JsonKey(name: 'seat_info') SeatRawData seatRawData,
+      @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo});
 
   @override
   $UserInfoCopyWith<$Res> get userInfo;
   @override
   $SeatRawDataCopyWith<$Res> get seatRawData;
+  @override
+  $BookmarkDataCopyWith<$Res>? get bookmarkInfo;
 }
 
 /// @nodoc
@@ -178,6 +204,7 @@ class __$$ReviewImplCopyWithImpl<$Res>
     Object? imageList = null,
     Object? userInfo = null,
     Object? seatRawData = null,
+    Object? bookmarkInfo = freezed,
   }) {
     return _then(_$ReviewImpl(
       reviewId: null == reviewId
@@ -208,6 +235,10 @@ class __$$ReviewImplCopyWithImpl<$Res>
           ? _value.seatRawData
           : seatRawData // ignore: cast_nullable_to_non_nullable
               as SeatRawData,
+      bookmarkInfo: freezed == bookmarkInfo
+          ? _value.bookmarkInfo
+          : bookmarkInfo // ignore: cast_nullable_to_non_nullable
+              as BookmarkData?,
     ));
   }
 }
@@ -222,7 +253,8 @@ class _$ReviewImpl implements _Review {
       @JsonKey(name: 'create_time') required this.createTime,
       @JsonKey(name: 'image_list') required final List<String> imageList,
       @JsonKey(name: 'user_info') required this.userInfo,
-      @JsonKey(name: 'seat_info') required this.seatRawData})
+      @JsonKey(name: 'seat_info') required this.seatRawData,
+      @JsonKey(name: 'seat_bookmark_info') this.bookmarkInfo})
       : _imageList = imageList;
 
   factory _$ReviewImpl.fromJson(Map<String, dynamic> json) =>
@@ -253,10 +285,13 @@ class _$ReviewImpl implements _Review {
   @override
   @JsonKey(name: 'seat_info')
   final SeatRawData seatRawData;
+  @override
+  @JsonKey(name: 'seat_bookmark_info')
+  final BookmarkData? bookmarkInfo;
 
   @override
   String toString() {
-    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, createTime: $createTime, imageList: $imageList, userInfo: $userInfo, seatRawData: $seatRawData)';
+    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, createTime: $createTime, imageList: $imageList, userInfo: $userInfo, seatRawData: $seatRawData, bookmarkInfo: $bookmarkInfo)';
   }
 
   @override
@@ -275,7 +310,9 @@ class _$ReviewImpl implements _Review {
             (identical(other.userInfo, userInfo) ||
                 other.userInfo == userInfo) &&
             (identical(other.seatRawData, seatRawData) ||
-                other.seatRawData == seatRawData));
+                other.seatRawData == seatRawData) &&
+            (identical(other.bookmarkInfo, bookmarkInfo) ||
+                other.bookmarkInfo == bookmarkInfo));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -288,7 +325,8 @@ class _$ReviewImpl implements _Review {
       createTime,
       const DeepCollectionEquality().hash(_imageList),
       userInfo,
-      seatRawData);
+      seatRawData,
+      bookmarkInfo);
 
   /// Create a copy of Review
   /// with the given fields replaced by the non-null parameter values.
@@ -308,14 +346,15 @@ class _$ReviewImpl implements _Review {
 
 abstract class _Review implements Review {
   const factory _Review(
-          {@JsonKey(name: 'review_id') required final int reviewId,
-          required final String content,
-          required final double rating,
-          @JsonKey(name: 'create_time') required final int createTime,
-          @JsonKey(name: 'image_list') required final List<String> imageList,
-          @JsonKey(name: 'user_info') required final UserInfo userInfo,
-          @JsonKey(name: 'seat_info') required final SeatRawData seatRawData}) =
-      _$ReviewImpl;
+      {@JsonKey(name: 'review_id') required final int reviewId,
+      required final String content,
+      required final double rating,
+      @JsonKey(name: 'create_time') required final int createTime,
+      @JsonKey(name: 'image_list') required final List<String> imageList,
+      @JsonKey(name: 'user_info') required final UserInfo userInfo,
+      @JsonKey(name: 'seat_info') required final SeatRawData seatRawData,
+      @JsonKey(name: 'seat_bookmark_info')
+      final BookmarkData? bookmarkInfo}) = _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
 
@@ -338,6 +377,9 @@ abstract class _Review implements Review {
   @override
   @JsonKey(name: 'seat_info')
   SeatRawData get seatRawData;
+  @override
+  @JsonKey(name: 'seat_bookmark_info')
+  BookmarkData? get bookmarkInfo;
 
   /// Create a copy of Review
   /// with the given fields replaced by the non-null parameter values.
@@ -773,5 +815,186 @@ abstract class _SeatRawData implements SeatRawData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SeatRawDataImplCopyWith<_$SeatRawDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+BookmarkData _$BookmarkDataFromJson(Map<String, dynamic> json) {
+  return _BookmarkData.fromJson(json);
+}
+
+/// @nodoc
+mixin _$BookmarkData {
+  @JsonKey(name: 'seat_id')
+  int get seatId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bookmarked')
+  bool get bookmarked => throw _privateConstructorUsedError;
+
+  /// Serializes this BookmarkData to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of BookmarkData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $BookmarkDataCopyWith<BookmarkData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BookmarkDataCopyWith<$Res> {
+  factory $BookmarkDataCopyWith(
+          BookmarkData value, $Res Function(BookmarkData) then) =
+      _$BookmarkDataCopyWithImpl<$Res, BookmarkData>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'seat_id') int seatId,
+      @JsonKey(name: 'bookmarked') bool bookmarked});
+}
+
+/// @nodoc
+class _$BookmarkDataCopyWithImpl<$Res, $Val extends BookmarkData>
+    implements $BookmarkDataCopyWith<$Res> {
+  _$BookmarkDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of BookmarkData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? seatId = null,
+    Object? bookmarked = null,
+  }) {
+    return _then(_value.copyWith(
+      seatId: null == seatId
+          ? _value.seatId
+          : seatId // ignore: cast_nullable_to_non_nullable
+              as int,
+      bookmarked: null == bookmarked
+          ? _value.bookmarked
+          : bookmarked // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$BookmarkDataImplCopyWith<$Res>
+    implements $BookmarkDataCopyWith<$Res> {
+  factory _$$BookmarkDataImplCopyWith(
+          _$BookmarkDataImpl value, $Res Function(_$BookmarkDataImpl) then) =
+      __$$BookmarkDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'seat_id') int seatId,
+      @JsonKey(name: 'bookmarked') bool bookmarked});
+}
+
+/// @nodoc
+class __$$BookmarkDataImplCopyWithImpl<$Res>
+    extends _$BookmarkDataCopyWithImpl<$Res, _$BookmarkDataImpl>
+    implements _$$BookmarkDataImplCopyWith<$Res> {
+  __$$BookmarkDataImplCopyWithImpl(
+      _$BookmarkDataImpl _value, $Res Function(_$BookmarkDataImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of BookmarkData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? seatId = null,
+    Object? bookmarked = null,
+  }) {
+    return _then(_$BookmarkDataImpl(
+      seatId: null == seatId
+          ? _value.seatId
+          : seatId // ignore: cast_nullable_to_non_nullable
+              as int,
+      bookmarked: null == bookmarked
+          ? _value.bookmarked
+          : bookmarked // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$BookmarkDataImpl implements _BookmarkData {
+  const _$BookmarkDataImpl(
+      {@JsonKey(name: 'seat_id') required this.seatId,
+      @JsonKey(name: 'bookmarked') required this.bookmarked});
+
+  factory _$BookmarkDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BookmarkDataImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'seat_id')
+  final int seatId;
+  @override
+  @JsonKey(name: 'bookmarked')
+  final bool bookmarked;
+
+  @override
+  String toString() {
+    return 'BookmarkData(seatId: $seatId, bookmarked: $bookmarked)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BookmarkDataImpl &&
+            (identical(other.seatId, seatId) || other.seatId == seatId) &&
+            (identical(other.bookmarked, bookmarked) ||
+                other.bookmarked == bookmarked));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, seatId, bookmarked);
+
+  /// Create a copy of BookmarkData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BookmarkDataImplCopyWith<_$BookmarkDataImpl> get copyWith =>
+      __$$BookmarkDataImplCopyWithImpl<_$BookmarkDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$BookmarkDataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _BookmarkData implements BookmarkData {
+  const factory _BookmarkData(
+          {@JsonKey(name: 'seat_id') required final int seatId,
+          @JsonKey(name: 'bookmarked') required final bool bookmarked}) =
+      _$BookmarkDataImpl;
+
+  factory _BookmarkData.fromJson(Map<String, dynamic> json) =
+      _$BookmarkDataImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'seat_id')
+  int get seatId;
+  @override
+  @JsonKey(name: 'bookmarked')
+  bool get bookmarked;
+
+  /// Create a copy of BookmarkData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BookmarkDataImplCopyWith<_$BookmarkDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
-import 'package:viewith/data/auth/auth_repository.dart';
 import 'package:viewith/ui/widgets/vi_navigation_bar.dart';
 import 'package:viewith/ui/widgets/vi_navigation_item.dart';
 

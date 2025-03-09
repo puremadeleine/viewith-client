@@ -16,6 +16,7 @@ class Review with _$Review {
     @JsonKey(name: 'image_list') required List<String> imageList,
     @JsonKey(name: 'user_info') required UserInfo userInfo,
     @JsonKey(name: 'seat_info') required SeatRawData seatRawData,
+    @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
@@ -44,8 +45,20 @@ class SeatRawData with _$SeatRawData {
   factory SeatRawData.fromJson(Map<String, dynamic> json) => _$SeatRawDataFromJson(json);
 }
 
+@freezed
+class BookmarkData with _$BookmarkData {
+  const factory BookmarkData({
+    @JsonKey(name: 'seat_id') required int seatId,
+    @JsonKey(name: 'bookmarked') required bool bookmarked,
+  }) = _BookmarkData;
+
+  factory BookmarkData.fromJson(Map<String, dynamic> json) => _$BookmarkDataFromJson(json);
+}
+
 extension ReviewX on Review {
   String get createdAt {
+    final createTime = this.createTime;
+    if (createTime == null) return '';
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(createTime);
     String formattedDate = DateFormat('yyyy년 MM월 dd일').format(dateTime);
     return formattedDate;

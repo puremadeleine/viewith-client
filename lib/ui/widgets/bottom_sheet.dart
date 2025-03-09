@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:viewith/core/utils/text_span.dart';
 import 'package:viewith/ui/app_design.dart';
-import 'package:viewith/ui/foundation/spacing.dart';
 
 class VIBottomSheet<T> extends StatelessWidget {
   final ScrollController controller;

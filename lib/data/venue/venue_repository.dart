@@ -18,4 +18,6 @@ abstract class VenueRepository {
   Future<Result<List<Venue>, BaseError>> searchVenues(String keyword);
 
   Future<Result<List<SeatInfo>, BaseError>> fetchSeatInfo(String id);
+
+  Future<Result<Review, BaseError>> fetchReview(int id);
 }

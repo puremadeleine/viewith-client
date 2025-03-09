@@ -68,15 +68,12 @@ class HomeScreen extends ConsumerWidget {
             padding: AppDesign.spacing.vertical8,
             child: GestureDetector(
               onTap: () {
-                context.push(
-                  '${AppRoute.seatmap.path}/${venues[index].id}',
-                  extra: {'name': venues[index].name}
-                );
+                context.push('${AppRoute.seatmap.path}/${venues[index].id}', extra: {'name': venues[index].name});
               },
               child: VenueItem(
                 name: venues[index].name,
                 address: venues[index].location,
-                images: [],
+                images: const [],
                 artists: performances.map((e) => e.artist).toList(),
               ),
             ),

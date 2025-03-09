@@ -17,6 +17,10 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       userInfo: UserInfo.fromJson(json['user_info'] as Map<String, dynamic>),
       seatRawData:
           SeatRawData.fromJson(json['seat_info'] as Map<String, dynamic>),
+      bookmarkInfo: json['seat_bookmark_info'] == null
+          ? null
+          : BookmarkData.fromJson(
+              json['seat_bookmark_info'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
@@ -28,6 +32,7 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'image_list': instance.imageList,
       'user_info': instance.userInfo,
       'seat_info': instance.seatRawData,
+      'seat_bookmark_info': instance.bookmarkInfo,
     };
 
 _$UserInfoImpl _$$UserInfoImplFromJson(Map<String, dynamic> json) =>
@@ -58,4 +63,16 @@ Map<String, dynamic> _$$SeatRawDataImplToJson(_$SeatRawDataImpl instance) =>
       'seat_row': instance.row,
       'seat_column': instance.column,
       'block': instance.block,
+    };
+
+_$BookmarkDataImpl _$$BookmarkDataImplFromJson(Map<String, dynamic> json) =>
+    _$BookmarkDataImpl(
+      seatId: (json['seat_id'] as num).toInt(),
+      bookmarked: json['bookmarked'] as bool,
+    );
+
+Map<String, dynamic> _$$BookmarkDataImplToJson(_$BookmarkDataImpl instance) =>
+    <String, dynamic>{
+      'seat_id': instance.seatId,
+      'bookmarked': instance.bookmarked,
     };

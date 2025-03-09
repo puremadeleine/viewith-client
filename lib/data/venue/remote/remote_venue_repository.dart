@@ -48,4 +48,11 @@ class RemoteVenueRepository extends VenueRepository {
     final response = await _client.get('/v1/venues/$id/filter');
     return response.toResult(fromJson: (json) => (json['seat_infos'] as List).map((e) => SeatInfo.fromJson(e)).toList());
   }
+
+  @override
+  Future<Result<Review, BaseError>> fetchReview(int id) async {
+    final response = await _client.get('/v1/reviews/$id', requiresAuth: true);
+    print('fetchReview $response');
+    return response.toResult(fromJson: Review.fromJson);
+  }
 }

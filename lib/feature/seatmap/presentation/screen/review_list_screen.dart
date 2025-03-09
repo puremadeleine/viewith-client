@@ -146,7 +146,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       widget: widget,
       items: reviews,
       onItemSelected: (item) {
-        context.pushNamed(AppRoute.reviewDetail.name);
+        context.push('${AppRoute.reviewDetail.path}/${item.reviewId}');
       },
       titleBuilder: (context) => Row(
         children: [

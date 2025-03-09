@@ -99,9 +99,12 @@ final router = GoRouter(
           ),
         ]),
     GoRoute(
-      path: AppRoute.reviewDetail.path,
+      path: '${AppRoute.reviewDetail.path}/:id',
       name: AppRoute.reviewDetail.name,
-      builder: (context, state) => ReviewDetailScreen()
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return ReviewDetailScreen(id: int.parse(id));
+      }
     )
   ],
 );

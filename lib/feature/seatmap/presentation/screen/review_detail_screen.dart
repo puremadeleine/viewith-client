@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viewith/data/venue/venue_repository_providers.dart';
 import 'package:viewith/ui/app_design.dart';
 
-class ReviewDetailScreen extends StatefulWidget {
-  const ReviewDetailScreen({super.key});
+class ReviewDetailScreen extends ConsumerStatefulWidget {
+  final int id;
+
+  const ReviewDetailScreen({super.key, required this.id});
 
   @override
-  State<ReviewDetailScreen> createState() => _ReviewDetailScreenState();
+  ConsumerState<ReviewDetailScreen> createState() => _ReviewDetailScreenState();
 }
 
-class _ReviewDetailScreenState extends State<ReviewDetailScreen> {
+class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   final List<String> imageUrls = [
     'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
     'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
     'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
   ];
 
-  int _currentIndex = 0; // 현재 이미지 인덱스
+  int _currentIndex = 0;
   final CarouselSliderController _carouselController = CarouselSliderController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchReviewData();
+  }
+
+  Future<void> _fetchReviewData() async {
+    final response = await ref.read(venueRepositoryProvider).fetchReview(widget.id);
+    response.match(
+      onSuccess: (data) {
+        print(data);
+      },
+      onFailure: (error) {
+        print(error);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +87,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "THE BOYZ WORLD TOUR : ZENERATION IIdasdasd",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

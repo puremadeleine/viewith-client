@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
-import 'package:viewith/app/route/app_router.dart';
 import 'package:viewith/feature/auth/presentation/controller/sign_in_controller.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/button/rounded_button.dart';
