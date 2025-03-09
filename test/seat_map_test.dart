@@ -25,15 +25,16 @@ void main() {
   });
 
   testWidgets('SeatMap widget renders correctly', (WidgetTester tester) async {
-    when(mockAssetBundle.loadString('assets/seat_map.svg')).thenAnswer((_) async => testSvgData);
+    when(mockAssetBundle.loadString('assets/seat_map.svg'))
+        .thenAnswer((_) async => testSvgData);
 
     await tester.pumpWidget(
       MaterialApp(
         home: DefaultAssetBundle(
           bundle: mockAssetBundle,
           child: SeatMap(
-            seatmapName: 'assets/seat_map.svg',
-            onSectionSelected: mockCallback,
+            seatmapSource: 'assets/seat_map.svg',
+            onSectionSelected: mockCallback.call,
             mode: const SeatMapWritable(),
           ),
         ),
@@ -51,8 +52,10 @@ void main() {
     verify(mockCallback.call('SEAT_8')).called(1);
   });
 
-  testWidgets('SeatMap changes background color on tap', (WidgetTester tester) async {
-    when(mockAssetBundle.loadString('assets/seat_map.svg')).thenAnswer((_) async => testSvgData);
+  testWidgets('SeatMap changes background color on tap',
+      (WidgetTester tester) async {
+    when(mockAssetBundle.loadString('assets/seat_map.svg'))
+        .thenAnswer((_) async => testSvgData);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -60,8 +63,8 @@ void main() {
           bundle: mockAssetBundle,
           child: SeatMap(
             key: const ValueKey('seatMap'),
-            seatmapName: 'assets/seat_map.svg',
-            onSectionSelected: mockCallback,
+            seatmapSource: 'assets/seat_map.svg',
+            onSectionSelected: mockCallback.call,
             mode: const SeatMapWritable(),
           ),
         ),
@@ -70,7 +73,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final initialPaint = tester.widget<CustomPaint>(find.byKey(const ValueKey('seatMapCustomPaint')));
+    final initialPaint = tester
+        .widget<CustomPaint>(find.byKey(const ValueKey('seatMapCustomPaint')));
     final initialPainter = initialPaint.painter as PathPainter;
 
     expect(initialPainter.colors, isNotNull);
@@ -81,7 +85,8 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('seatMapGestureDetector')));
     await tester.pumpAndSettle();
 
-    final updatedPaint = tester.widget<CustomPaint>(find.byKey(const ValueKey('seatMapCustomPaint')));
+    final updatedPaint = tester
+        .widget<CustomPaint>(find.byKey(const ValueKey('seatMapCustomPaint')));
     final updatedPainter = updatedPaint.painter as PathPainter;
 
     expect(updatedPainter.colors, isNotNull);
