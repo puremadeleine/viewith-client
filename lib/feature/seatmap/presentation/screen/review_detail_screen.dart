@@ -4,6 +4,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/data/venue/response/review.dart';
+import 'package:viewith/core/result/result.dart';
+import 'package:viewith/core/result/base_error.dart';
+import 'package:dio/dio.dart';
 
 class ReviewDetailScreen extends ConsumerStatefulWidget {
   final int id;
@@ -15,122 +19,131 @@ class ReviewDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
-  final List<String> imageUrls = [
-    'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
-    'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
-    'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
-  ];
-
   int _currentIndex = 0;
   final CarouselSliderController _carouselController = CarouselSliderController();
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchReviewData();
+  String _getErrorMessage(Object error) {
+    if (error is DioException) {
+      if (error.response?.statusCode == 401) {
+        return '로그인이 필요한 기능입니다. 로그인 후 다시 시도해주세요.';
+      }
+      if (error.response?.statusCode == 404) {
+        return '존재하지 않는 리뷰입니다.';
+      }
+    } else if (error is BaseError) {
+      if (error.code == 401) {
+        return '로그인이 필요한 기능입니다. 로그인 후 다시 시도해주세요.';
+      }
+      if (error.code == 404) {
+        return '존재하지 않는 리뷰입니다.';
+      }
+      return error.message;
+    }
+    return '알 수 없는 에러가 발생했습니다. 잠시 후 다시 시도해주세요.';
   }
 
-  Future<void> _fetchReviewData() async {
-    final response = await ref.read(venueRepositoryProvider).fetchReview(widget.id);
-    response.match(
-      onSuccess: (data) {
-        print(data);
-      },
-      onFailure: (error) {
-        print(error);
-      },
-    );
+  bool _isAuthError(Object error) {
+    if (error is DioException) {
+      return error.response?.statusCode == 401;
+    } else if (error is BaseError) {
+      return error.code == 401;
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
+    final response = ref.watch(venueRepositoryProvider).fetchReview(widget.id);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("2구역 5열 03번", style: AppDesign.typo.title2bold()),
+        title: Text("리뷰 상세", style: AppDesign.typo.title2bold()),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildConcertInfo(),
-              AppDesign.spacing.h16,
-              _buildUserInfo(),
-              if (imageUrls.isNotEmpty) _buildImageSlider(),
-              _buildReviewContent(),
-              AppDesign.spacing.h16,
-              _buildFavoriteSection(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+      body: FutureBuilder<Result<Review, BaseError>>(
+        future: response,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(_getErrorMessage(snapshot.error!)),
+                  const SizedBox(height: 16),
+                  if (_isAuthError(snapshot.error!))
+                    ElevatedButton(
+                      onPressed: () {
+                        // TODO: Navigate to login screen
+                      },
+                      child: const Text('로그인하기'),
+                    ),
+                ],
+              ),
+            );
+          }
 
-  Widget _buildConcertInfo() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Image.network(
-            "https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg",
-            width: 30,
-            fit: BoxFit.cover,
-          ),
-          AppDesign.spacing.w12,
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "THE BOYZ WORLD TOUR : ZENERATION IIdasdasd",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return snapshot.data!.match(
+            onSuccess: (review) => SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildUserInfo(review),
+                    if (review.imageList.isNotEmpty) _buildImageSlider(review.imageList),
+                    _buildReviewContent(review),
+                    AppDesign.spacing.h16,
+                    _buildFavoriteSection(review),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text("2024.07.12 - 2024.07.14", style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-              ],
+              ),
             ),
-          ),
-        ],
+            onFailure: (error) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(_getErrorMessage(error)),
+                  const SizedBox(height: 16),
+                  if (_isAuthError(error))
+                    ElevatedButton(
+                      onPressed: () {
+                        // TODO: Navigate to login screen
+                      },
+                      child: const Text('로그인하기'),
+                    ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(Review review) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            "https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg",
-            width: 40,
-            height: 40,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("1열 사수 다람쥐", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(
+              review.userInfo.userNickname,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 4),
             Row(
               children: [
                 RatingBarIndicator(
-                  rating: 4.0,
+                  rating: review.rating,
                   itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.amber),
                   itemCount: 5,
                   itemSize: 18.0,
                 ),
                 const SizedBox(width: 8),
-                const Text("4.0 / 5.0", style: TextStyle(fontSize: 14)),
+                Text("${review.rating} / 5.0", style: const TextStyle(fontSize: 14)),
               ],
             ),
           ],
@@ -139,7 +152,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     );
   }
 
-  Widget _buildImageSlider() {
+  Widget _buildImageSlider(List<String> images) {
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -158,7 +171,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
                 });
               },
             ),
-            items: imageUrls.map((url) {
+            items: images.map((url) {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(url, fit: BoxFit.cover, width: double.infinity),
@@ -176,7 +189,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              "${_currentIndex + 1} / ${imageUrls.length}",
+              "${_currentIndex + 1} / ${images.length}",
               style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
@@ -185,14 +198,14 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     );
   }
 
-  Widget _buildReviewContent() {
-    return const Text(
-      "너무 잘 보여요 ㅠㅠ 너무 잘 보여요 ㅠㅠ너무 잘 보여요 ㅠㅠ 너무 잘 보여요 ㅠㅠ 너무 잘 보여요 ㅠㅠ너무 잘 보여요 ㅠㅠ너무 잘 보여요 ㅠㅠ너무 잘 보여요 ㅠㅠ 너무 잘 보여요 ㅠㅠ",
-      style: TextStyle(fontSize: 14, height: 1.6),
+  Widget _buildReviewContent(Review review) {
+    return Text(
+      review.content,
+      style: const TextStyle(fontSize: 14, height: 1.6),
     );
   }
 
-  Widget _buildFavoriteSection() {
+  Widget _buildFavoriteSection(Review review) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -211,9 +224,9 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
           const SizedBox(height: 12),
           Row(
             children: [
-              _buildTagButton("2구역"),
+              _buildTagButton(review.seatRawData.section),
               const SizedBox(width: 8),
-              _buildTagButton("2구역 5열"),
+              _buildTagButton("${review.seatRawData.row}열"),
             ],
           ),
         ],

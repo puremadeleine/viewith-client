@@ -73,7 +73,6 @@ class ReviewListController extends _$ReviewListController {
     if (currentState == null) return;
     final newState = currentState.copyWith(selectedFloor: floor);
     state = AsyncData(newState);
-    print(state);
   }
 
   void setRow(String row) {
