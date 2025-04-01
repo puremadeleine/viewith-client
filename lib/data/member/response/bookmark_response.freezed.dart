@@ -14,14 +14,185 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+BookmarkListResponse _$BookmarkListResponseFromJson(Map<String, dynamic> json) {
+  return _BookmarkListResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$BookmarkListResponse {
+  @JsonKey(name: 'bookmarks')
+  List<BookmarkResponse> get bookmarks => throw _privateConstructorUsedError;
+
+  /// Serializes this BookmarkListResponse to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of BookmarkListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $BookmarkListResponseCopyWith<BookmarkListResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BookmarkListResponseCopyWith<$Res> {
+  factory $BookmarkListResponseCopyWith(BookmarkListResponse value,
+          $Res Function(BookmarkListResponse) then) =
+      _$BookmarkListResponseCopyWithImpl<$Res, BookmarkListResponse>;
+  @useResult
+  $Res call({@JsonKey(name: 'bookmarks') List<BookmarkResponse> bookmarks});
+}
+
+/// @nodoc
+class _$BookmarkListResponseCopyWithImpl<$Res,
+        $Val extends BookmarkListResponse>
+    implements $BookmarkListResponseCopyWith<$Res> {
+  _$BookmarkListResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of BookmarkListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookmarks = null,
+  }) {
+    return _then(_value.copyWith(
+      bookmarks: null == bookmarks
+          ? _value.bookmarks
+          : bookmarks // ignore: cast_nullable_to_non_nullable
+              as List<BookmarkResponse>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$BookmarkListResponseImplCopyWith<$Res>
+    implements $BookmarkListResponseCopyWith<$Res> {
+  factory _$$BookmarkListResponseImplCopyWith(_$BookmarkListResponseImpl value,
+          $Res Function(_$BookmarkListResponseImpl) then) =
+      __$$BookmarkListResponseImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({@JsonKey(name: 'bookmarks') List<BookmarkResponse> bookmarks});
+}
+
+/// @nodoc
+class __$$BookmarkListResponseImplCopyWithImpl<$Res>
+    extends _$BookmarkListResponseCopyWithImpl<$Res, _$BookmarkListResponseImpl>
+    implements _$$BookmarkListResponseImplCopyWith<$Res> {
+  __$$BookmarkListResponseImplCopyWithImpl(_$BookmarkListResponseImpl _value,
+      $Res Function(_$BookmarkListResponseImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of BookmarkListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bookmarks = null,
+  }) {
+    return _then(_$BookmarkListResponseImpl(
+      bookmarks: null == bookmarks
+          ? _value._bookmarks
+          : bookmarks // ignore: cast_nullable_to_non_nullable
+              as List<BookmarkResponse>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$BookmarkListResponseImpl implements _BookmarkListResponse {
+  const _$BookmarkListResponseImpl(
+      {@JsonKey(name: 'bookmarks')
+      required final List<BookmarkResponse> bookmarks})
+      : _bookmarks = bookmarks;
+
+  factory _$BookmarkListResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BookmarkListResponseImplFromJson(json);
+
+  final List<BookmarkResponse> _bookmarks;
+  @override
+  @JsonKey(name: 'bookmarks')
+  List<BookmarkResponse> get bookmarks {
+    if (_bookmarks is EqualUnmodifiableListView) return _bookmarks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_bookmarks);
+  }
+
+  @override
+  String toString() {
+    return 'BookmarkListResponse(bookmarks: $bookmarks)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BookmarkListResponseImpl &&
+            const DeepCollectionEquality()
+                .equals(other._bookmarks, _bookmarks));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_bookmarks));
+
+  /// Create a copy of BookmarkListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BookmarkListResponseImplCopyWith<_$BookmarkListResponseImpl>
+      get copyWith =>
+          __$$BookmarkListResponseImplCopyWithImpl<_$BookmarkListResponseImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$BookmarkListResponseImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _BookmarkListResponse implements BookmarkListResponse {
+  const factory _BookmarkListResponse(
+          {@JsonKey(name: 'bookmarks')
+          required final List<BookmarkResponse> bookmarks}) =
+      _$BookmarkListResponseImpl;
+
+  factory _BookmarkListResponse.fromJson(Map<String, dynamic> json) =
+      _$BookmarkListResponseImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'bookmarks')
+  List<BookmarkResponse> get bookmarks;
+
+  /// Create a copy of BookmarkListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BookmarkListResponseImplCopyWith<_$BookmarkListResponseImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 BookmarkResponse _$BookmarkResponseFromJson(Map<String, dynamic> json) {
-  return _BookmarkInfo.fromJson(json);
+  return _BookmarkResponse.fromJson(json);
 }
 
 /// @nodoc
 mixin _$BookmarkResponse {
+  @JsonKey(name: 'venue_id')
   int get venueId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'venue_name')
   String get venueName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bookmark_floors')
   List<Floor> get bookmarkFloors => throw _privateConstructorUsedError;
 
   /// Serializes this BookmarkResponse to a JSON map.
@@ -40,7 +211,10 @@ abstract class $BookmarkResponseCopyWith<$Res> {
           BookmarkResponse value, $Res Function(BookmarkResponse) then) =
       _$BookmarkResponseCopyWithImpl<$Res, BookmarkResponse>;
   @useResult
-  $Res call({int venueId, String venueName, List<Floor> bookmarkFloors});
+  $Res call(
+      {@JsonKey(name: 'venue_id') int venueId,
+      @JsonKey(name: 'venue_name') String venueName,
+      @JsonKey(name: 'bookmark_floors') List<Floor> bookmarkFloors});
 }
 
 /// @nodoc
@@ -80,22 +254,25 @@ class _$BookmarkResponseCopyWithImpl<$Res, $Val extends BookmarkResponse>
 }
 
 /// @nodoc
-abstract class _$$BookmarkInfoImplCopyWith<$Res>
+abstract class _$$BookmarkResponseImplCopyWith<$Res>
     implements $BookmarkResponseCopyWith<$Res> {
-  factory _$$BookmarkInfoImplCopyWith(
-          _$BookmarkInfoImpl value, $Res Function(_$BookmarkInfoImpl) then) =
-      __$$BookmarkInfoImplCopyWithImpl<$Res>;
+  factory _$$BookmarkResponseImplCopyWith(_$BookmarkResponseImpl value,
+          $Res Function(_$BookmarkResponseImpl) then) =
+      __$$BookmarkResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int venueId, String venueName, List<Floor> bookmarkFloors});
+  $Res call(
+      {@JsonKey(name: 'venue_id') int venueId,
+      @JsonKey(name: 'venue_name') String venueName,
+      @JsonKey(name: 'bookmark_floors') List<Floor> bookmarkFloors});
 }
 
 /// @nodoc
-class __$$BookmarkInfoImplCopyWithImpl<$Res>
-    extends _$BookmarkResponseCopyWithImpl<$Res, _$BookmarkInfoImpl>
-    implements _$$BookmarkInfoImplCopyWith<$Res> {
-  __$$BookmarkInfoImplCopyWithImpl(
-      _$BookmarkInfoImpl _value, $Res Function(_$BookmarkInfoImpl) _then)
+class __$$BookmarkResponseImplCopyWithImpl<$Res>
+    extends _$BookmarkResponseCopyWithImpl<$Res, _$BookmarkResponseImpl>
+    implements _$$BookmarkResponseImplCopyWith<$Res> {
+  __$$BookmarkResponseImplCopyWithImpl(_$BookmarkResponseImpl _value,
+      $Res Function(_$BookmarkResponseImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of BookmarkResponse
@@ -107,7 +284,7 @@ class __$$BookmarkInfoImplCopyWithImpl<$Res>
     Object? venueName = null,
     Object? bookmarkFloors = null,
   }) {
-    return _then(_$BookmarkInfoImpl(
+    return _then(_$BookmarkResponseImpl(
       venueId: null == venueId
           ? _value.venueId
           : venueId // ignore: cast_nullable_to_non_nullable
@@ -126,22 +303,26 @@ class __$$BookmarkInfoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$BookmarkInfoImpl implements _BookmarkInfo {
-  const _$BookmarkInfoImpl(
-      {required this.venueId,
-      required this.venueName,
+class _$BookmarkResponseImpl implements _BookmarkResponse {
+  const _$BookmarkResponseImpl(
+      {@JsonKey(name: 'venue_id') required this.venueId,
+      @JsonKey(name: 'venue_name') required this.venueName,
+      @JsonKey(name: 'bookmark_floors')
       required final List<Floor> bookmarkFloors})
       : _bookmarkFloors = bookmarkFloors;
 
-  factory _$BookmarkInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BookmarkInfoImplFromJson(json);
+  factory _$BookmarkResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BookmarkResponseImplFromJson(json);
 
   @override
+  @JsonKey(name: 'venue_id')
   final int venueId;
   @override
+  @JsonKey(name: 'venue_name')
   final String venueName;
   final List<Floor> _bookmarkFloors;
   @override
+  @JsonKey(name: 'bookmark_floors')
   List<Floor> get bookmarkFloors {
     if (_bookmarkFloors is EqualUnmodifiableListView) return _bookmarkFloors;
     // ignore: implicit_dynamic_type
@@ -157,7 +338,7 @@ class _$BookmarkInfoImpl implements _BookmarkInfo {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BookmarkInfoImpl &&
+            other is _$BookmarkResponseImpl &&
             (identical(other.venueId, venueId) || other.venueId == venueId) &&
             (identical(other.venueName, venueName) ||
                 other.venueName == venueName) &&
@@ -175,38 +356,43 @@ class _$BookmarkInfoImpl implements _BookmarkInfo {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$BookmarkInfoImplCopyWith<_$BookmarkInfoImpl> get copyWith =>
-      __$$BookmarkInfoImplCopyWithImpl<_$BookmarkInfoImpl>(this, _$identity);
+  _$$BookmarkResponseImplCopyWith<_$BookmarkResponseImpl> get copyWith =>
+      __$$BookmarkResponseImplCopyWithImpl<_$BookmarkResponseImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookmarkInfoImplToJson(
+    return _$$BookmarkResponseImplToJson(
       this,
     );
   }
 }
 
-abstract class _BookmarkInfo implements BookmarkResponse {
-  const factory _BookmarkInfo(
-      {required final int venueId,
-      required final String venueName,
-      required final List<Floor> bookmarkFloors}) = _$BookmarkInfoImpl;
+abstract class _BookmarkResponse implements BookmarkResponse {
+  const factory _BookmarkResponse(
+      {@JsonKey(name: 'venue_id') required final int venueId,
+      @JsonKey(name: 'venue_name') required final String venueName,
+      @JsonKey(name: 'bookmark_floors')
+      required final List<Floor> bookmarkFloors}) = _$BookmarkResponseImpl;
 
-  factory _BookmarkInfo.fromJson(Map<String, dynamic> json) =
-      _$BookmarkInfoImpl.fromJson;
+  factory _BookmarkResponse.fromJson(Map<String, dynamic> json) =
+      _$BookmarkResponseImpl.fromJson;
 
   @override
+  @JsonKey(name: 'venue_id')
   int get venueId;
   @override
+  @JsonKey(name: 'venue_name')
   String get venueName;
   @override
+  @JsonKey(name: 'bookmark_floors')
   List<Floor> get bookmarkFloors;
 
   /// Create a copy of BookmarkResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BookmarkInfoImplCopyWith<_$BookmarkInfoImpl> get copyWith =>
+  _$$BookmarkResponseImplCopyWith<_$BookmarkResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -216,7 +402,9 @@ Floor _$FloorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Floor {
+  @JsonKey(name: 'bookmark_floor')
   String get bookmarkFloor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bookmark_seats')
   List<BookmarkedSeat> get bookmarkSeats => throw _privateConstructorUsedError;
 
   /// Serializes this Floor to a JSON map.
@@ -233,7 +421,9 @@ abstract class $FloorCopyWith<$Res> {
   factory $FloorCopyWith(Floor value, $Res Function(Floor) then) =
       _$FloorCopyWithImpl<$Res, Floor>;
   @useResult
-  $Res call({String bookmarkFloor, List<BookmarkedSeat> bookmarkSeats});
+  $Res call(
+      {@JsonKey(name: 'bookmark_floor') String bookmarkFloor,
+      @JsonKey(name: 'bookmark_seats') List<BookmarkedSeat> bookmarkSeats});
 }
 
 /// @nodoc
@@ -274,7 +464,9 @@ abstract class _$$FloorImplCopyWith<$Res> implements $FloorCopyWith<$Res> {
       __$$FloorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String bookmarkFloor, List<BookmarkedSeat> bookmarkSeats});
+  $Res call(
+      {@JsonKey(name: 'bookmark_floor') String bookmarkFloor,
+      @JsonKey(name: 'bookmark_seats') List<BookmarkedSeat> bookmarkSeats});
 }
 
 /// @nodoc
@@ -310,7 +502,8 @@ class __$$FloorImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FloorImpl implements _Floor {
   const _$FloorImpl(
-      {required this.bookmarkFloor,
+      {@JsonKey(name: 'bookmark_floor') required this.bookmarkFloor,
+      @JsonKey(name: 'bookmark_seats')
       required final List<BookmarkedSeat> bookmarkSeats})
       : _bookmarkSeats = bookmarkSeats;
 
@@ -318,9 +511,11 @@ class _$FloorImpl implements _Floor {
       _$$FloorImplFromJson(json);
 
   @override
+  @JsonKey(name: 'bookmark_floor')
   final String bookmarkFloor;
   final List<BookmarkedSeat> _bookmarkSeats;
   @override
+  @JsonKey(name: 'bookmark_seats')
   List<BookmarkedSeat> get bookmarkSeats {
     if (_bookmarkSeats is EqualUnmodifiableListView) return _bookmarkSeats;
     // ignore: implicit_dynamic_type
@@ -366,14 +561,17 @@ class _$FloorImpl implements _Floor {
 
 abstract class _Floor implements Floor {
   const factory _Floor(
-      {required final String bookmarkFloor,
+      {@JsonKey(name: 'bookmark_floor') required final String bookmarkFloor,
+      @JsonKey(name: 'bookmark_seats')
       required final List<BookmarkedSeat> bookmarkSeats}) = _$FloorImpl;
 
   factory _Floor.fromJson(Map<String, dynamic> json) = _$FloorImpl.fromJson;
 
   @override
+  @JsonKey(name: 'bookmark_floor')
   String get bookmarkFloor;
   @override
+  @JsonKey(name: 'bookmark_seats')
   List<BookmarkedSeat> get bookmarkSeats;
 
   /// Create a copy of Floor
@@ -390,9 +588,13 @@ BookmarkedSeat _$BookmarkedSeatFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookmarkedSeat {
+  @JsonKey(name: 'bookmark_id')
   int get bookmarkId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bookmark_section')
   String? get bookmarkSection => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bookmark_row')
   int? get bookmarkRow => throw _privateConstructorUsedError;
+  @JsonKey(name: 'last_update_date')
   DateTime? get lastUpdateDate => throw _privateConstructorUsedError;
 
   /// Serializes this BookmarkedSeat to a JSON map.
@@ -412,10 +614,10 @@ abstract class $BookmarkedSeatCopyWith<$Res> {
       _$BookmarkedSeatCopyWithImpl<$Res, BookmarkedSeat>;
   @useResult
   $Res call(
-      {int bookmarkId,
-      String? bookmarkSection,
-      int? bookmarkRow,
-      DateTime? lastUpdateDate});
+      {@JsonKey(name: 'bookmark_id') int bookmarkId,
+      @JsonKey(name: 'bookmark_section') String? bookmarkSection,
+      @JsonKey(name: 'bookmark_row') int? bookmarkRow,
+      @JsonKey(name: 'last_update_date') DateTime? lastUpdateDate});
 }
 
 /// @nodoc
@@ -468,10 +670,10 @@ abstract class _$$BookmarkedSeatImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int bookmarkId,
-      String? bookmarkSection,
-      int? bookmarkRow,
-      DateTime? lastUpdateDate});
+      {@JsonKey(name: 'bookmark_id') int bookmarkId,
+      @JsonKey(name: 'bookmark_section') String? bookmarkSection,
+      @JsonKey(name: 'bookmark_row') int? bookmarkRow,
+      @JsonKey(name: 'last_update_date') DateTime? lastUpdateDate});
 }
 
 /// @nodoc
@@ -517,21 +719,25 @@ class __$$BookmarkedSeatImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BookmarkedSeatImpl implements _BookmarkedSeat {
   const _$BookmarkedSeatImpl(
-      {required this.bookmarkId,
-      this.bookmarkSection,
-      this.bookmarkRow,
-      this.lastUpdateDate});
+      {@JsonKey(name: 'bookmark_id') required this.bookmarkId,
+      @JsonKey(name: 'bookmark_section') this.bookmarkSection,
+      @JsonKey(name: 'bookmark_row') this.bookmarkRow,
+      @JsonKey(name: 'last_update_date') this.lastUpdateDate});
 
   factory _$BookmarkedSeatImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookmarkedSeatImplFromJson(json);
 
   @override
+  @JsonKey(name: 'bookmark_id')
   final int bookmarkId;
   @override
+  @JsonKey(name: 'bookmark_section')
   final String? bookmarkSection;
   @override
+  @JsonKey(name: 'bookmark_row')
   final int? bookmarkRow;
   @override
+  @JsonKey(name: 'last_update_date')
   final DateTime? lastUpdateDate;
 
   @override
@@ -578,21 +784,26 @@ class _$BookmarkedSeatImpl implements _BookmarkedSeat {
 
 abstract class _BookmarkedSeat implements BookmarkedSeat {
   const factory _BookmarkedSeat(
-      {required final int bookmarkId,
-      final String? bookmarkSection,
-      final int? bookmarkRow,
-      final DateTime? lastUpdateDate}) = _$BookmarkedSeatImpl;
+          {@JsonKey(name: 'bookmark_id') required final int bookmarkId,
+          @JsonKey(name: 'bookmark_section') final String? bookmarkSection,
+          @JsonKey(name: 'bookmark_row') final int? bookmarkRow,
+          @JsonKey(name: 'last_update_date') final DateTime? lastUpdateDate}) =
+      _$BookmarkedSeatImpl;
 
   factory _BookmarkedSeat.fromJson(Map<String, dynamic> json) =
       _$BookmarkedSeatImpl.fromJson;
 
   @override
+  @JsonKey(name: 'bookmark_id')
   int get bookmarkId;
   @override
+  @JsonKey(name: 'bookmark_section')
   String? get bookmarkSection;
   @override
+  @JsonKey(name: 'bookmark_row')
   int? get bookmarkRow;
   @override
+  @JsonKey(name: 'last_update_date')
   DateTime? get lastUpdateDate;
 
   /// Create a copy of BookmarkedSeat

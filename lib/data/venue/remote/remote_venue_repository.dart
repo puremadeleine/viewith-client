@@ -46,13 +46,12 @@ class RemoteVenueRepository extends VenueRepository {
   @override
   Future<Result<List<SeatInfo>, BaseError>> fetchSeatInfo(String id) async {
     final response = await _client.get('/v1/venues/$id/filter');
-    return response.toResult(fromJson: (json) => (json['seat_infos'] as List).map((e) => SeatInfo.fromJson(e)).toList());
+    return response.toListResult(fromJson: SeatInfo.fromJson, key: 'seat_infos');
   }
 
   @override
   Future<Result<Review, BaseError>> fetchReview(int id) async {
     final response = await _client.get('/v1/reviews/$id', requiresAuth: true);
-    print('fetchReview $response');
     return response.toResult(fromJson: Review.fromJson);
   }
 }

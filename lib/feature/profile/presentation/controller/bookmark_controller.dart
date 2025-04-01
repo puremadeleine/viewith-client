@@ -9,7 +9,7 @@ import '../../../../core/result/result.dart';
 part 'bookmark_controller.g.dart';
 
 @riverpod
-Future<Result<BookmarkResponse, BaseError>> fetchBookmarks(Ref ref) async {
+Future<Result<BookmarkListResponse, BaseError>> fetchBookmarks(Ref ref) async {
   final repository = ref.watch(memberRepositoryProvider);
   return repository.fetchBookmarks();
 }

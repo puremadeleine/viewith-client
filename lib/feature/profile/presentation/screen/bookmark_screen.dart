@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:viewith/data/member/member_repository_providers.dart';
 import 'package:viewith/feature/profile/presentation/controller/bookmark_controller.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/data/member/response/bookmark_response.dart';
 
 class BookmarkScreen extends ConsumerStatefulWidget {
   const BookmarkScreen({super.key});
@@ -12,33 +12,64 @@ class BookmarkScreen extends ConsumerStatefulWidget {
 }
 
 class _BookmarkScreenState extends ConsumerState<BookmarkScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  TabController? _tabController;
+  List<BookmarkResponse> bookmarks = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeTabController();
+    });
+  }
+
+  void _initializeTabController() {
+    final response = ref.read(fetchBookmarksProvider);
+    response.whenData((data) {
+      data.match(
+        onSuccess: (bookmarkList) {
+          if (!mounted) return;
+          setState(() {
+            bookmarks = bookmarkList.bookmarks;
+            _tabController?.dispose();
+            if (bookmarks.isNotEmpty) {
+              _tabController = TabController(length: bookmarks.length, vsync: this);
+            }
+          });
+        },
+        onFailure: (_) {},
+      );
+    });
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final response = ref.watch(fetchBookmarksProvider);
-    return response.when(
-      data: (data) => _buildBody(),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (err, stack) => Center(child: Text('Error: $err')),
-    );
-  }
+    ref.listen(fetchBookmarksProvider, (previous, next) {
+      next.whenData((data) {
+        data.match(
+          onSuccess: (bookmarkList) {
+            if (!mounted) return;
+            setState(() {
+              bookmarks = bookmarkList.bookmarks;
+              _tabController?.dispose();
+              if (bookmarks.isNotEmpty) {
+                _tabController = TabController(length: bookmarks.length, vsync: this);
+              } else {
+                _tabController = null;
+              }
+            });
+          },
+          onFailure: (_) {},
+        );
+      });
+    });
 
-  Widget _buildBody() {
     return Scaffold(
       appBar: AppBar(
         title: Text('즐겨찾기 한 좌석 후기', style: AppDesign.typo.title2bold()),
@@ -51,67 +82,71 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> with SingleTick
             ),
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: '고척 스카이돔'),
-            Tab(text: '장충 체육관'),
-            Tab(text: '잠실 실내체육관'),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildStadiumPage(title: '고척 스카이돔'),
-          _buildStadiumPage(title: '장충 체육관'),
-          _buildStadiumPage(title: '잠실 실내체육관'),
-        ],
-      ),
+      body: ref.watch(fetchBookmarksProvider).when(
+            data: (data) => data.match(
+              onSuccess: (_) {
+                if (bookmarks.isEmpty || _tabController == null) {
+                  return const Center(
+                    child: Text('즐겨찾기한 좌석이 없습니다.'),
+                  );
+                }
+
+                return DefaultTabController(
+                  length: bookmarks.length,
+                  child: Column(
+                    children: [
+                      TabBar(
+                        controller: _tabController,
+                        tabs: bookmarks.map((venue) => Tab(text: venue.venueName)).toList(),
+                        labelStyle: AppDesign.typo.body4Bold(),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: bookmarks.map((venue) => _buildVenuePage(venue)).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              onFailure: (error) => Center(child: Text('Error: $error')),
+            ),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+          ),
     );
   }
 
-  Widget _buildStadiumPage({required String title}) {
+  Widget _buildVenuePage(BookmarkResponse venue) {
+    if (venue.bookmarkFloors.isEmpty) {
+      return const Center(
+        child: Text('즐겨찾기한 좌석이 없습니다.'),
+      );
+    }
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ExpansionTile(
-            title: const Text('3구역'),
-            children: [
-              ListTile(
-                title: Text('3구역 좌석 후기 1'),
-                subtitle: Text(title),
-              ),
-              ListTile(
-                title: Text('3구역 좌석 후기 2'),
-              ),
-            ],
-          ),
-          ExpansionTile(
-            title: const Text('5구역'),
-            children: const [
-              ListTile(
-                title: Text('5구역 좌석 후기 1'),
-              ),
-              ListTile(
-                title: Text('5구역 좌석 후기 2'),
-              ),
-            ],
-          ),
-          ExpansionTile(
-            title: const Text('7구역'),
-            children: const [
-              ListTile(
-                title: Text('7구역 좌석 후기 1'),
-              ),
-              ListTile(
-                title: Text('7구역 좌석 후기 2'),
-              ),
-            ],
-          ),
-        ],
+        children: venue.bookmarkFloors.map((floor) {
+          return ExpansionTile(
+            title: Text('${floor.bookmarkFloor}층'),
+            children: floor.bookmarkSeats.map((seat) {
+              return ListTile(
+                title: Text(
+                  '${seat.bookmarkSection ?? ''} ${seat.bookmarkRow != null ? '${seat.bookmarkRow}열' : ''}'.trim(),
+                ),
+                subtitle: Text(
+                  seat.lastUpdateDate != null ? '마지막 업데이트: ${seat.lastUpdateDate!.toString()}' : '',
+                ),
+              );
+            }).toList(),
+          );
+        }).toList(),
       ),
     );
   }

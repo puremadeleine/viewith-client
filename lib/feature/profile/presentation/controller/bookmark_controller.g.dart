@@ -6,12 +6,12 @@ part of 'bookmark_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchBookmarksHash() => r'13fde0ec4adc84ca6393465f42d3af42522902bd';
+String _$fetchBookmarksHash() => r'd9f30d4de1032fd501520b59b5eaf75fc59f209a';
 
 /// See also [fetchBookmarks].
 @ProviderFor(fetchBookmarks)
 final fetchBookmarksProvider =
-    AutoDisposeFutureProvider<Result<BookmarkResponse, BaseError>>.internal(
+    AutoDisposeFutureProvider<Result<BookmarkListResponse, BaseError>>.internal(
   fetchBookmarks,
   name: r'fetchBookmarksProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,6 +24,6 @@ final fetchBookmarksProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FetchBookmarksRef
-    = AutoDisposeFutureProviderRef<Result<BookmarkResponse, BaseError>>;
+    = AutoDisposeFutureProviderRef<Result<BookmarkListResponse, BaseError>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

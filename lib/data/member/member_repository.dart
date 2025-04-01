@@ -3,5 +3,5 @@ import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/member/response/bookmark_response.dart';
 
 abstract class MemberRepository {
-  Future<Result<BookmarkResponse, BaseError>> fetchBookmarks();
+  Future<Result<BookmarkListResponse, BaseError>> fetchBookmarks();
 }
