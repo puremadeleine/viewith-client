@@ -6,20 +6,6 @@ part of 'bookmark_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BookmarkListResponseImpl _$$BookmarkListResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$BookmarkListResponseImpl(
-      bookmarks: (json['bookmarks'] as List<dynamic>)
-          .map((e) => BookmarkResponse.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$BookmarkListResponseImplToJson(
-        _$BookmarkListResponseImpl instance) =>
-    <String, dynamic>{
-      'bookmarks': instance.bookmarks,
-    };
-
 _$BookmarkResponseImpl _$$BookmarkResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$BookmarkResponseImpl(

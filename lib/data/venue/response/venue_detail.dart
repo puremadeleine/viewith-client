@@ -19,7 +19,8 @@ class VenueDetail with _$VenueDetail {
 @freezed
 class Stage with _$Stage {
   const factory Stage({
-    @JsonKey(name: 'stage_id') required String stageId,
+    @JsonKey(name: 'stage_id') required int stageId,
+    @JsonKey(name: 'type') required String type,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'svg_url') required String url,
   }) = _Stage;
@@ -38,6 +39,5 @@ class SectionReviewCount with _$SectionReviewCount {
 }
 
 extension SectionReviewCountX on VenueDetail {
-  Map<String, int> get sectionReviewCountMap => Map.fromIterables(
-      sectionReviewCount.map((section) => section.sectionKey), sectionReviewCount.map((section) => section.reviewCount));
+  Map<String, int> get sectionReviewCountMap => Map.fromIterables(sectionReviewCount.map((section) => section.sectionKey), sectionReviewCount.map((section) => section.reviewCount));
 }

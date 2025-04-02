@@ -4,15 +4,6 @@ part 'bookmark_response.freezed.dart';
 part 'bookmark_response.g.dart';
 
 @freezed
-class BookmarkListResponse with _$BookmarkListResponse {
-  const factory BookmarkListResponse({
-    @JsonKey(name: 'bookmarks') required List<BookmarkResponse> bookmarks,
-  }) = _BookmarkListResponse;
-
-  factory BookmarkListResponse.fromJson(Map<String, dynamic> json) => _$BookmarkListResponseFromJson(json);
-}
-
-@freezed
 class BookmarkResponse with _$BookmarkResponse {
   const factory BookmarkResponse({
     @JsonKey(name: 'venue_id') required int venueId,

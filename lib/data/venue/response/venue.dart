@@ -22,6 +22,5 @@ class Performance with _$Performance {
     @JsonKey(name: 'image_url') required String imageUrl,
   }) = _Performance;
 
-  factory Performance.fromJson(Map<String, dynamic> json) =>
-      _$PerformanceFromJson(json);
+  factory Performance.fromJson(Map<String, dynamic> json) => _$PerformanceFromJson(json);
 }

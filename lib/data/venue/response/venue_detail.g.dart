@@ -28,7 +28,8 @@ Map<String, dynamic> _$$VenueDetailImplToJson(_$VenueDetailImpl instance) =>
     };
 
 _$StageImpl _$$StageImplFromJson(Map<String, dynamic> json) => _$StageImpl(
-      stageId: json['stage_id'] as String,
+      stageId: (json['stage_id'] as num).toInt(),
+      type: json['type'] as String,
       name: json['name'] as String,
       url: json['svg_url'] as String,
     );
@@ -36,6 +37,7 @@ _$StageImpl _$$StageImplFromJson(Map<String, dynamic> json) => _$StageImpl(
 Map<String, dynamic> _$$StageImplToJson(_$StageImpl instance) =>
     <String, dynamic>{
       'stage_id': instance.stageId,
+      'type': instance.type,
       'name': instance.name,
       'svg_url': instance.url,
     };

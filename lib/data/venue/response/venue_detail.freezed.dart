@@ -280,7 +280,9 @@ Stage _$StageFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Stage {
   @JsonKey(name: 'stage_id')
-  String get stageId => throw _privateConstructorUsedError;
+  int get stageId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'type')
+  String get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'svg_url')
@@ -301,7 +303,8 @@ abstract class $StageCopyWith<$Res> {
       _$StageCopyWithImpl<$Res, Stage>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'stage_id') String stageId,
+      {@JsonKey(name: 'stage_id') int stageId,
+      @JsonKey(name: 'type') String type,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'svg_url') String url});
 }
@@ -322,6 +325,7 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
   @override
   $Res call({
     Object? stageId = null,
+    Object? type = null,
     Object? name = null,
     Object? url = null,
   }) {
@@ -329,6 +333,10 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
       stageId: null == stageId
           ? _value.stageId
           : stageId // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -350,7 +358,8 @@ abstract class _$$StageImplCopyWith<$Res> implements $StageCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'stage_id') String stageId,
+      {@JsonKey(name: 'stage_id') int stageId,
+      @JsonKey(name: 'type') String type,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'svg_url') String url});
 }
@@ -369,6 +378,7 @@ class __$$StageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? stageId = null,
+    Object? type = null,
     Object? name = null,
     Object? url = null,
   }) {
@@ -376,6 +386,10 @@ class __$$StageImplCopyWithImpl<$Res>
       stageId: null == stageId
           ? _value.stageId
           : stageId // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -394,6 +408,7 @@ class __$$StageImplCopyWithImpl<$Res>
 class _$StageImpl implements _Stage {
   const _$StageImpl(
       {@JsonKey(name: 'stage_id') required this.stageId,
+      @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'svg_url') required this.url});
 
@@ -402,7 +417,10 @@ class _$StageImpl implements _Stage {
 
   @override
   @JsonKey(name: 'stage_id')
-  final String stageId;
+  final int stageId;
+  @override
+  @JsonKey(name: 'type')
+  final String type;
   @override
   @JsonKey(name: 'name')
   final String name;
@@ -412,7 +430,7 @@ class _$StageImpl implements _Stage {
 
   @override
   String toString() {
-    return 'Stage(stageId: $stageId, name: $name, url: $url)';
+    return 'Stage(stageId: $stageId, type: $type, name: $name, url: $url)';
   }
 
   @override
@@ -421,13 +439,14 @@ class _$StageImpl implements _Stage {
         (other.runtimeType == runtimeType &&
             other is _$StageImpl &&
             (identical(other.stageId, stageId) || other.stageId == stageId) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.url, url) || other.url == url));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, stageId, name, url);
+  int get hashCode => Object.hash(runtimeType, stageId, type, name, url);
 
   /// Create a copy of Stage
   /// with the given fields replaced by the non-null parameter values.
@@ -447,7 +466,8 @@ class _$StageImpl implements _Stage {
 
 abstract class _Stage implements Stage {
   const factory _Stage(
-      {@JsonKey(name: 'stage_id') required final String stageId,
+      {@JsonKey(name: 'stage_id') required final int stageId,
+      @JsonKey(name: 'type') required final String type,
       @JsonKey(name: 'name') required final String name,
       @JsonKey(name: 'svg_url') required final String url}) = _$StageImpl;
 
@@ -455,7 +475,10 @@ abstract class _Stage implements Stage {
 
   @override
   @JsonKey(name: 'stage_id')
-  String get stageId;
+  int get stageId;
+  @override
+  @JsonKey(name: 'type')
+  String get type;
   @override
   @JsonKey(name: 'name')
   String get name;

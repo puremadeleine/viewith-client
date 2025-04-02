@@ -17,27 +17,39 @@ part 'review_list_controller.g.dart';
 class ReviewListController extends _$ReviewListController {
   @override
   FutureOr<ReviewListState> build(String id) async {
-    final venueResult = await ref.read(venueRepositoryProvider).fetchVenue(id);
-    final reviewsResult = await fetchReviews();
-    final seatsResult = await ref.read(venueRepositoryProvider).fetchSeatInfo(id);
-    return Result.combine([
-      venueResult,
-      reviewsResult,
-      seatsResult,
-    ]).match<ReviewListState>(
-      onSuccess: (results) {
-        final VenueDetail venues = results[0];
-        final PaginatedResponse<List<Review>> reviews = results[1];
-        final List<SeatInfo> seats = results[2];
-        return ReviewListState(
-          id: id,
-          venueInfo: AsyncData(venues),
-          seatInfo: AsyncData(seats),
-          reviews: AsyncData(reviews.list),
-        );
-      },
-      onFailure: (error) => throw error,
-    );
+    try {
+      final venueResult = await ref.read(venueRepositoryProvider).fetchVenue(id);
+      final VenueDetail venue = await venueResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Venue API 호출 실패: $error'),
+      );
+
+      final reviewsResult = await fetchReviews();
+      final PaginatedResponse<List<Review>> reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+
+      final seatsResult = await ref.read(venueRepositoryProvider).fetchSeatInfo(id);
+      final List<SeatInfo> seats = await seatsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Seat Info API 호출 실패: $error'),
+      );
+
+      return ReviewListState(
+        id: id,
+        venueInfo: AsyncData(venue),
+        seatInfo: AsyncData(seats),
+        reviews: AsyncData(reviews.list),
+      );
+    } catch (error) {
+      return ReviewListState(
+        id: id,
+        venueInfo: AsyncError(error, StackTrace.current),
+        seatInfo: AsyncError(error, StackTrace.current),
+        reviews: AsyncError(error, StackTrace.current),
+      );
+    }
   }
 
   Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchReviews() async {

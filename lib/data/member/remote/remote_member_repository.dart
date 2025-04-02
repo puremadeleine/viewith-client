@@ -11,8 +11,8 @@ class RemoteMemberRepository extends MemberRepository {
   RemoteMemberRepository(this._client);
 
   @override
-  Future<Result<BookmarkListResponse, BaseError>> fetchBookmarks() async {
+  Future<Result<List<BookmarkResponse>, BaseError>> fetchBookmarks() async {
     final response = await _client.get('/v1/members/bookmarks', requiresAuth: true);
-    return response.toResult(fromJson: BookmarkListResponse.fromJson);
+    return response.toListResult(fromJson: BookmarkResponse.fromJson, key: 'bookmarks');
   }
 }

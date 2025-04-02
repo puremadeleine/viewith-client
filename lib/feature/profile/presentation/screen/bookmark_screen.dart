@@ -30,10 +30,9 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> with SingleTick
         onSuccess: (bookmarkList) {
           if (!mounted) return;
           setState(() {
-            bookmarks = bookmarkList.bookmarks;
             _tabController?.dispose();
-            if (bookmarks.isNotEmpty) {
-              _tabController = TabController(length: bookmarks.length, vsync: this);
+            if (bookmarkList.isNotEmpty) {
+              _tabController = TabController(length: bookmarkList.length, vsync: this);
             }
           });
         },
@@ -56,10 +55,9 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> with SingleTick
           onSuccess: (bookmarkList) {
             if (!mounted) return;
             setState(() {
-              bookmarks = bookmarkList.bookmarks;
               _tabController?.dispose();
-              if (bookmarks.isNotEmpty) {
-                _tabController = TabController(length: bookmarks.length, vsync: this);
+              if (bookmarkList.isNotEmpty) {
+                _tabController = TabController(length: bookmarkList.length, vsync: this);
               } else {
                 _tabController = null;
               }

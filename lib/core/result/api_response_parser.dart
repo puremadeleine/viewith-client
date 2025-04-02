@@ -1,4 +1,7 @@
+import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:viewith/core/result/paginated_response.dart';
 import 'package:viewith/core/result/result.dart';
 
@@ -17,9 +20,11 @@ extension ApiResponseParser on Response {
           return Success(fromJson(targetData));
 
         default:
+          _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');
           return Failure(ApiError(code: statusCode ?? -1, message: statusMessage ?? ''));
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logError('Parse Error in toResult', e.toString(), stackTrace);
       return Failure(UnknownError());
     }
   }
@@ -39,9 +44,11 @@ extension ApiResponseParser on Response {
           );
 
         default:
+          _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');
           return Failure(ApiError(code: statusCode ?? -1, message: statusMessage ?? ''));
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logError('Parse Error in toListResult', e.toString(), stackTrace);
       return Failure(UnknownError());
     }
   }
@@ -51,6 +58,7 @@ extension ApiResponseParser on Response {
   ) {
     try {
       if (statusCode != 200) {
+        _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');
         return Failure(ApiError(code: statusCode ?? -1, message: statusMessage ?? ''));
       }
 
@@ -60,9 +68,26 @@ extension ApiResponseParser on Response {
           fromJsonT,
         ),
       );
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      _logError('Parse Error in toPaginatedResult', e.toString(), stackTrace);
       return Failure(UnknownError());
+    }
+  }
+
+  void _logError(String type, String message, [StackTrace? stackTrace]) {
+    developer.log(
+      message,
+      name: type,
+      error: message,
+      stackTrace: stackTrace,
+    );
+
+    // Debug 모드에서는 print도 함께 사용
+    if (kDebugMode) {
+      print('[$type] $message');
+      if (stackTrace != null) {
+        print(stackTrace);
+      }
     }
   }
 }
