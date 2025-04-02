@@ -1,59 +1,77 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viewith/di/app_providers.dart';
 import 'package:viewith/app/route/app_route.dart';
-import 'package:viewith/app/route/navigation_bar.dart';
 import 'package:viewith/feature/auth/presentation/screen/sign_in_screen.dart';
+import 'package:viewith/app/route/navigation_bar.dart';
 import 'package:viewith/feature/help/presentation/help_detail_screen.dart';
 import 'package:viewith/feature/help/presentation/help_list_screen.dart';
 import 'package:viewith/feature/home/presentation/screen/home_screen.dart';
-import 'package:viewith/feature/profile/presentation/screen/bookmark_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/profile_screen.dart';
+import 'package:viewith/feature/profile/presentation/screen/bookmark_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_detail_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_list_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_performance_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_rating_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_review_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_venues_screen.dart';
+import 'package:viewith/feature/writing/search/presentation/writing_seat_info_screen.dart';
 
-import '../../feature/writing/search/presentation/writing_seat_info_screen.dart';
+final routerProvider = Provider<GoRouter>((ref) {
+  final tokenHandler = ref.watch(tokenHandlerProvider);
 
-final router = GoRouter(
-  initialLocation: AppRoute.signIn.path,
-  routes: [
-    GoRoute(
-      path: AppRoute.signIn.path,
-      name: AppRoute.signIn.name,
-      builder: (context, state) => const SignInScreen(),
-    ),
-    StatefulShellRoute.indexedStack(
-      builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
-        return NavigationBar(navigationShell: navigationShell);
-      },
-      branches: [
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: AppRoute.home.path,
-            name: AppRoute.home.name,
-            builder: (context, state) => const HomeScreen(),
-          ),
-        ]),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: AppRoute.profile.path,
-            name: AppRoute.profile.name,
-            builder: (context, state) => const ProfileScreen(),
-            routes: [
-              GoRoute(
-                path: AppRoute.bookmarkedReviews.path,
-                name: AppRoute.bookmarkedReviews.name,
-                builder: (context, state) => const BookmarkScreen(),
-              )
-            ],
-          ),
-        ]),
-      ],
-    ),
-    GoRoute(
+  return GoRouter(
+    initialLocation: AppRoute.signIn.path,
+    redirect: (context, state) async {
+      final hasTokens = await tokenHandler.hasTokens();
+      final isSignInRoute = state.matchedLocation == AppRoute.signIn.path;
+
+      if (!hasTokens && !isSignInRoute) {
+        return AppRoute.signIn.path;
+      }
+
+      if (hasTokens && isSignInRoute) {
+        return AppRoute.home.path;
+      }
+
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: AppRoute.signIn.path,
+        name: AppRoute.signIn.name,
+        builder: (context, state) => const SignInScreen(),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+          return NavigationBar(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoute.home.path,
+              name: AppRoute.home.name,
+              builder: (context, state) => const HomeScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoute.profile.path,
+              name: AppRoute.profile.name,
+              builder: (context, state) => const ProfileScreen(),
+              routes: [
+                GoRoute(
+                  path: AppRoute.bookmarkedReviews.path,
+                  name: AppRoute.bookmarkedReviews.name,
+                  builder: (context, state) => const BookmarkScreen(),
+                )
+              ],
+            ),
+          ]),
+        ],
+      ),
+      GoRoute(
         path: AppRoute.writingVenues.path,
         name: AppRoute.writingVenues.name,
         builder: (context, state) => const WritingVenuesScreen(),
@@ -84,18 +102,19 @@ final router = GoRouter(
               ),
             ],
           ),
-        ]),
-    GoRoute(
-      path: '${AppRoute.seatmap.path}/:id',
-      name: AppRoute.seatmap.name,
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        final extra = state.extra as Map<String, dynamic>;
-        final name = extra['name'] as String;
-        return ReviewListScreen(id: id, venueName: name);
-      },
-    ),
-    GoRoute(
+        ],
+      ),
+      GoRoute(
+        path: '${AppRoute.seatmap.path}/:id',
+        name: AppRoute.seatmap.name,
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          final extra = state.extra as Map<String, dynamic>;
+          final name = extra['name'] as String;
+          return ReviewListScreen(id: id, venueName: name);
+        },
+      ),
+      GoRoute(
         path: AppRoute.helpList.path,
         name: AppRoute.helpList.name,
         builder: (context, state) => const HelpListScreen(),
@@ -105,13 +124,16 @@ final router = GoRouter(
             name: AppRoute.help.name,
             builder: (context, state) => const HelpDetailScreen(),
           ),
-        ]),
-    GoRoute(
+        ],
+      ),
+      GoRoute(
         path: '${AppRoute.reviewDetail.path}/:id',
         name: AppRoute.reviewDetail.name,
         builder: (context, state) {
           final id = state.pathParameters['id']!;
           return ReviewDetailScreen(id: int.parse(id));
-        })
-  ],
-);
+        },
+      ),
+    ],
+  );
+});
