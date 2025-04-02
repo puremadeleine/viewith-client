@@ -23,7 +23,7 @@ class VIBottomSheet<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
+      padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
       decoration: BoxDecoration(
         color: AppDesign.colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
@@ -40,7 +40,7 @@ class VIBottomSheet<T> extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (titleBuilder != null) titleBuilder!(context),
-          if (titleBuilder != null) AppDesign.spacing.h24,
+          if (titleBuilder != null) AppDesign.spacing.h8,
           _buildListView(),
         ],
       ),
@@ -52,7 +52,10 @@ class VIBottomSheet<T> extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('조건에 일치하는 후기가 없어요.', style: AppDesign.typo.title1(),),
+          Text(
+            '조건에 일치하는 후기가 없어요.',
+            style: AppDesign.typo.title1(),
+          ),
           AppDesign.spacing.h8,
           Text.rich(
             TextSpan(

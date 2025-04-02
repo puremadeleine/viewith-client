@@ -129,9 +129,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         minChildSize: _minChildSize,
         maxChildSize: 1.0,
         builder: (BuildContext context, ScrollController scrollController) {
-          return _isFilterMode
-              ? _buildFilterScreen(state.seats, state.selectedFloor, state.selectedRow)
-              : _buildReviews(state.reviews.value ?? [], scrollController);
+          return _isFilterMode ? _buildFilterScreen(state.seats, state.selectedFloor, state.selectedRow) : _buildReviews(state.reviews.value ?? [], scrollController);
         },
       ),
     );

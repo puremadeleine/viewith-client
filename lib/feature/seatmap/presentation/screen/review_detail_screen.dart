@@ -131,19 +131,24 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
           children: [
             Text(
               review.userInfo.userNickname,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: AppDesign.typo.body1Bold(),
             ),
             const SizedBox(height: 4),
             Row(
               children: [
                 RatingBarIndicator(
                   rating: review.rating,
-                  itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.amber),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star_rounded,
+                    color: AppDesign.colors.red900,
+                  ),
                   itemCount: 5,
                   itemSize: 18.0,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 0),
+                  unratedColor: AppDesign.colors.gray300,
                 ),
                 const SizedBox(width: 8),
-                Text("${review.rating} / 5.0", style: const TextStyle(fontSize: 14)),
+                Text("${review.rating} / 5.0", style: AppDesign.typo.body2Bold()),
               ],
             ),
           ],
@@ -209,24 +214,23 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: AppDesign.colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppDesign.colors.gray900),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("좌석이 마음에 드셨나요?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             "관심있는 좌석을 즐겨찾기 해보세요. 마이페이지 > 즐겨찾기 한 후기를 통해 한 번에 모아볼 수 있어요.",
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            style: TextStyle(fontSize: 14, color: AppDesign.colors.gray900),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              _buildTagButton(review.seatRawData.section),
-              const SizedBox(width: 8),
-              _buildTagButton("${review.seatRawData.row}열"),
+              _buildTagButton("${review.seatRawData.floor}층 ${review.seatRawData.row}열", review.bookmarkInfo?.bookmarked ?? false),
             ],
           ),
         ],
@@ -234,14 +238,33 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     );
   }
 
-  Widget _buildTagButton(String label) {
+  Widget _buildTagButton(String label, bool bookmarked) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: AppDesign.colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppDesign.colors.gray600),
       ),
-      child: Text(label, style: const TextStyle(fontSize: 14)),
+      child: Row(
+        children: [
+          _buildBookmarkButton(bookmarked),
+          const SizedBox(width: 4),
+          Text(label, style: const TextStyle(fontSize: 14)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBookmarkButton(bool bookmarked) {
+    return GestureDetector(
+      onTap: () {
+        // TODO: Implement bookmark toggle
+      },
+      child: Icon(
+        bookmarked ? Icons.bookmark : Icons.bookmark_border,
+        size: 16,
+      ),
     );
   }
 }
