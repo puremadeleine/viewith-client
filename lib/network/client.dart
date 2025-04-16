@@ -26,8 +26,8 @@ class Client {
     try {
       if (refreshToken == null) return null;
 
-      final response = await _dio.post(
-        '/v1/refresh',
+      final response = await _dio.put(
+        '/v1/members/refresh',
         data: {'refresh_token': refreshToken},
         options: Options(extra: {'requiresAuth': false}),
       );
