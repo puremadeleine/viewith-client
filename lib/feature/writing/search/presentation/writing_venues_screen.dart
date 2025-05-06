@@ -21,8 +21,16 @@ class _WritingVenuesState extends ConsumerState<WritingVenuesScreen> {
   final _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    ref.read(writingVenuesControllerProvider.notifier).searchVenues('');
+  }
+
+  @override
   Widget build(BuildContext context) {
     final searchResult = ref.watch(writingVenuesControllerProvider);
+    final selectedVenue = ref.watch(selectedVenueProvider);
 
     return Scaffold(
       appBar: AppBar(),
@@ -34,9 +42,12 @@ class _WritingVenuesState extends ConsumerState<WritingVenuesScreen> {
             _buildTitle('공연장을 입력해주세요'),
             _buildSubTitle('어떤 공연장에서 공연을 관람하셨나요?'),
             _buildSearchBar(ref),
-            AppDesign.spacing.h12,
+            if (selectedVenue != null) ...[
+              AppDesign.spacing.h8,
+              _buildSelectedVenue(selectedVenue),
+            ],
+            AppDesign.spacing.h8,
             _buildListView(searchResult),
-            const Spacer(),
             _buildNextButton(),
           ],
         ),
@@ -57,8 +68,36 @@ class _WritingVenuesState extends ConsumerState<WritingVenuesScreen> {
       controller: _textEditingController,
       hintText: '공연장 이름을 입력해주세요.',
       onChanged: (text) {
+        print('text: $text');
         ref.read(writingVenuesControllerProvider.notifier).searchVenues(text);
       },
+    );
+  }
+
+  Widget _buildSelectedVenue(Venue selectedVenue) {
+    return Wrap(
+      spacing: 4,
+      children: [
+        Chip(
+          label: Text(
+            selectedVenue.name,
+            style: AppDesign.typo.body2(color: AppDesign.colors.white),
+          ),
+          backgroundColor: AppDesign.colors.gray900,
+          deleteIcon: Icon(
+            Icons.close,
+            size: 18,
+            color: AppDesign.colors.white,
+          ),
+          onDeleted: () {
+            ref.read(selectedVenueProvider.notifier).select(null);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide.none,
+          ),
+        ),
+      ],
     );
   }
 
@@ -67,14 +106,19 @@ class _WritingVenuesState extends ConsumerState<WritingVenuesScreen> {
       child: ListView.separated(
         itemBuilder: (context, index) {
           final venue = venues[index];
-          return SearchListItem(
-            text: venue.name,
-            subText: venue.location,
-            query: _textEditingController.text,
+          return InkWell(
+            onTap: () {
+              ref.read(selectedVenueProvider.notifier).select(venue);
+            },
+            child: SearchListItem(
+              text: venue.name,
+              subText: venue.location,
+              query: _textEditingController.text,
+            ),
           );
         },
         separatorBuilder: (context, index) {
-          return Divider(color: AppDesign.colors.gray200);
+          return const SizedBox(height: 8);
         },
         itemCount: venues.length,
       ),
@@ -82,9 +126,17 @@ class _WritingVenuesState extends ConsumerState<WritingVenuesScreen> {
   }
 
   Widget _buildNextButton() {
+    final selectedVenue = ref.watch(selectedVenueProvider);
     return VIButton(
-      onTap: () => context.pushNamed(AppRoute.writingSeatInfo.name),
-      type: VIButtonType.primary,
+      onTap: () {
+        if (selectedVenue != null) {
+          context.pushNamed(
+            AppRoute.writingSeatInfo.name,
+            pathParameters: {'id': selectedVenue.id.toString()},
+          );
+        }
+      },
+      type: selectedVenue != null ? VIButtonType.primary : VIButtonType.disabled,
       text: '다음',
     );
   }

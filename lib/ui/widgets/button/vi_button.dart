@@ -23,6 +23,7 @@ class VIButton extends StatelessWidget {
       VIButtonType.primary => AppDesign.colors.gray900,
       VIButtonType.kakao => AppDesign.colors.kakao,
       VIButtonType.apple => AppDesign.colors.gray900,
+      VIButtonType.disabled => AppDesign.colors.gray100,
     };
   }
 
@@ -31,6 +32,7 @@ class VIButton extends StatelessWidget {
       VIButtonType.primary => AppDesign.colors.white,
       VIButtonType.kakao => AppDesign.colors.gray900,
       VIButtonType.apple => AppDesign.colors.white,
+      VIButtonType.disabled => AppDesign.colors.gray300,
     };
   }
 

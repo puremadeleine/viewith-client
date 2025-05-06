@@ -10,6 +10,7 @@ import 'package:viewith/network/client.dart';
 
 import '../response/venue.dart';
 import '../venue_repository.dart';
+import 'package:viewith/data/venue/response/seat_detail.dart';
 
 class RemoteVenueRepository extends VenueRepository {
   final Client _client;
@@ -25,9 +26,9 @@ class RemoteVenueRepository extends VenueRepository {
 
   @override
   Future<Result<List<Venue>, BaseError>> searchVenues(String keyword) async {
-    // TODO: 토큰 넣은 후 값 재확인 필요
-    final response = await _client.get('/v1/venues/search');
-    return response.toListResult(fromJson: Venue.fromJson, key: 'list');
+    final response = await _client.get('/v1/venues/search', queryParameters: {'keyword': keyword});
+    print('searchVenues response: ${response.data}');
+    return response.toListResult(fromJson: Venue.fromJson, key: 'venues');
   }
 
   @override
@@ -53,5 +54,11 @@ class RemoteVenueRepository extends VenueRepository {
   Future<Result<Review, BaseError>> fetchReview(int id) async {
     final response = await _client.get('/v1/reviews/$id', requiresAuth: true);
     return response.toResult(fromJson: Review.fromJson);
+  }
+
+  @override
+  Future<Result<List<SectionInfo>, BaseError>> fetchSeatDetail(String id) async {
+    final response = await _client.get('/v1/venues/$id/seats');
+    return response.toListResult(fromJson: SectionInfo.fromJson, key: 'seat_infos');
   }
 }

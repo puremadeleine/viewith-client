@@ -126,10 +126,7 @@ class Client {
           queryParameters: queryParameters,
           options: Options(extra: {'requiresAuth': requiresAuth}),
         ),
-        retryIf: (error) =>
-            error is DioException &&
-            error.type != DioExceptionType.cancel &&
-            error.type != DioExceptionType.badResponse,
+        retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,
         delayFactor: const Duration(seconds: 1),
       );
@@ -153,10 +150,7 @@ class Client {
           queryParameters: queryParameters,
           options: Options(extra: {'requiresAuth': requiresAuth}),
         ),
-        retryIf: (error) =>
-            error is DioException &&
-            error.type != DioExceptionType.cancel &&
-            error.type != DioExceptionType.badResponse,
+        retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,
         delayFactor: const Duration(seconds: 1),
       );
@@ -180,10 +174,7 @@ class Client {
           queryParameters: queryParameters,
           options: Options(extra: {'requiresAuth': requiresAuth}),
         ),
-        retryIf: (error) =>
-            error is DioException &&
-            error.type != DioExceptionType.cancel &&
-            error.type != DioExceptionType.badResponse,
+        retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,
         delayFactor: const Duration(seconds: 1),
       );
@@ -207,10 +198,7 @@ class Client {
           queryParameters: queryParameters,
           options: Options(extra: {'requiresAuth': requiresAuth}),
         ),
-        retryIf: (error) =>
-            error is DioException &&
-            error.type != DioExceptionType.cancel &&
-            error.type != DioExceptionType.badResponse,
+        retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,
         delayFactor: const Duration(seconds: 1),
       );
@@ -234,10 +222,7 @@ class Client {
           queryParameters: queryParameters,
           options: options,
         ),
-        retryIf: (error) =>
-            error is DioException &&
-            error.type != DioExceptionType.cancel &&
-            error.type != DioExceptionType.badResponse,
+        retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,
         delayFactor: const Duration(seconds: 1),
       );

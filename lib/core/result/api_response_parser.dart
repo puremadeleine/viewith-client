@@ -74,6 +74,21 @@ extension ApiResponseParser on Response {
     }
   }
 
+  Result<void, BaseError> toVoidResult() {
+    try {
+      switch (statusCode) {
+        case 200:
+          return const Success(null);
+        default:
+          _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');
+          return Failure(ApiError(code: statusCode ?? -1, message: statusMessage ?? ''));
+      }
+    } catch (e, stackTrace) {
+      _logError('Parse Error in toVoidResult', e.toString(), stackTrace);
+      return Failure(UnknownError());
+    }
+  }
+
   void _logError(String type, String message, [StackTrace? stackTrace]) {
     developer.log(
       message,

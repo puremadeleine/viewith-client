@@ -15,4 +15,10 @@ class RemoteMemberRepository extends MemberRepository {
     final response = await _client.get('/v1/members/bookmarks', requiresAuth: true);
     return response.toListResult(fromJson: BookmarkResponse.fromJson, key: 'bookmarks');
   }
+
+  @override
+  Future<Result<void, BaseError>> fetchProfile() async {
+    final response = await _client.get('/v1/members/profile', requiresAuth: true);
+    return response.toVoidResult();
+  }
 }
