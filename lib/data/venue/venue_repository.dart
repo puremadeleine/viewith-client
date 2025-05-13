@@ -22,4 +22,14 @@ abstract class VenueRepository {
   Future<Result<Review, BaseError>> fetchReview(int id);
 
   Future<Result<List<SectionInfo>, BaseError>> fetchSeatDetail(String id);
+
+  Future<Result<void, BaseError>> createReview({
+    required int venueId,
+    required String section,
+    required int seatRow,
+    int? seatColumn,
+    required String content,
+    required double rating,
+    List<String>? images,
+  });
 }

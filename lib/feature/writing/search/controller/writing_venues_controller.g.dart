@@ -21,12 +21,11 @@ final searchQueryProvider =
 );
 
 typedef _$SearchQuery = AutoDisposeNotifier<String>;
-String _$selectedVenueHash() => r'879729618451d8ac837ae2c7bcd4c6ce4b8be114';
+String _$selectedVenueHash() => r'1c9e231d2a6c63fae4d4a0841dd72e1cd3da6d23';
 
 /// See also [SelectedVenue].
 @ProviderFor(SelectedVenue)
-final selectedVenueProvider =
-    AutoDisposeNotifierProvider<SelectedVenue, Venue?>.internal(
+final selectedVenueProvider = NotifierProvider<SelectedVenue, Venue?>.internal(
   SelectedVenue.new,
   name: r'selectedVenueProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -36,9 +35,9 @@ final selectedVenueProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedVenue = AutoDisposeNotifier<Venue?>;
+typedef _$SelectedVenue = Notifier<Venue?>;
 String _$writingVenuesControllerHash() =>
-    r'394706e227fc2216095b278fd65821528308892a';
+    r'ac7309d00f7d3a30fbf568a2861957ac4e7ef2c4';
 
 /// See also [WritingVenuesController].
 @ProviderFor(WritingVenuesController)

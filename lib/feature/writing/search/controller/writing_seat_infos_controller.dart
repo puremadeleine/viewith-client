@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viewith/data/venue/response/seat_detail.dart';
+import 'package:viewith/data/venue/response/venue.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 
 part 'writing_seat_infos_controller.g.dart';
@@ -84,7 +85,33 @@ class WritingSeatInfosController extends _$WritingSeatInfosController {
     };
   }
 
+  void setError(bool hasError) {
+    if (hasError) {
+      state = {
+        ...state,
+        'error': 'true',
+      };
+    } else {
+      state = {
+        'section': state['section'],
+        'row': state['row'],
+        'number': state['number'],
+        'block': state['block'],
+      };
+    }
+  }
+
   bool isValid() {
     return state['section'] != null && state['row'] != null && state['number'] != null;
+  }
+}
+
+@riverpod
+class WritingSeatInfosError extends _$WritingSeatInfosError {
+  @override
+  bool build() => false;
+
+  void setError(bool hasError) {
+    state = hasError;
   }
 }

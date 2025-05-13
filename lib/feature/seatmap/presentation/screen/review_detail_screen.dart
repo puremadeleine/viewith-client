@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/core/result/result.dart';
 import 'package:viewith/core/result/base_error.dart';
 import 'package:dio/dio.dart';
+import 'package:viewith/di/app_providers.dart';
 
 class ReviewDetailScreen extends ConsumerStatefulWidget {
   final int id;
@@ -51,6 +54,13 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     return false;
   }
 
+  Future<void> _handleAuthError() async {
+    await ref.read(tokenHandlerProvider).clearTokens();
+    if (mounted) {
+      context.goNamed(AppRoute.signIn.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final response = ref.watch(venueRepositoryProvider).fetchReview(widget.id);
@@ -63,6 +73,9 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
         future: response,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            if (_isAuthError(snapshot.error!)) {
+              _handleAuthError();
+            }
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,8 +84,11 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
                   const SizedBox(height: 16),
                   if (_isAuthError(snapshot.error!))
                     ElevatedButton(
-                      onPressed: () {
-                        // TODO: Navigate to login screen
+                      onPressed: () async {
+                        await ref.read(tokenHandlerProvider).clearTokens();
+                        if (mounted) {
+                          context.goNamed(AppRoute.signIn.name);
+                        }
                       },
                       child: const Text('로그인하기'),
                     ),
@@ -101,22 +117,30 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
                 ),
               ),
             ),
-            onFailure: (error) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_getErrorMessage(error)),
-                  const SizedBox(height: 16),
-                  if (_isAuthError(error))
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Navigate to login screen
-                      },
-                      child: const Text('로그인하기'),
-                    ),
-                ],
-              ),
-            ),
+            onFailure: (error) {
+              if (_isAuthError(error)) {
+                _handleAuthError();
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(_getErrorMessage(error)),
+                    const SizedBox(height: 16),
+                    if (_isAuthError(error))
+                      ElevatedButton(
+                        onPressed: () async {
+                          await ref.read(tokenHandlerProvider).clearTokens();
+                          if (mounted) {
+                            context.goNamed(AppRoute.signIn.name);
+                          }
+                        },
+                        child: const Text('로그인하기'),
+                      ),
+                  ],
+                ),
+              );
+            },
           );
         },
       ),

@@ -61,4 +61,29 @@ class RemoteVenueRepository extends VenueRepository {
     final response = await _client.get('/v1/venues/$id/seats');
     return response.toListResult(fromJson: SectionInfo.fromJson, key: 'seat_infos');
   }
+
+  @override
+  Future<Result<void, BaseError>> createReview({
+    required int venueId,
+    required String section,
+    required int seatRow,
+    int? seatColumn,
+    required String content,
+    required double rating,
+    List<String>? images,
+  }) async {
+    final response = await _client.post(
+      '/v1/reviews',
+      data: {
+        'venue_id': venueId,
+        'section': section,
+        'seat_row': seatRow,
+        if (seatColumn != null) 'seat_column': seatColumn,
+        'content': content,
+        'rating': rating,
+        if (images != null) 'image': images,
+      },
+    );
+    return response.toVoidResult();
+  }
 }

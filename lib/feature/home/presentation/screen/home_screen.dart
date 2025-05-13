@@ -16,30 +16,79 @@ class HomeScreen extends ConsumerWidget {
     final state = ref.watch(homeControllerProvider);
 
     return Scaffold(
+      backgroundColor: AppDesign.colors.white,
+      appBar: AppBar(
+        title: Text('VIEWITH', style: AppDesign.typo.title1ExtraBold(color: AppDesign.colors.white)),
+        centerTitle: false,
+        backgroundColor: AppDesign.colors.gray900,
+        elevation: 0,
+      ),
       body: state.when(
         data: (venues) => _buildBody(venues),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(
+          child: Text(
+            'Error: $err',
+            style: AppDesign.typo.body1(color: AppDesign.colors.gray500),
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildBody(List<Venue> venues) {
     return SafeArea(
-      child: Padding(
-        padding: AppDesign.spacing.horizontal24,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppDesign.spacing.h32,
-            _buildTitle('1열 사수 다람쥐님!\n시야를 확인해 보세요.'),
-            AppDesign.spacing.h8,
-            _buildSubTitle('전체 공연장 목록'),
-            AppDesign.spacing.h4,
-            const Divider(height: 1),
-            _buildList(venues),
-          ],
-        ),
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: AppDesign.spacing.horizontal24,
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                AppDesign.spacing.h32,
+                _buildTitle('1열 사수 다람쥐님!\n시야를 확인해 보세요.'),
+                AppDesign.spacing.h24,
+              ]),
+            ),
+          ),
+          SliverPadding(
+            padding: AppDesign.spacing.horizontal24,
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final performances = venues[index].performances ?? [];
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context.push(
+                            '${AppRoute.seatmap.path}/${venues[index].id}',
+                            extra: {'name': venues[index].name},
+                          );
+                        },
+                        child: VenueItem(
+                          name: venues[index].name,
+                          address: venues[index].location,
+                          images: venues[index].performances?.map((e) => e.imageUrl).toList() ?? [],
+                          artists: performances.map((e) => e.artist).toList(),
+                        ),
+                      ),
+                      if (index != venues.length - 1)
+                        Divider(
+                          color: AppDesign.colors.gray100,
+                          height: 32,
+                          thickness: 1,
+                        ),
+                    ],
+                  );
+                },
+                childCount: venues.length,
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: AppDesign.spacing.vertical24,
+          ),
+        ],
       ),
     );
   }
@@ -47,42 +96,7 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildTitle(String title) {
     return Text(
       title,
-      style: AppDesign.typo.h1(),
-    );
-  }
-
-  Widget _buildSubTitle(String subTitle) {
-    return Text(
-      subTitle,
-      style: AppDesign.typo.h2(),
-    );
-  }
-
-  Widget _buildList(List<Venue> venues) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: venues.length,
-        itemBuilder: (context, index) {
-          final performances = venues[index].performances ?? [];
-          return Padding(
-            padding: AppDesign.spacing.vertical8,
-            child: GestureDetector(
-              onTap: () {
-                context.push('${AppRoute.seatmap.path}/${venues[index].id}', extra: {'name': venues[index].name});
-              },
-              child: VenueItem(
-                name: venues[index].name,
-                address: venues[index].location,
-                images: const [],
-                artists: performances.map((e) => e.artist).toList(),
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider(color: AppDesign.colors.gray200);
-        },
-      ),
+      style: AppDesign.typo.title1ExtraBold(color: AppDesign.colors.gray900),
     );
   }
 }

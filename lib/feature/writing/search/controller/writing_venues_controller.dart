@@ -15,13 +15,19 @@ class SearchQuery extends _$SearchQuery {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SelectedVenue extends _$SelectedVenue {
+  Venue? _venue;
+
   @override
-  Venue? build() => null;
+  Venue? build() {
+    return _venue;
+  }
 
   void select(Venue? venue) {
+    _venue = venue;
     state = venue;
+    print("Venue selected and stored: $_venue");
   }
 }
 
@@ -36,7 +42,6 @@ class WritingVenuesController extends _$WritingVenuesController {
     final result = await ref.read(venueRepositoryProvider).searchVenues(keyword);
     return result.match(
       onSuccess: (venues) {
-        print('searchVenues $venues');
         state = venues;
         return venues;
       },

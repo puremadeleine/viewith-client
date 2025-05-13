@@ -66,7 +66,7 @@ final seatBlockProvider =
 
 typedef _$SeatBlock = AutoDisposeNotifier<String?>;
 String _$seatDetailControllerHash() =>
-    r'0abaac5dbaf2b6662a264e419b03ab705f5bdd09';
+    r'57a95e998aa0445874e75ebe27f171acc1e1ca67';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -235,7 +235,7 @@ class _SeatDetailControllerProviderElement
 }
 
 String _$writingSeatInfosControllerHash() =>
-    r'0706727ceebde99a3ef112944042a8ba8b20e442';
+    r'ed3cfb87924cfe5bc740975fb5d19514bc7bd773';
 
 /// See also [WritingSeatInfosController].
 @ProviderFor(WritingSeatInfosController)
@@ -252,5 +252,22 @@ final writingSeatInfosControllerProvider = AutoDisposeNotifierProvider<
 
 typedef _$WritingSeatInfosController
     = AutoDisposeNotifier<Map<String, String?>>;
+String _$writingSeatInfosErrorHash() =>
+    r'2780c5e33640f6171d6249dcc70377c8b9e19b1c';
+
+/// See also [WritingSeatInfosError].
+@ProviderFor(WritingSeatInfosError)
+final writingSeatInfosErrorProvider =
+    AutoDisposeNotifierProvider<WritingSeatInfosError, bool>.internal(
+  WritingSeatInfosError.new,
+  name: r'writingSeatInfosErrorProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$writingSeatInfosErrorHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$WritingSeatInfosError = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

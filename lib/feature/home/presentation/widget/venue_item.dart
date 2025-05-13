@@ -18,8 +18,11 @@ class VenueItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildVenueInfo(),
+        Expanded(child: _buildVenueInfo()),
+        AppDesign.spacing.w16,
+        _buildImages(),
       ],
     );
   }
@@ -36,6 +39,20 @@ class VenueItem extends StatelessWidget {
     );
   }
 
+  Widget _buildImages() {
+    if (images.isEmpty) return const SizedBox();
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.network(
+        images.first,
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
   Widget _buildTitle(String title) {
     return Text(
       title,
@@ -45,7 +62,7 @@ class VenueItem extends StatelessWidget {
 
   Widget _buildAddress(String address) {
     return Text(
-      address,
+      "📍 $address",
       style: AppDesign.typo.body4(),
     );
   }
