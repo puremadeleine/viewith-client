@@ -103,6 +103,13 @@ class AppTypography {
         color: color,
       );
 
+  TextStyle body1SemiBold({Color? color}) => TextStyle(
+        fontSize: 16,
+        fontWeight: TypographyTokens.semiBold,
+        height: 1.5,
+        color: color,
+      );
+
   TextStyle body2({Color? color}) => TextStyle(
         fontSize: 14,
         fontWeight: TypographyTokens.regular,

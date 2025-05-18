@@ -1,12 +1,22 @@
-enum Profile {
-  contact('문의하기'),
-  termsOfService('개인정보처리방침'),
-  license('오픈소스라이센스'),
-  version('버전정보'),
-  logout('로그아웃'),
-  withdraw('회원탈퇴');
+import 'package:flutter/material.dart';
+
+enum ProfileMenu {
+  contact('문의하기', Icons.help_outline),
+  termsOfService('개인정보처리방침', Icons.privacy_tip_outlined),
+  license('오픈소스 라이센스', Icons.article_outlined),
+  version('버전정보', Icons.info_outline),
+  logout('로그아웃', Icons.logout, textColor: Colors.red),
+  withdraw('회원탈퇴', Icons.person_remove_outlined, textColor: Colors.grey);
 
   final String title;
+  final IconData icon;
+  final Color? textColor;
 
-  const Profile(this.title);
+  const ProfileMenu(this.title, this.icon, {this.textColor});
+
+  // 메뉴 그룹을 반환하는 메서드
+  static List<List<ProfileMenu>> get groups => [
+        [contact, termsOfService, license, version],
+        [logout, withdraw]
+      ];
 }

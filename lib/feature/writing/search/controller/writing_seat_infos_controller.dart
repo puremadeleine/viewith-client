@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viewith/data/venue/response/seat_detail.dart';
-import 'package:viewith/data/venue/response/venue.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 
 part 'writing_seat_infos_controller.g.dart';

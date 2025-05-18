@@ -6,7 +6,7 @@ part of 'writing_rating_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$writingRatingHash() => r'fe9d2a6598e8943f027ca048ad880307aa2d4fa1';
+String _$writingRatingHash() => r'e8b3c4bd611e159586802eca0a660984b1d438c5';
 
 /// See also [WritingRating].
 @ProviderFor(WritingRating)
