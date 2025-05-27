@@ -6,6 +6,13 @@ sealed class Result<S, F> {
     required T Function(F failure) onFailure,
   });
 
+  S? get successValue {
+    return switch (this) {
+      Success(value: final value) => value,
+      Failure() => null,
+    };
+  }
+
   static Result<List<S>, F> combine<S, F>(List<Result>? results) {
     if (results == null || results.isEmpty) {
       return const Success([]);

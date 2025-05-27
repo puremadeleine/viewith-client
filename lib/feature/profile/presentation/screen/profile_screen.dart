@@ -61,24 +61,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
   }
 
   Widget _buildBody(ProfileResponse data) {
-    return Column(
-      children: [
-        _buildProfileSection(data),
-        AppDesign.spacing.h24,
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                for (final group in ProfileMenu.groups) ...[
-                  _buildMenuGroup(group),
-                  if (group != ProfileMenu.groups.last) const SizedBox(height: 16),
+    return Container(
+      color: AppDesign.colors.gray50,
+      child: Column(
+        children: [
+          _buildProfileSection(data),
+          AppDesign.spacing.h24,
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  for (final group in ProfileMenu.groups) ...[
+                    _buildMenuGroup(group),
+                    if (group != ProfileMenu.groups.last) const SizedBox(height: 16),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -137,7 +140,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
             ),
           ),
         ),
-        _buildVerificationBadge(),
       ],
     );
   }

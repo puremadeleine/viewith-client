@@ -35,83 +35,78 @@ class VINavigationBar extends StatelessWidget {
       return localIndex + leftItems.length;
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppDesign.colors.white,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height: 1,
+          color: AppDesign.colors.gray200,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: AppDesign.colors.gray900.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: const Offset(0, 0),
+        Container(
+          decoration: BoxDecoration(
+            color: AppDesign.colors.white,
           ),
-        ],
-      ),
-      child: Padding(
-        padding: AppDesign.spacing.horizontal24,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ...leftItems.asMap().entries.map((entry) {
-              final localIndex = entry.key;
-              final actualIndex = getActualIndex(true, localIndex);
-              final item = entry.value;
-              return GestureDetector(
-                onTap: () => onTap(actualIndex),
-                child: VINavigationItem(
-                  activeIcon: item.activeIcon,
-                  inactiveIcon: item.inactiveIcon,
-                  title: item.title,
-                  isSelected: currentIndex == actualIndex,
-                ),
-              );
-            }),
-            GestureDetector(
-              onTap: () => onCenterButtonTap(),
-              child: Container(
-                width: 56,
-                height: 56,
-                margin: AppDesign.spacing.vertical16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppDesign.colors.gray900,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 0,
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+          child: Padding(
+            padding: AppDesign.spacing.horizontal24,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ...leftItems.asMap().entries.map((entry) {
+                  final localIndex = entry.key;
+                  final actualIndex = getActualIndex(true, localIndex);
+                  final item = entry.value;
+                  return GestureDetector(
+                    onTap: () => onTap(actualIndex),
+                    child: VINavigationItem(
+                      icon: item.icon,
+                      title: item.title,
+                      isSelected: currentIndex == actualIndex,
                     ),
-                  ],
+                  );
+                }),
+                GestureDetector(
+                  onTap: () => onCenterButtonTap(),
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    margin: AppDesign.spacing.vertical16,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppDesign.colors.gray900,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 0,
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
                 ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
+                ...rightItems.asMap().entries.map((entry) {
+                  final localIndex = entry.key;
+                  final actualIndex = getActualIndex(false, localIndex);
+                  final item = entry.value;
+                  return GestureDetector(
+                    onTap: () => onTap(actualIndex),
+                    child: VINavigationItem(
+                      icon: item.icon,
+                      title: item.title,
+                      isSelected: currentIndex == actualIndex,
+                    ),
+                  );
+                }),
+              ],
             ),
-            ...rightItems.asMap().entries.map((entry) {
-              final localIndex = entry.key;
-              final actualIndex = getActualIndex(false, localIndex);
-              final item = entry.value;
-              return GestureDetector(
-                onTap: () => onTap(actualIndex),
-                child: VINavigationItem(
-                  activeIcon: item.activeIcon,
-                  inactiveIcon: item.inactiveIcon,
-                  title: item.title,
-                  isSelected: currentIndex == actualIndex,
-                ),
-              );
-            }),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

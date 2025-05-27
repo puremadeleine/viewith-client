@@ -4,27 +4,48 @@ import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/home/presentation/controller/home_controller.dart';
 import 'package:viewith/feature/home/presentation/widget/venue_item.dart';
+import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
 import 'package:viewith/ui/app_design.dart';
 
 import '../../../../data/venue/response/venue.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
+  int _selectedIndex = 0;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(homeControllerProvider);
+    final member = ref.watch(fetchProfileProvider).asData?.value.successValue;
 
     return Scaffold(
       backgroundColor: AppDesign.colors.white,
       appBar: AppBar(
-        title: Text('VIEWITH', style: AppDesign.typo.title1ExtraBold(color: AppDesign.colors.white)),
+        title: Text('VIEWITH', style: AppDesign.typo.title1ExtraBold()),
         centerTitle: false,
-        backgroundColor: AppDesign.colors.gray900,
         elevation: 0,
       ),
       body: state.when(
-        data: (venues) => _buildBody(venues),
+        data: (venues) => _buildBody(venues, member?.nickname ?? ''),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(
           child: Text(
@@ -36,57 +57,58 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(List<Venue> venues) {
+  Widget _buildBody(List<Venue> venues, String nickname) {
     return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverPadding(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
             padding: AppDesign.spacing.horizontal24,
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                AppDesign.spacing.h32,
-                _buildTitle('1열 사수 다람쥐님!\n시야를 확인해 보세요.'),
-                AppDesign.spacing.h24,
-              ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle('$nickname님!'),
+                AppDesign.spacing.h4,
+                _buildSubtitle('시야를 확인해 보세요.'),
+              ],
             ),
           ),
-          SliverPadding(
-            padding: AppDesign.spacing.horizontal24,
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final performances = venues[index].performances ?? [];
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.push(
-                            '${AppRoute.seatmap.path}/${venues[index].id}',
-                            extra: {'name': venues[index].name},
-                          );
-                        },
-                        child: VenueItem(
-                          name: venues[index].name,
-                          address: venues[index].location,
-                          images: venues[index].performances?.map((e) => e.imageUrl).toList() ?? [],
-                          artists: performances.map((e) => e.artist).toList(),
-                        ),
-                      ),
-                      if (index != venues.length - 1)
-                        Divider(
-                          color: AppDesign.colors.gray100,
-                          height: 32,
-                          thickness: 1,
-                        ),
-                    ],
-                  );
-                },
-                childCount: venues.length,
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey[200]!,
+                  width: 1,
+                ),
               ),
             ),
+            child: TabBar(
+              controller: _tabController,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: Colors.black,
+              tabs: const [
+                Tab(text: '공연장'),
+                Tab(text: '야구장'),
+              ],
+            ),
           ),
-          SliverPadding(
-            padding: AppDesign.spacing.vertical24,
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: venues.length,
+                  itemBuilder: (context, index) {
+                    return VenueItem(venue: venues[index]);
+                  },
+                ),
+                const Center(
+                  child: Text('준비 중인 기능입니다.'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -97,6 +119,34 @@ class HomeScreen extends ConsumerWidget {
     return Text(
       title,
       style: AppDesign.typo.title1ExtraBold(color: AppDesign.colors.gray900),
+    );
+  }
+
+  Widget _buildSubtitle(String subtitle) {
+    return Text(
+      subtitle,
+      style: AppDesign.typo.title2semiBold(color: AppDesign.colors.gray900),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppDesign.colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppDesign.colors.gray200,
+          width: 1,
+        ),
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: '공연장 또는 아티스트 검색',
+          prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+      ),
     );
   }
 }

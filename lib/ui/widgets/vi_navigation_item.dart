@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:viewith/ui/app_design.dart';
 
 class VINavigationItem extends StatelessWidget {
-  final SvgPicture activeIcon;
-  final SvgPicture inactiveIcon;
+  final IconData icon;
   final String? title;
   final bool isSelected;
 
   const VINavigationItem({
     super.key,
-    required this.activeIcon,
-    required this.inactiveIcon,
+    required this.icon,
     this.title,
     this.isSelected = false,
   });
@@ -22,7 +19,10 @@ class VINavigationItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        isSelected ? activeIcon : inactiveIcon,  // 선택 여부에 따라 다른 아이콘 표시
+        Icon(
+          icon,
+          color: isSelected ? AppDesign.colors.gray900 : AppDesign.colors.gray500,
+        ),
         if (label != null)
           Text(
             label,

@@ -68,6 +68,13 @@ class AppTypography {
         color: color,
       );
 
+  TextStyle title2ExtraBold({Color? color}) => TextStyle(
+        fontSize: 19,
+        fontWeight: TypographyTokens.extraBold,
+        height: 1.4,
+        color: color,
+      );
+
   TextStyle title2semiBold({Color? color}) => TextStyle(
         fontSize: 19,
         fontWeight: TypographyTokens.semiBold,
@@ -110,9 +117,23 @@ class AppTypography {
         color: color,
       );
 
+  TextStyle body1ExtraBold({Color? color}) => TextStyle(
+        fontSize: 16,
+        fontWeight: TypographyTokens.extraBold,
+        height: 1.5,
+        color: color,
+      );
+
   TextStyle body2({Color? color}) => TextStyle(
         fontSize: 14,
         fontWeight: TypographyTokens.regular,
+        height: 1.4,
+        color: color,
+      );
+
+  TextStyle body2Semibold({Color? color}) => TextStyle(
+        fontSize: 14,
+        fontWeight: TypographyTokens.semiBold,
         height: 1.4,
         color: color,
       );

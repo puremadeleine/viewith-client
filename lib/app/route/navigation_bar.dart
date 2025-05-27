@@ -4,8 +4,6 @@ import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/ui/widgets/vi_navigation_bar.dart';
 import 'package:viewith/ui/widgets/vi_navigation_item.dart';
 
-import '../../ui/gen/assets.gen.dart';
-
 class NavigationBar extends StatelessWidget {
   const NavigationBar({super.key, required this.navigationShell});
 
@@ -16,15 +14,13 @@ class NavigationBar extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: VINavigationBar(
-        items: [
+        items: const [
           VINavigationItem(
-            activeIcon: Assets.images.pipeFill.svg(width: 36, height: 36),
-            inactiveIcon: Assets.images.pipeLight.svg(width: 36, height: 36),
-            title: '후기',
+            icon: Icons.home,
+            title: '홈',
           ),
           VINavigationItem(
-            activeIcon: Assets.images.userAltFill.svg(width: 36, height: 36),
-            inactiveIcon: Assets.images.userAlt.svg(width: 36, height: 36),
+            icon: Icons.person,
             title: '프로필',
           ),
         ],
