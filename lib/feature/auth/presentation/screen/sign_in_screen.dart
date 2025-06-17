@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart' as apple;
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/auth/presentation/controller/sign_in_controller.dart';
 import 'package:viewith/ui/app_design.dart';
@@ -29,17 +30,28 @@ class SignInScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(),
-          Center(child: Assets.images.appLogo.image(width: 120, height: 120)),
-          _buildTitle(),
-          const Spacer(),
-          _buildSignInWithKakaoButton(ref),
-          _buildStartWithUnauthorizedStatusButton(),
-          AppDesign.spacing.h12
-        ],
+      body: Padding(
+        padding: AppDesign.spacing.horizontal8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Center(child: Assets.images.appLogo.image(width: 120, height: 120)),
+            _buildTitle(),
+            const Spacer(),
+            apple.SignInWithAppleButton(
+              onPressed: () {},
+              borderRadius: BorderRadius.circular(30),
+              height: 52,
+              text: 'Apple로 시작하기',
+              iconAlignment: apple.IconAlignment.left,
+            ),
+            AppDesign.spacing.h16,
+            _buildSignInWithKakaoButton(ref),
+            _buildStartWithUnauthorizedStatusButton(),
+            AppDesign.spacing.h12
+          ],
+        ),
       ),
     );
   }
@@ -49,26 +61,20 @@ class SignInScreen extends ConsumerWidget {
   }
 
   Widget _buildSignInWithKakaoButton(WidgetRef ref) {
-    return Padding(
-      padding: AppDesign.spacing.horizontal8,
-      child: RoundedButton(
-        onTap: () async {
-          await ref.read(signInScreenControllerProvider.notifier).signInWithKakao();
-        },
-        text: '카카오로 시작하기',
-        backgroundColor: AppDesign.colors.kakao,
-        image: Assets.images.kakao.svg(),
-      ),
+    return RoundedButton(
+      onTap: () async {
+        await ref.read(signInScreenControllerProvider.notifier).signInWithKakao();
+      },
+      text: '카카오로 시작하기',
+      backgroundColor: AppDesign.colors.kakao,
+      image: Assets.images.kakao.svg(),
     );
   }
 
   Widget _buildStartWithUnauthorizedStatusButton() {
-    return Padding(
-      padding: AppDesign.spacing.horizontal8,
-      child: RoundedButton(
-        onTap: () {},
-        text: '로그인 없이 시작하기',
-      ),
+    return RoundedButton(
+      onTap: () {},
+      text: '로그인 없이 시작하기',
     );
   }
 }

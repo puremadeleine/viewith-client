@@ -158,10 +158,11 @@ class VenueItem extends StatelessWidget {
                 color: AppDesign.colors.gray100,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(
-                Icons.image_outlined,
-                size: 32,
-                color: AppDesign.colors.gray300,
+              child: Image.asset(
+                'assets/images/cat_profile.png',
+                width: 80,
+                height: 110,
+                fit: BoxFit.cover,
               ),
             ),
     );

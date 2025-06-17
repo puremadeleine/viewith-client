@@ -141,6 +141,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/app_logo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/images/app_logo.png');
 
+  /// File path: assets/images/apple.svg
+  SvgGenImage get apple => const SvgGenImage('assets/images/apple.svg');
+
   /// File path: assets/images/candlestick_light.svg
   SvgGenImage get candlestickLight => const SvgGenImage('assets/images/candlestick_light.svg');
 
@@ -203,6 +206,7 @@ class $AssetsImagesGen {
         userAlt,
         userAltFill,
         appLogo,
+        apple,
         candlestickLight,
         closeFillWhite,
         infoLight,

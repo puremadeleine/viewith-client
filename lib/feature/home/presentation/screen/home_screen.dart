@@ -84,12 +84,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
             ),
             child: TabBar(
               controller: _tabController,
+              labelStyle: AppDesign.typo.title1(color: AppDesign.colors.gray900),
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.black,
               tabs: const [
-                Tab(text: '공연장'),
-                Tab(text: '야구장'),
+                Tab(text: '🎙️'),
+                Tab(text: '⚾️'),
               ],
             ),
           ),
@@ -101,17 +102,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   padding: const EdgeInsets.all(16),
                   itemCount: venues.length,
                   itemBuilder: (context, index) {
-                    return VenueItem(venue: venues[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        context.pushNamed(
+                          AppRoute.seatmap.name,
+                          pathParameters: {'id': venues[index].id.toString()},
+                          extra: {'name': venues[index].name},
+                        );
+                      },
+                      child: VenueItem(venue: venues[index]),
+                    );
                   },
                 ),
-                const Center(
-                  child: Text('준비 중인 기능입니다.'),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildProfileAvatar(),
+                    const SizedBox(height: 16),
+                    Text('준비 중인 기능입니다.\n조금만 기다려주세요!', style: AppDesign.typo.title2semiBold(color: AppDesign.colors.gray900)),
+                  ],
                 ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildProfileAvatar() {
+    return Stack(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: const DecorationImage(
+              image: AssetImage('assets/images/rabbit_profile.png'),
+              fit: BoxFit.cover,
+            ),
+            border: Border.all(
+              color: Colors.white,
+              width: 2,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

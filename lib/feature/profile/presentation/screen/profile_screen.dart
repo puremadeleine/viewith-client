@@ -121,22 +121,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
         Container(
           width: 80,
           height: 80,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.purple, Colors.pink],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(
-              data.nickname.substring(data.nickname.length - 2),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+            image: const DecorationImage(
+              image: AssetImage('assets/images/rabbit_profile.png'),
+              fit: BoxFit.cover,
+            ),
+            border: Border.all(
+              color: Colors.white,
+              width: 2,
             ),
           ),
         ),

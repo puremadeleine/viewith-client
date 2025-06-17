@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/feature/seatmap/presentation/widget/seat_map.dart';
@@ -14,14 +15,78 @@ import '../../../../ui/widgets/button/vi_button_type.dart';
 class WritingSeatInfoScreen extends ConsumerWidget {
   const WritingSeatInfoScreen({super.key});
 
+  void _showPicker(BuildContext context, String label, List<String> items, String? currentValue, Function(String?) onChanged) {
+    String? tempValue = currentValue;
+    if (tempValue == null && items.isNotEmpty) {
+      tempValue = items[0];
+    }
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 300,
+          color: CupertinoColors.systemBackground.resolveFrom(context),
+          child: Column(
+            children: [
+              Container(
+                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.systemBackground.resolveFrom(context),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: CupertinoColors.systemGrey4.resolveFrom(context),
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      child: const Text('취소'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      child: const Text('확인'),
+                      onPressed: () {
+                        onChanged(tempValue);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: CupertinoPicker(
+                  scrollController: FixedExtentScrollController(
+                    initialItem: currentValue != null ? items.indexOf(currentValue) : 0,
+                  ),
+                  itemExtent: 32,
+                  onSelectedItemChanged: (int index) {
+                    tempValue = items[index];
+                  },
+                  children: items.map((String item) {
+                    return Center(child: Text(item));
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final venue = ref.watch(selectedVenueProvider);
-    print("Watched venue in WritingSeatInfoScreen: $venue");
-    print("Venue ID: ${venue?.id}, Name: ${venue?.name}");
     final venueId = venue?.id;
     if (venueId == null) {
-      print("Venue ID is null, returning empty widget");
       return const SizedBox.shrink();
     }
     final provider = ref.watch(seatDetailControllerProvider(venueId.toString()));
@@ -76,91 +141,147 @@ class WritingSeatInfoScreen extends ConsumerWidget {
     final selectedSection = ref.watch(writingSeatInfosControllerProvider)['section'];
     final hasError = ref.watch(writingSeatInfosControllerProvider)['error'] == 'true';
 
-    // 선택된 섹션에 해당하는 열 목록 가져오기
     final selectedSectionInfo = selectedSection != null ? seatDetail.firstWhere((section) => section.section == selectedSection, orElse: () => seatDetail.first) : null;
     final rows = selectedSectionInfo?.rows.map((row) => row.row.toString()).toList() ?? [];
 
-    // 선택된 열에 해당하는 좌석 번호와 블록 정보 가져오기
     final selectedRow = ref.watch(writingSeatInfosControllerProvider)['row'];
     final selectedRowInfo =
         selectedRow != null && selectedSectionInfo != null ? selectedSectionInfo.rows.firstWhere((row) => row.row.toString() == selectedRow, orElse: () => selectedSectionInfo.rows.first) : null;
     final numbers = selectedRowInfo?.columns.map((col) => col.column.toString()).toList() ?? [];
-    final blocks = selectedRowInfo?.columns.map((col) => col.block).where((block) => block != null).map((block) => block!).toSet().toList() ?? [];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return Builder(
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _buildPickerButton(
+                  context,
+                  '구역',
+                  sections,
+                  selectedSection,
+                  (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(section: value),
+                  hasError: hasError && selectedSection == null,
+                ),
+              ),
+              AppDesign.spacing.w8,
+              Expanded(
+                child: _buildPickerButton(
+                  context,
+                  '열',
+                  rows,
+                  selectedRow,
+                  (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(row: value),
+                  hasError: hasError && selectedRow == null,
+                ),
+              ),
+              AppDesign.spacing.w8,
+              Expanded(
+                child: _buildPickerButton(
+                  context,
+                  '번호',
+                  numbers,
+                  ref.watch(writingSeatInfosControllerProvider)['number'],
+                  (value) {
+                    if (value != null && selectedRowInfo != null) {
+                      final selectedColumn = selectedRowInfo.columns.firstWhere(
+                        (col) => col.column.toString() == value,
+                        orElse: () => selectedRowInfo.columns.first,
+                      );
+                      ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(
+                            number: value,
+                            block: selectedColumn.block,
+                          );
+                    } else {
+                      ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(number: value);
+                    }
+                  },
+                ),
+              ),
+              AppDesign.spacing.w8,
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '블록',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppDesign.colors.gray400,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        ref.watch(writingSeatInfosControllerProvider)['block'] ?? '선택',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ref.watch(writingSeatInfosControllerProvider)['block'] != null ? Colors.black : AppDesign.colors.gray400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (hasError && (selectedSection == null || selectedRow == null))
+            const Padding(
+              padding: EdgeInsets.only(top: 8, left: 4),
+              child: Text(
+                '구역 / 열은 필수로 선택해야 해요.',
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPickerButton(BuildContext context, String label, List<String> items, String? value, Function(String?) onChanged, {bool hasError = false}) {
+    return InkWell(
+      onTap: items.isEmpty ? null : () => _showPicker(context, label, items, value, onChanged),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: hasError ? Colors.red : Colors.grey,
+              width: 1,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: _buildDropdownButton(
-                '구역',
-                sections,
-                selectedSection,
-                (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(section: value),
-                hasError: hasError && selectedSection == null,
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                color: hasError ? Colors.red : AppDesign.colors.gray400,
               ),
             ),
-            AppDesign.spacing.w8,
-            Expanded(
-              child: _buildDropdownButton(
-                '열',
-                rows,
-                selectedRow,
-                (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(row: value),
-                hasError: hasError && selectedRow == null,
-              ),
-            ),
-            AppDesign.spacing.w8,
-            Expanded(
-              child: _buildDropdownButton(
-                '번호',
-                numbers,
-                ref.watch(writingSeatInfosControllerProvider)['number'],
-                (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(number: value),
-              ),
-            ),
-            AppDesign.spacing.w8,
-            Expanded(
-              child: _buildDropdownButton(
-                '블록',
-                blocks,
-                ref.watch(writingSeatInfosControllerProvider)['block'],
-                (value) => ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(block: value),
+            const SizedBox(height: 4),
+            Text(
+              value ?? '선택',
+              style: TextStyle(
+                fontSize: 16,
+                color: value != null ? Colors.black : AppDesign.colors.gray400,
               ),
             ),
           ],
         ),
-        if (hasError && (selectedSection == null || selectedRow == null))
-          const Padding(
-            padding: EdgeInsets.only(top: 8, left: 4),
-            child: Text(
-              '구역 / 열은 필수로 선택해야 해요.',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildDropdownButton(String label, List<String> items, String? value, Function(String?) onChanged, {bool hasError = false}) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        labelStyle: TextStyle(fontSize: 15, color: hasError ? Colors.red : AppDesign.colors.gray400),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: hasError ? Colors.red : Colors.grey),
-        ),
       ),
-      value: value,
-      onChanged: onChanged,
-      items: items.map<DropdownMenuItem<String>>((String item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(item),
-        );
-      }).toList(),
     );
   }
 
