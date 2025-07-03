@@ -40,7 +40,35 @@ class SignInScreen extends ConsumerWidget {
             _buildTitle(),
             const Spacer(),
             apple.SignInWithAppleButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final credential = await apple.SignInWithApple.getAppleIDCredential(
+                    scopes: [
+                      apple.AppleIDAuthorizationScopes.email,
+                      apple.AppleIDAuthorizationScopes.fullName,
+                    ],
+                  );
+                  print(credential.authorizationCode);
+                  print(credential.identityToken);
+
+                  // TODO: Implement Apple sign in logic
+                } catch (e) {
+                  print(e);
+                  if (e.toString().contains('error 1000')) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Apple 로그인은 실제 기기에서만 사용할 수 있습니다.'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Apple 로그인 실패: $e'),
+                      ),
+                    );
+                  }
+                }
+              },
               borderRadius: BorderRadius.circular(30),
               height: 52,
               text: 'Apple로 시작하기',

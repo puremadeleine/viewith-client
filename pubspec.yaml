@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.20.2
   carousel_slider: ^5.0.0
   flutter_rating_bar: ^4.0.1
+  sign_in_with_apple: ^7.0.1
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,9 @@ flutter:
   assets:
     - assets/images/
     - assets/seatmap/
+    - assets/images/rabbit_profile.png
+    - assets/images/chick_profile.png
+    - assets/images/cat_profile.png
   fonts:
     - family: Pretendard
       fonts:
