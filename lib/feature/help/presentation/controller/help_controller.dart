@@ -7,8 +7,8 @@ part 'help_controller.g.dart';
 @riverpod
 class HelpController extends _$HelpController {
   @override
-  FutureOr<HelpListItem> build() async {
-    final result = await ref.read(helpRepositoryProvider).fetchHelp('1');
+  FutureOr<HelpListItem> build(int id) async {
+    final result = await ref.read(helpRepositoryProvider).fetchHelp(id.toString());
 
     return result.match(
       onSuccess: (data) => data,

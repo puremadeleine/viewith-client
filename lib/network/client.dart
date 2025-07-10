@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
-import 'package:viewith/app_environment.dart';
+import '../app_environment.dart';
 import 'package:viewith/network/token_handler.dart';
 
 class Client {

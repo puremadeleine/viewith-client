@@ -20,6 +20,8 @@ HelpListItem _$HelpListItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$HelpListItem {
+  @JsonKey(name: 'help_id')
+  int? get helpId => throw _privateConstructorUsedError;
   @JsonKey(name: 'title')
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'content')
@@ -42,7 +44,8 @@ abstract class $HelpListItemCopyWith<$Res> {
       _$HelpListItemCopyWithImpl<$Res, HelpListItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'title') String title,
+      {@JsonKey(name: 'help_id') int? helpId,
+      @JsonKey(name: 'title') String title,
       @JsonKey(name: 'content') String content});
 }
 
@@ -61,10 +64,15 @@ class _$HelpListItemCopyWithImpl<$Res, $Val extends HelpListItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? helpId = freezed,
     Object? title = null,
     Object? content = null,
   }) {
     return _then(_value.copyWith(
+      helpId: freezed == helpId
+          ? _value.helpId
+          : helpId // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -86,7 +94,8 @@ abstract class _$$HelpListItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'title') String title,
+      {@JsonKey(name: 'help_id') int? helpId,
+      @JsonKey(name: 'title') String title,
       @JsonKey(name: 'content') String content});
 }
 
@@ -103,10 +112,15 @@ class __$$HelpListItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? helpId = freezed,
     Object? title = null,
     Object? content = null,
   }) {
     return _then(_$HelpListItemImpl(
+      helpId: freezed == helpId
+          ? _value.helpId
+          : helpId // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -123,12 +137,16 @@ class __$$HelpListItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HelpListItemImpl implements _HelpListItem {
   const _$HelpListItemImpl(
-      {@JsonKey(name: 'title') required this.title,
+      {@JsonKey(name: 'help_id') this.helpId,
+      @JsonKey(name: 'title') required this.title,
       @JsonKey(name: 'content') required this.content});
 
   factory _$HelpListItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$HelpListItemImplFromJson(json);
 
+  @override
+  @JsonKey(name: 'help_id')
+  final int? helpId;
   @override
   @JsonKey(name: 'title')
   final String title;
@@ -138,7 +156,7 @@ class _$HelpListItemImpl implements _HelpListItem {
 
   @override
   String toString() {
-    return 'HelpListItem(title: $title, content: $content)';
+    return 'HelpListItem(helpId: $helpId, title: $title, content: $content)';
   }
 
   @override
@@ -146,13 +164,14 @@ class _$HelpListItemImpl implements _HelpListItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HelpListItemImpl &&
+            (identical(other.helpId, helpId) || other.helpId == helpId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, content);
+  int get hashCode => Object.hash(runtimeType, helpId, title, content);
 
   /// Create a copy of HelpListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -172,13 +191,17 @@ class _$HelpListItemImpl implements _HelpListItem {
 
 abstract class _HelpListItem implements HelpListItem {
   const factory _HelpListItem(
-          {@JsonKey(name: 'title') required final String title,
+          {@JsonKey(name: 'help_id') final int? helpId,
+          @JsonKey(name: 'title') required final String title,
           @JsonKey(name: 'content') required final String content}) =
       _$HelpListItemImpl;
 
   factory _HelpListItem.fromJson(Map<String, dynamic> json) =
       _$HelpListItemImpl.fromJson;
 
+  @override
+  @JsonKey(name: 'help_id')
+  int? get helpId;
   @override
   @JsonKey(name: 'title')
   String get title;

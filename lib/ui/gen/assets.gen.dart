@@ -147,6 +147,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/candlestick_light.svg
   SvgGenImage get candlestickLight => const SvgGenImage('assets/images/candlestick_light.svg');
 
+  /// File path: assets/images/cat_profile.png
+  AssetGenImage get catProfile => const AssetGenImage('assets/images/cat_profile.png');
+
+  /// File path: assets/images/chick_profile.png
+  AssetGenImage get chickProfile => const AssetGenImage('assets/images/chick_profile.png');
+
   /// File path: assets/images/close_fill_white.svg
   SvgGenImage get closeFillWhite => const SvgGenImage('assets/images/close_fill_white.svg');
 
@@ -155,6 +161,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/kakao.svg
   SvgGenImage get kakao => const SvgGenImage('assets/images/kakao.svg');
+
+  /// File path: assets/images/rabbit_profile.png
+  AssetGenImage get rabbitProfile => const AssetGenImage('assets/images/rabbit_profile.png');
 
   /// File path: assets/images/thumb_down.svg
   SvgGenImage get thumbDown => const SvgGenImage('assets/images/thumb_down.svg');
@@ -208,29 +217,21 @@ class $AssetsImagesGen {
         appLogo,
         apple,
         candlestickLight,
+        catProfile,
+        chickProfile,
         closeFillWhite,
         infoLight,
         kakao,
+        rabbitProfile,
         thumbDown,
         thumbUp
       ];
-}
-
-class $AssetsSeatmapGen {
-  const $AssetsSeatmapGen();
-
-  /// File path: assets/seatmap/kspo.svg
-  SvgGenImage get kspo => const SvgGenImage('assets/seatmap/kspo.svg');
-
-  /// List of all assets
-  List<SvgGenImage> get values => [kspo];
 }
 
 class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsSeatmapGen seatmap = $AssetsSeatmapGen();
 }
 
 class AssetGenImage {

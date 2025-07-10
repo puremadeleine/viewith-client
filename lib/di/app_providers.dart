@@ -5,6 +5,8 @@ import 'package:viewith/network/token_handler.dart';
 
 part 'app_providers.g.dart';
 
+final isGuestModeProvider = StateProvider<bool>((ref) => false);
+
 @Riverpod(keepAlive: true)
 TokenHandler tokenHandler(Ref ref) {
   return TokenHandler();

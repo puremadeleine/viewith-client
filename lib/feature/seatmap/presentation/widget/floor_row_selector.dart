@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:viewith/ui/app_design.dart';
 
 class FloorRowSelector extends StatefulWidget {
-  final Map<String, List<int>> seats;
+  final Map<String, List<String>> seats;
 
   final Function(String floor) onFloorSelected;
 
@@ -69,7 +69,7 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
               : () => _showSelectionDialog(
                     context,
                     title: '열 선택',
-                    options: widget.seats[selectedFloor!]?.map((e) => '$e').toList() ?? [],
+                    options: widget.seats[selectedFloor!] ?? [],
                     onSelected: (value) {
                       setState(() {
                         selectedRow = value;

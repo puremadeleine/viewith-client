@@ -23,7 +23,7 @@ mixin _$SeatInfo {
   @JsonKey(name: 'floor')
   String get floor => throw _privateConstructorUsedError;
   @JsonKey(name: 'rows')
-  List<int> get rows => throw _privateConstructorUsedError;
+  List<String> get rows => throw _privateConstructorUsedError;
 
   /// Serializes this SeatInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $SeatInfoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'floor') String floor,
-      @JsonKey(name: 'rows') List<int> rows});
+      @JsonKey(name: 'rows') List<String> rows});
 }
 
 /// @nodoc
@@ -71,7 +71,7 @@ class _$SeatInfoCopyWithImpl<$Res, $Val extends SeatInfo>
       rows: null == rows
           ? _value.rows
           : rows // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -86,7 +86,7 @@ abstract class _$$SeatInfoImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'floor') String floor,
-      @JsonKey(name: 'rows') List<int> rows});
+      @JsonKey(name: 'rows') List<String> rows});
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class __$$SeatInfoImplCopyWithImpl<$Res>
       rows: null == rows
           ? _value._rows
           : rows // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+              as List<String>,
     ));
   }
 }
@@ -123,7 +123,7 @@ class __$$SeatInfoImplCopyWithImpl<$Res>
 class _$SeatInfoImpl implements _SeatInfo {
   const _$SeatInfoImpl(
       {@JsonKey(name: 'floor') required this.floor,
-      @JsonKey(name: 'rows') required final List<int> rows})
+      @JsonKey(name: 'rows') required final List<String> rows})
       : _rows = rows;
 
   factory _$SeatInfoImpl.fromJson(Map<String, dynamic> json) =>
@@ -132,10 +132,10 @@ class _$SeatInfoImpl implements _SeatInfo {
   @override
   @JsonKey(name: 'floor')
   final String floor;
-  final List<int> _rows;
+  final List<String> _rows;
   @override
   @JsonKey(name: 'rows')
-  List<int> get rows {
+  List<String> get rows {
     if (_rows is EqualUnmodifiableListView) return _rows;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_rows);
@@ -178,8 +178,9 @@ class _$SeatInfoImpl implements _SeatInfo {
 
 abstract class _SeatInfo implements SeatInfo {
   const factory _SeatInfo(
-      {@JsonKey(name: 'floor') required final String floor,
-      @JsonKey(name: 'rows') required final List<int> rows}) = _$SeatInfoImpl;
+          {@JsonKey(name: 'floor') required final String floor,
+          @JsonKey(name: 'rows') required final List<String> rows}) =
+      _$SeatInfoImpl;
 
   factory _SeatInfo.fromJson(Map<String, dynamic> json) =
       _$SeatInfoImpl.fromJson;
@@ -189,7 +190,7 @@ abstract class _SeatInfo implements SeatInfo {
   String get floor;
   @override
   @JsonKey(name: 'rows')
-  List<int> get rows;
+  List<String> get rows;
 
   /// Create a copy of SeatInfo
   /// with the given fields replaced by the non-null parameter values.

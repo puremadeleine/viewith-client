@@ -63,7 +63,7 @@ class RemoteAuthRepository extends AuthRepository {
       kakao.OAuthToken token = await kakao.UserApi.instance.loginWithKakaoAccount();
       return token;
     } catch (error) {
-      throw Exception('로그인에 실패하였습니다. 잠시 후 다시 시도해주세요.');
+      rethrow;
     }
   }
 

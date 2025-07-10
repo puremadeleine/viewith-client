@@ -6,6 +6,7 @@ import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/auth/presentation/controller/sign_in_controller.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/button/rounded_button.dart';
+import 'package:viewith/di/app_providers.dart';
 
 import '../../../../ui/gen/assets.gen.dart';
 
@@ -76,7 +77,7 @@ class SignInScreen extends ConsumerWidget {
             ),
             AppDesign.spacing.h16,
             _buildSignInWithKakaoButton(ref),
-            _buildStartWithUnauthorizedStatusButton(),
+            _buildStartWithUnauthorizedStatusButton(context, ref),
             AppDesign.spacing.h12
           ],
         ),
@@ -99,9 +100,12 @@ class SignInScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStartWithUnauthorizedStatusButton() {
+  Widget _buildStartWithUnauthorizedStatusButton(BuildContext context, WidgetRef ref) {
     return RoundedButton(
-      onTap: () {},
+      onTap: () {
+        ref.read(isGuestModeProvider.notifier).state = true;
+        context.go(AppRoute.home.path);
+      },
       text: '로그인 없이 시작하기',
     );
   }

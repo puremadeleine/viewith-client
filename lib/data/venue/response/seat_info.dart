@@ -7,7 +7,7 @@ part 'seat_info.g.dart';
 class SeatInfo with _$SeatInfo {
   const factory SeatInfo({
     @JsonKey(name: 'floor') required String floor,
-    @JsonKey(name: 'rows') required List<int> rows,
+    @JsonKey(name: 'rows') required List<String> rows,
   }) = _SeatInfo;
 
   factory SeatInfo.fromJson(Map<String, dynamic> json) => _$SeatInfoFromJson(json);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,12 +20,35 @@ import 'package:viewith/feature/writing/search/presentation/writing_review_scree
 import 'package:viewith/feature/writing/search/presentation/writing_venues_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_seat_info_screen.dart';
 
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+          (dynamic _) => notifyListeners(),
+        );
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final tokenHandler = ref.watch(tokenHandlerProvider);
 
   return GoRouter(
     initialLocation: AppRoute.signIn.path,
+    refreshListenable: GoRouterRefreshStream(ref.watch(isGuestModeProvider.notifier).stream),
     redirect: (context, state) async {
+      final isGuestMode = ref.read(isGuestModeProvider);
+      if (isGuestMode) {
+        return null;
+      }
+
       final hasTokens = await tokenHandler.hasTokens();
       final isSignInRoute = state.matchedLocation == AppRoute.signIn.path;
 
@@ -120,9 +145,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HelpListScreen(),
         routes: [
           GoRoute(
-            path: AppRoute.help.path,
+            path: '${AppRoute.help.path}/:id',
             name: AppRoute.help.name,
-            builder: (context, state) => const HelpDetailScreen(),
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return HelpDetailScreen(id: int.parse(id));
+            },
           ),
         ],
       ),

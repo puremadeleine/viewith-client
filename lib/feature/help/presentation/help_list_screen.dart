@@ -41,7 +41,10 @@ class HelpListScreen extends ConsumerWidget {
   Widget _buildItem(HelpListItem item, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref.context.pushNamed(AppRoute.help.name);
+        ref.context.pushNamed(
+          AppRoute.help.name,
+          pathParameters: {'id': item.helpId.toString()},
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(

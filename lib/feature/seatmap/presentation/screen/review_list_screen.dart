@@ -191,7 +191,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildFilterScreen(Map<String, List<int>> seats, String? initialFloor, String? initialRow) {
+  Widget _buildFilterScreen(Map<String, List<String>> seats, String? initialFloor, String? initialRow) {
     return Container(
       decoration: BoxDecoration(
         color: AppDesign.colors.white,
@@ -262,7 +262,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildSeatOptions(Map<String, List<int>> seats, String? initialFloor, String? initialRow) {
+  Widget _buildSeatOptions(Map<String, List<String>> seats, String? initialFloor, String? initialRow) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

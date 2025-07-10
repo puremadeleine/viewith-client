@@ -9,9 +9,7 @@ part of 'seat_info.dart';
 _$SeatInfoImpl _$$SeatInfoImplFromJson(Map<String, dynamic> json) =>
     _$SeatInfoImpl(
       floor: json['floor'] as String,
-      rows: (json['rows'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
-          .toList(),
+      rows: (json['rows'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$SeatInfoImplToJson(_$SeatInfoImpl instance) =>

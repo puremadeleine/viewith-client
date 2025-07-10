@@ -9,11 +9,13 @@ import 'package:viewith/ui/widgets/button/vi_button_type.dart';
 import '../../../ui/app_design.dart';
 
 class HelpDetailScreen extends ConsumerWidget {
-  const HelpDetailScreen({super.key});
+  const HelpDetailScreen({super.key, required this.id});
+
+  final int id;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(helpControllerProvider);
+    final state = ref.watch(helpControllerProvider(id));
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +26,10 @@ class HelpDetailScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: state.when(
-        data: (item) => _buildBody(item),
+        data: (item) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _buildBody(item),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
@@ -40,7 +45,15 @@ class HelpDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(item.title, style: AppDesign.typo.title1ExtraBold()),
           ),
-          Html(data: item.content),
+          Html(
+            data: item.content,
+            style: {
+              "body": Style(
+                fontSize: FontSize(16.0),
+                color: AppDesign.colors.gray900,
+              ),
+            },
+          ),
           AppDesign.spacing.h48,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

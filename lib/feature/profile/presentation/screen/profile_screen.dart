@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/data/member/response/profile_response.dart';
+import 'package:viewith/di/app_providers.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
 import 'package:viewith/feature/profile/presentation/model/profile_enum.dart';
 import 'package:viewith/ui/app_design.dart';
@@ -32,9 +35,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
+    final isGuestMode = ref.watch(isGuestModeProvider);
+
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _buildMainContent(),
+      body: isGuestMode ? _buildGuestModeBody() : _buildMainContent(),
     );
   }
 
@@ -45,6 +50,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
           '내 프로필',
           style: AppDesign.typo.title2bold(color: AppDesign.colors.gray900),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGuestModeBody() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '로그인이 필요한 서비스입니다.',
+            style: AppDesign.typo.title2semiBold(color: AppDesign.colors.gray900),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppDesign.colors.gray900,
+              foregroundColor: AppDesign.colors.white,
+            ),
+            onPressed: () {
+              ref.read(isGuestModeProvider.notifier).state = false;
+              context.go(AppRoute.signIn.path);
+            },
+            child: const Text('로그인 하러 가기'),
+          ),
+        ],
       ),
     );
   }

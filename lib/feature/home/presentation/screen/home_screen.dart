@@ -6,6 +6,7 @@ import 'package:viewith/feature/home/presentation/controller/home_controller.dar
 import 'package:viewith/feature/home/presentation/widget/venue_item.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/di/app_providers.dart';
 
 import '../../../../data/venue/response/venue.dart';
 
@@ -35,7 +36,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homeControllerProvider);
+    final isGuestMode = ref.watch(isGuestModeProvider);
     final member = ref.watch(fetchProfileProvider).asData?.value.successValue;
+
+    final nickname = isGuestMode ? '비회원' : member?.nickname ?? '';
 
     return Scaffold(
       backgroundColor: AppDesign.colors.white,
@@ -45,7 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
         elevation: 0,
       ),
       body: state.when(
-        data: (venues) => _buildBody(venues, member?.nickname ?? ''),
+        data: (venues) => _buildBody(venues, nickname),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(
           child: Text(

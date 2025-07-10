@@ -23,7 +23,7 @@ class ReviewListState with _$ReviewListState {
 }
 
 extension ReviewListStateX on ReviewListState {
-  Map<String, List<int>> get seats =>
+  Map<String, List<String>> get seats =>
       Map.fromIterables(
           seatInfo.value?.map((seat) => seat.floor) ?? [],
           seatInfo.value?.map((seat) => seat.rows) ?? []
