@@ -12,4 +12,10 @@ class Strings {
   static const x = 'x';
   static const y = 'y';
   static const roundedX = 'rx';
+  static const circle = 'circle';
+  static const cx = 'cx';
+  static const cy = 'cy';
+  static const r = 'r';
+  static const g = 'g';
+  static const transform = 'transform';
 }

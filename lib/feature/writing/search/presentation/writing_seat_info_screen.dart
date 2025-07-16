@@ -142,12 +142,12 @@ class WritingSeatInfoScreen extends ConsumerWidget {
     final hasError = ref.watch(writingSeatInfosControllerProvider)['error'] == 'true';
 
     final selectedSectionInfo = selectedSection != null ? seatDetail.firstWhere((section) => section.section == selectedSection, orElse: () => seatDetail.first) : null;
-    final rows = selectedSectionInfo?.rows.map((row) => row.row.toString()).toList() ?? [];
+    final rows = selectedSectionInfo?.rows.map((row) => row.row).toList() ?? [];
 
     final selectedRow = ref.watch(writingSeatInfosControllerProvider)['row'];
     final selectedRowInfo =
-        selectedRow != null && selectedSectionInfo != null ? selectedSectionInfo.rows.firstWhere((row) => row.row.toString() == selectedRow, orElse: () => selectedSectionInfo.rows.first) : null;
-    final numbers = selectedRowInfo?.columns.map((col) => col.column.toString()).toList() ?? [];
+        selectedRow != null && selectedSectionInfo != null ? selectedSectionInfo.rows.firstWhere((row) => row.row == selectedRow, orElse: () => selectedSectionInfo.rows.first) : null;
+    final numbers = selectedRowInfo?.columns.map((col) => col.column).toList() ?? [];
 
     return Builder(
       builder: (context) => Column(
@@ -186,7 +186,7 @@ class WritingSeatInfoScreen extends ConsumerWidget {
                   (value) {
                     if (value != null && selectedRowInfo != null) {
                       final selectedColumn = selectedRowInfo.columns.firstWhere(
-                        (col) => col.column.toString() == value,
+                        (col) => col.column == value,
                         orElse: () => selectedRowInfo.columns.first,
                       );
                       ref.read(writingSeatInfosControllerProvider.notifier).updateSeatInfo(

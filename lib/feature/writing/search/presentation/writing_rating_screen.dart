@@ -70,8 +70,8 @@ class WritingRatingScreen extends ConsumerWidget {
           await ref.read(writingReviewProvider.notifier).submitReview(
             venueId: venue.id,
             section: seatInfo['section']!,
-            seatRow: int.parse(seatInfo['row']!),
-            seatColumn: seatInfo['number'] != null ? int.parse(seatInfo['number']!) : null,
+            seatRow: seatInfo['row']!,
+            seatColumn: seatInfo['number'],
             content: 'test',
             rating: ref.read(writingRatingProvider),
             images: [], // TODO: Get images from review screen

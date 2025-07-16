@@ -26,8 +26,8 @@ abstract class VenueRepository {
   Future<Result<void, BaseError>> createReview({
     required int venueId,
     required String section,
-    required int seatRow,
-    int? seatColumn,
+    required String seatRow,
+    String? seatColumn,
     required String content,
     required double rating,
     List<String>? images,

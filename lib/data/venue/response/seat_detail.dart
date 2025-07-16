@@ -16,7 +16,7 @@ class SectionInfo with _$SectionInfo {
 @freezed
 class RowInfo with _$RowInfo {
   const factory RowInfo({
-    required int row,
+    required String row,
     required List<ColumnInfo> columns,
   }) = _RowInfo;
 
@@ -26,7 +26,7 @@ class RowInfo with _$RowInfo {
 @freezed
 class ColumnInfo with _$ColumnInfo {
   const factory ColumnInfo({
-    required int column,
+    required String column,
     String? block,
   }) = _ColumnInfo;
 

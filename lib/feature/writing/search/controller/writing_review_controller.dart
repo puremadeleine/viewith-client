@@ -11,8 +11,8 @@ class WritingReview extends _$WritingReview {
   Future<void> submitReview({
     required int venueId,
     required String section,
-    required int seatRow,
-    int? seatColumn,
+    required String seatRow,
+    String? seatColumn,
     required String content,
     required double rating,
     List<String>? images,

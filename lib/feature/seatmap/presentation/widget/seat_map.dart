@@ -146,20 +146,47 @@ class _SeatMapState extends State<SeatMap> {
   Future<void> _loadSeatMap() async {
     final document = await _loadSvg(widget.seatmapSource);
 
+    final newSections = <Section>[];
+
+    void processElement(XmlElement element, Matrix4 parentTransform) {
+      final transformStr = element.getAttribute(Strings.transform);
+      final currentTransform = transformStr != null ? SvgUtil.parseTransform(transformStr) : Matrix4.identity();
+      final totalTransform = parentTransform.multiplied(currentTransform);
+
+      if (element.name.local == Strings.g) {
+        for (var child in element.children.whereType<XmlElement>()) {
+          processElement(child, totalTransform);
+        }
+      } else {
+        Path? path;
+        final id = element.getAttribute(Strings.id) ?? '';
+        switch (element.name.local) {
+          case Strings.rect:
+            path = _getRectPath(element);
+            break;
+          case Strings.path:
+            final pathData = element.getAttribute(Strings.pathData) ?? '';
+            path = _getPath(pathData);
+            break;
+          case Strings.circle:
+            path = _getCirclePath(element);
+            break;
+        }
+
+        if (path != null) {
+          _setColor(id);
+          newSections.add(Section(id, path.transform(totalTransform.storage)));
+        }
+      }
+    }
+
+    final svgRoot = document.rootElement;
+    for (var element in svgRoot.children.whereType<XmlElement>()) {
+      processElement(element, Matrix4.identity());
+    }
+
     setState(() {
-      sections = [
-        ...document.findAllElements(Strings.rect).map((element) {
-          final id = element.getAttribute(Strings.id) ?? '';
-          _setColor(id);
-          return Section(id, _getRectPath(element));
-        }),
-        ...document.findAllElements(Strings.path).map((element) {
-          final path = element.getAttribute(Strings.pathData) ?? '';
-          final id = element.getAttribute(Strings.id) ?? '';
-          _setColor(id);
-          return Section(id, _getPath(path));
-        }),
-      ];
+      sections = newSections;
     });
   }
 
@@ -213,6 +240,16 @@ class _SeatMapState extends State<SeatMap> {
       path.addRect(Rect.fromLTWH(x, y, width, height));
     }
 
+    return path;
+  }
+
+  Path _getCirclePath(XmlElement element) {
+    final cx = double.tryParse(element.getAttribute(Strings.cx) ?? '') ?? 0.0;
+    final cy = double.tryParse(element.getAttribute(Strings.cy) ?? '') ?? 0.0;
+    final r = double.tryParse(element.getAttribute(Strings.r) ?? '') ?? 0.0;
+
+    final path = Path();
+    path.addOval(Rect.fromCircle(center: Offset(cx, cy), radius: r));
     return path;
   }
 
@@ -281,7 +318,7 @@ class _SeatMapState extends State<SeatMap> {
     final y = position.dy / scale;
     final offset = Offset(x, y);
 
-    for (var section in sections) {
+    for (var section in sections.reversed) {
       if (section.path.contains(offset)) {
         if (widget.mode == const SeatMapWritable()) _changeColor(section.id);
         widget.onSectionSelected(section.id);

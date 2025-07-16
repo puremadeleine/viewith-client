@@ -22,7 +22,7 @@ Map<String, dynamic> _$$SectionInfoImplToJson(_$SectionInfoImpl instance) =>
 
 _$RowInfoImpl _$$RowInfoImplFromJson(Map<String, dynamic> json) =>
     _$RowInfoImpl(
-      row: (json['row'] as num).toInt(),
+      row: json['row'] as String,
       columns: (json['columns'] as List<dynamic>)
           .map((e) => ColumnInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -36,7 +36,7 @@ Map<String, dynamic> _$$RowInfoImplToJson(_$RowInfoImpl instance) =>
 
 _$ColumnInfoImpl _$$ColumnInfoImplFromJson(Map<String, dynamic> json) =>
     _$ColumnInfoImpl(
-      column: (json['column'] as num).toInt(),
+      column: json['column'] as String,
       block: json['block'] as String?,
     );
 

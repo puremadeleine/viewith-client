@@ -195,7 +195,7 @@ RowInfo _$RowInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RowInfo {
-  int get row => throw _privateConstructorUsedError;
+  String get row => throw _privateConstructorUsedError;
   List<ColumnInfo> get columns => throw _privateConstructorUsedError;
 
   /// Serializes this RowInfo to a JSON map.
@@ -212,7 +212,7 @@ abstract class $RowInfoCopyWith<$Res> {
   factory $RowInfoCopyWith(RowInfo value, $Res Function(RowInfo) then) =
       _$RowInfoCopyWithImpl<$Res, RowInfo>;
   @useResult
-  $Res call({int row, List<ColumnInfo> columns});
+  $Res call({String row, List<ColumnInfo> columns});
 }
 
 /// @nodoc
@@ -237,7 +237,7 @@ class _$RowInfoCopyWithImpl<$Res, $Val extends RowInfo>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       columns: null == columns
           ? _value.columns
           : columns // ignore: cast_nullable_to_non_nullable
@@ -253,7 +253,7 @@ abstract class _$$RowInfoImplCopyWith<$Res> implements $RowInfoCopyWith<$Res> {
       __$$RowInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int row, List<ColumnInfo> columns});
+  $Res call({String row, List<ColumnInfo> columns});
 }
 
 /// @nodoc
@@ -276,7 +276,7 @@ class __$$RowInfoImplCopyWithImpl<$Res>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       columns: null == columns
           ? _value._columns
           : columns // ignore: cast_nullable_to_non_nullable
@@ -296,7 +296,7 @@ class _$RowInfoImpl implements _RowInfo {
       _$$RowInfoImplFromJson(json);
 
   @override
-  final int row;
+  final String row;
   final List<ColumnInfo> _columns;
   @override
   List<ColumnInfo> get columns {
@@ -342,13 +342,13 @@ class _$RowInfoImpl implements _RowInfo {
 
 abstract class _RowInfo implements RowInfo {
   const factory _RowInfo(
-      {required final int row,
+      {required final String row,
       required final List<ColumnInfo> columns}) = _$RowInfoImpl;
 
   factory _RowInfo.fromJson(Map<String, dynamic> json) = _$RowInfoImpl.fromJson;
 
   @override
-  int get row;
+  String get row;
   @override
   List<ColumnInfo> get columns;
 
@@ -366,7 +366,7 @@ ColumnInfo _$ColumnInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ColumnInfo {
-  int get column => throw _privateConstructorUsedError;
+  String get column => throw _privateConstructorUsedError;
   String? get block => throw _privateConstructorUsedError;
 
   /// Serializes this ColumnInfo to a JSON map.
@@ -385,7 +385,7 @@ abstract class $ColumnInfoCopyWith<$Res> {
           ColumnInfo value, $Res Function(ColumnInfo) then) =
       _$ColumnInfoCopyWithImpl<$Res, ColumnInfo>;
   @useResult
-  $Res call({int column, String? block});
+  $Res call({String column, String? block});
 }
 
 /// @nodoc
@@ -410,7 +410,7 @@ class _$ColumnInfoCopyWithImpl<$Res, $Val extends ColumnInfo>
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -427,7 +427,7 @@ abstract class _$$ColumnInfoImplCopyWith<$Res>
       __$$ColumnInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int column, String? block});
+  $Res call({String column, String? block});
 }
 
 /// @nodoc
@@ -450,7 +450,7 @@ class __$$ColumnInfoImplCopyWithImpl<$Res>
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -468,7 +468,7 @@ class _$ColumnInfoImpl implements _ColumnInfo {
       _$$ColumnInfoImplFromJson(json);
 
   @override
-  final int column;
+  final String column;
   @override
   final String? block;
 
@@ -507,14 +507,14 @@ class _$ColumnInfoImpl implements _ColumnInfo {
 }
 
 abstract class _ColumnInfo implements ColumnInfo {
-  const factory _ColumnInfo({required final int column, final String? block}) =
-      _$ColumnInfoImpl;
+  const factory _ColumnInfo(
+      {required final String column, final String? block}) = _$ColumnInfoImpl;
 
   factory _ColumnInfo.fromJson(Map<String, dynamic> json) =
       _$ColumnInfoImpl.fromJson;
 
   @override
-  int get column;
+  String get column;
   @override
   String? get block;
 
