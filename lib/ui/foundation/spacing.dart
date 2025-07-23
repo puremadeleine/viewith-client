@@ -9,6 +9,7 @@ class AppSpacing {
   double get sp8 => _baseUnit * 2;
   double get sp12 => _baseUnit * 3;
   double get sp16 => _baseUnit * 4;
+  double get sp20 => _baseUnit * 5;
   double get sp24 => _baseUnit * 6;
   double get sp32 => _baseUnit * 8;
   double get sp48 => _baseUnit * 12;
@@ -23,6 +24,7 @@ class AppSpacing {
   SizedBox get h8 => SizedBox(height: sp8);
   SizedBox get h12 => SizedBox(height: sp12);
   SizedBox get h16 => SizedBox(height: sp16);
+  SizedBox get h20 => SizedBox(height: sp20);
   SizedBox get h24 => SizedBox(height: sp24);
   SizedBox get h32 => SizedBox(height: sp32);
   SizedBox get h48 => SizedBox(height: sp48);
