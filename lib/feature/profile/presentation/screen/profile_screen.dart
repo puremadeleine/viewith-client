@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
+import 'package:viewith/data/auth/auth_repository_providers.dart';
 import 'package:viewith/data/member/response/profile_response.dart';
 import 'package:viewith/di/app_providers.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
@@ -213,17 +214,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
     return Row(
       children: [
         Expanded(
-          child: _buildStatCard('내가 작성한 리뷰', data.writtenReviewsCount.toString()),
+          child: _buildStatCard('내가 작성한 리뷰', data.writtenReviewsCount.toString(), () {}),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _buildStatCard('즐겨찾기한 리뷰', data.bookmarkCount.toString()),
+          child: _buildStatCard('즐겨찾기한 리뷰', data.bookmarkCount.toString(), () {
+            context.push(AppRoute.bookmarkedReviews.path);
+          }),
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(String title, String count) {
+  Widget _buildStatCard(String title, String count, VoidCallback onTap) {
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 1.0, end: 1.0),
       duration: const Duration(milliseconds: 200),
@@ -231,6 +234,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
         return Transform.scale(
           scale: value,
           child: GestureDetector(
+            onTap: onTap,
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -282,6 +286,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
 
   Widget _buildMenuItem(ProfileMenu menu, bool isLast) {
     return InkWell(
+      onTap: () async {
+        switch (menu) {
+          case ProfileMenu.logout:
+            await ref.read(authRepositoryProvider).signOut();
+            if (mounted) {
+              context.go(AppRoute.signIn.path);
+            }
+            break;
+          case ProfileMenu.contact:
+            // TODO: Handle contact tap
+            break;
+          case ProfileMenu.termsOfService:
+            // TODO: Handle terms tap
+            break;
+          case ProfileMenu.license:
+            // TODO: Handle privacy tap
+            break;
+          case ProfileMenu.version:
+            // TODO: Handle contact tap
+            break;
+          case ProfileMenu.withdraw:
+            // TODO: Handle withdraw tap
+            break;
+        }
+      },
       child: Column(
         children: [
           Padding(
