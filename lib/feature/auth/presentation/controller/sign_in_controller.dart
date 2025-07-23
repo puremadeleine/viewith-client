@@ -16,4 +16,19 @@ class SignInScreenController extends _$SignInScreenController {
       },
     );
   }
+
+  Future<void> signInWithApple({
+    required String idToken,
+    required String authorizationCode,
+  }) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    state = await AsyncValue.guard(
+      () {
+        return authRepository.signInWithApple(
+          idToken: idToken,
+          authorizationCode: authorizationCode,
+        );
+      },
+    );
+  }
 }

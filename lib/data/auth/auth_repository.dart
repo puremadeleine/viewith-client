@@ -8,7 +8,10 @@ abstract class AuthRepository {
 
   Future<Result<AuthResponse, BaseError>> signInWithKakao();
 
-  Future<AuthenticatedUser> signInWithApple();
+  Future<Result<AuthResponse, BaseError>> signInWithApple({
+    required String idToken,
+    required String authorizationCode,
+  });
 
   Future<User> signInAnonymously();
 

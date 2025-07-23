@@ -40,43 +40,10 @@ class SignInScreen extends ConsumerWidget {
             Center(child: Assets.images.appLogo.image(width: 120, height: 120)),
             _buildTitle(),
             const Spacer(),
-            apple.SignInWithAppleButton(
-              onPressed: () async {
-                try {
-                  final credential = await apple.SignInWithApple.getAppleIDCredential(
-                    scopes: [
-                      apple.AppleIDAuthorizationScopes.email,
-                      apple.AppleIDAuthorizationScopes.fullName,
-                    ],
-                  );
-                  print(credential.authorizationCode);
-                  print(credential.identityToken);
-
-                  // TODO: Implement Apple sign in logic
-                } catch (e) {
-                  print(e);
-                  if (e.toString().contains('error 1000')) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Apple 로그인은 실제 기기에서만 사용할 수 있습니다.'),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Apple 로그인 실패: $e'),
-                      ),
-                    );
-                  }
-                }
-              },
-              borderRadius: BorderRadius.circular(30),
-              height: 52,
-              text: 'Apple로 시작하기',
-              iconAlignment: apple.IconAlignment.left,
-            ),
-            AppDesign.spacing.h16,
+            _buildSignInWithAppleButton(ref),
+            AppDesign.spacing.h12,
             _buildSignInWithKakaoButton(ref),
+            AppDesign.spacing.h20,
             _buildStartWithUnauthorizedStatusButton(context, ref),
             AppDesign.spacing.h12
           ],
@@ -87,6 +54,31 @@ class SignInScreen extends ConsumerWidget {
 
   Widget _buildTitle() {
     return Text('viewith', style: AppDesign.typo.title1ExtraBold());
+  }
+
+  Widget _buildSignInWithAppleButton(WidgetRef ref) {
+    return apple.SignInWithAppleButton(
+      onPressed: () async {
+        try {
+          final credential = await apple.SignInWithApple.getAppleIDCredential(
+            scopes: [
+              apple.AppleIDAuthorizationScopes.email,
+              apple.AppleIDAuthorizationScopes.fullName,
+            ],
+          );
+          await ref.read(signInScreenControllerProvider.notifier).signInWithApple(
+                idToken: credential.identityToken!,
+                authorizationCode: credential.authorizationCode,
+              );
+        } catch (e) {
+          // TODO: Handle error
+          print('Apple sign in error: $e');
+        }
+      },
+      style: apple.SignInWithAppleButtonStyle.black,
+      height: 56,
+      borderRadius: BorderRadius.circular(100),
+    );
   }
 
   Widget _buildSignInWithKakaoButton(WidgetRef ref) {

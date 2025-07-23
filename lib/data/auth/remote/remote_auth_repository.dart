@@ -33,11 +33,11 @@ class RemoteAuthRepository extends AuthRepository {
   Future<Result<AuthResponse, BaseError>> signInWithKakao() async {
     try {
       kakao.OAuthToken token;
-      if (await kakao.isKakaoTalkInstalled()) {
-        token = await kakao.UserApi.instance.loginWithKakaoTalk();
-      } else {
+      // if (await kakao.isKakaoTalkInstalled()) {
+        // token = await kakao.UserApi.instance.loginWithKakaoTalk();
+      // } else {
         token = await _signInWithKakaoWeb();
-      }
+      // }
 
       final response = await _client.post(
         '/v1/members/login/KAKAO',
@@ -68,9 +68,29 @@ class RemoteAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<AuthenticatedUser> signInWithApple() {
-    // TODO: implement signInWithApple
-    throw UnimplementedError();
+  Future<Result<AuthResponse, BaseError>> signInWithApple({
+    required String idToken,
+    required String authorizationCode,
+  }) async {
+    try {
+      final response = await _client.post(
+        '/v1/members/login/APPLE',
+        queryParameters: {
+          'id_token': idToken,
+          'auth_code': authorizationCode,
+        },
+        requiresAuth: false,
+      );
+
+      final accessToken = response.data['access_token'];
+      final refreshToken = response.data['refresh_token'];
+      _tokenHandler.saveTokens(accessToken: accessToken, refreshToken: refreshToken);
+
+      return response.toResult(fromJson: AuthResponse.fromJson);
+    } catch (e, stackTrace) {
+      log('Apple sign-in failed: $e\n$stackTrace');
+      return Failure(UnknownError());
+    }
   }
 
   @override
