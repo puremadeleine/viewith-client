@@ -66,7 +66,7 @@ final seatBlockProvider =
 
 typedef _$SeatBlock = AutoDisposeNotifier<String?>;
 String _$seatDetailControllerHash() =>
-    r'57a95e998aa0445874e75ebe27f171acc1e1ca67';
+    r'b0a80fbd2f753e1fa020757f03ef3dbee80f714c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -90,10 +90,10 @@ class _SystemHash {
 }
 
 abstract class _$SeatDetailController
-    extends BuildlessAutoDisposeAsyncNotifier<List<SectionInfo>> {
+    extends BuildlessAutoDisposeAsyncNotifier<WritingSeatInfoScreenData> {
   late final String venueId;
 
-  FutureOr<List<SectionInfo>> build(
+  FutureOr<WritingSeatInfoScreenData> build(
     String venueId,
   );
 }
@@ -103,7 +103,8 @@ abstract class _$SeatDetailController
 const seatDetailControllerProvider = SeatDetailControllerFamily();
 
 /// See also [SeatDetailController].
-class SeatDetailControllerFamily extends Family<AsyncValue<List<SectionInfo>>> {
+class SeatDetailControllerFamily
+    extends Family<AsyncValue<WritingSeatInfoScreenData>> {
   /// See also [SeatDetailController].
   const SeatDetailControllerFamily();
 
@@ -142,7 +143,7 @@ class SeatDetailControllerFamily extends Family<AsyncValue<List<SectionInfo>>> {
 
 /// See also [SeatDetailController].
 class SeatDetailControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    SeatDetailController, List<SectionInfo>> {
+    SeatDetailController, WritingSeatInfoScreenData> {
   /// See also [SeatDetailController].
   SeatDetailControllerProvider(
     String venueId,
@@ -173,7 +174,7 @@ class SeatDetailControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String venueId;
 
   @override
-  FutureOr<List<SectionInfo>> runNotifierBuild(
+  FutureOr<WritingSeatInfoScreenData> runNotifierBuild(
     covariant SeatDetailController notifier,
   ) {
     return notifier.build(
@@ -199,7 +200,7 @@ class SeatDetailControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<SeatDetailController,
-      List<SectionInfo>> createElement() {
+      WritingSeatInfoScreenData> createElement() {
     return _SeatDetailControllerProviderElement(this);
   }
 
@@ -220,14 +221,14 @@ class SeatDetailControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin SeatDetailControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<List<SectionInfo>> {
+    on AutoDisposeAsyncNotifierProviderRef<WritingSeatInfoScreenData> {
   /// The parameter `venueId` of this provider.
   String get venueId;
 }
 
 class _SeatDetailControllerProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<SeatDetailController,
-        List<SectionInfo>> with SeatDetailControllerRef {
+        WritingSeatInfoScreenData> with SeatDetailControllerRef {
   _SeatDetailControllerProviderElement(super.provider);
 
   @override

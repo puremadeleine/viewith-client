@@ -1,6 +1,7 @@
 class Strings {
   static const seatPrefix = 'SEAT_';
   static const floorPrefix = 'Floor_';
+  static const disablePrefix = 'DISABLE_';
   static const textSuffix = '_TEXT';
   static const svg = 'svg';
   static const id = 'id';

@@ -6,7 +6,7 @@ part of 'writing_review_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$writingReviewHash() => r'23b1052d573267bffc01c7f29a4ca9e801cf8418';
+String _$writingReviewHash() => r'2299db82e124d598917e18c478f43eb018e43684';
 
 /// See also [WritingReview].
 @ProviderFor(WritingReview)

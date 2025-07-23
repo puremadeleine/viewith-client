@@ -109,7 +109,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       padding: const EdgeInsets.only(top: 10),
       child: SeatMap(
         seatmapSource: value.seatmapUrl,
-        stageSource: 'assets/seatmap/kspo-t.svg',
         sourceType: SvgSource.url,
         mode: SeatMapReadOnly(reviewCount: value.sectionReviewCountMap),
         onSectionSelected: (id) {

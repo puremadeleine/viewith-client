@@ -61,6 +61,7 @@ class _SeatMapState extends State<SeatMap> {
 
   final Color defaultColor = AppDesign.colors.gray100;
   final Color selectedColor = AppDesign.colors.gray900;
+  final Color disabledColor = AppDesign.colors.gray100;
   final Color defaultTextColor = AppDesign.colors.gray900;
   final Color selectedTextColor = AppDesign.colors.gray50;
 
@@ -160,6 +161,17 @@ class _SeatMapState extends State<SeatMap> {
       } else {
         Path? path;
         final id = element.getAttribute(Strings.id) ?? '';
+
+        bool isBackground = false;
+        XmlNode? parent = element.parent;
+        while (parent != null && parent is XmlElement) {
+          if (parent.getAttribute('id') == 'background') {
+            isBackground = true;
+            break;
+          }
+          parent = parent.parent;
+        }
+
         switch (element.name.local) {
           case Strings.rect:
             path = _getRectPath(element);
@@ -174,7 +186,7 @@ class _SeatMapState extends State<SeatMap> {
         }
 
         if (path != null) {
-          _setColor(id);
+          _setColor(id, isBackground: isBackground);
           newSections.add(Section(id, path.transform(totalTransform.storage)));
         }
       }
@@ -253,8 +265,20 @@ class _SeatMapState extends State<SeatMap> {
     return path;
   }
 
-  void _setColor(String id) {
-    colors[id] = id.contains(Strings.textSuffix) ? defaultTextColor : defaultColor;
+  void _setColor(String id, {bool isBackground = false}) {
+    if (isBackground) {
+      colors[id] = AppDesign.colors.gray50;
+      return;
+    }
+    if (id.startsWith(Strings.disablePrefix)) {
+      colors[id] = disabledColor;
+    } else if (id.contains(Strings.textSuffix)) {
+      colors[id] = defaultTextColor;
+    } else if (id.startsWith(Strings.seatPrefix)) {
+      colors[id] = defaultColor;
+    } else {
+      colors[id] = defaultColor;
+    }
   }
 
   @override
@@ -320,6 +344,7 @@ class _SeatMapState extends State<SeatMap> {
 
     for (var section in sections.reversed) {
       if (section.path.contains(offset)) {
+        if (section.id.startsWith(Strings.disablePrefix)) return;
         if (widget.mode == const SeatMapWritable()) _changeColor(section.id);
         widget.onSectionSelected(section.id);
         break;

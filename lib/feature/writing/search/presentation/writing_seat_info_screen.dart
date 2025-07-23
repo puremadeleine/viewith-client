@@ -49,7 +49,6 @@ class WritingSeatInfoScreen extends ConsumerWidget {
                       child: const Text('취소'),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     CupertinoButton(
                       padding: EdgeInsets.zero,
                       child: const Text('확인'),
@@ -94,7 +93,7 @@ class WritingSeatInfoScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(),
       body: provider.when(
-        data: (seatDetail) => Padding(
+        data: (data) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,8 +101,8 @@ class WritingSeatInfoScreen extends ConsumerWidget {
               _buildTitle('좌석 정보를 입력해주세요'),
               _buildSubTitle('어떤 자리에서 공연을 관람하셨나요?'),
               AppDesign.spacing.h12,
-              _buildSeatMap(context),
-              _buildOptions(ref, seatDetail),
+              _buildSeatMap(context, data.venueDetail.seatmapUrl),
+              _buildOptions(ref, data.seatDetail),
               const Spacer(),
               _buildNextButton(context, ref),
             ],
@@ -123,14 +122,15 @@ class WritingSeatInfoScreen extends ConsumerWidget {
     return Text(text, style: AppDesign.typo.body2(color: AppDesign.colors.gray600));
   }
 
-  Widget _buildSeatMap(BuildContext context) {
+  Widget _buildSeatMap(BuildContext context, String seatmapUrl) {
     final screenSize = MediaQuery.of(context).size;
     final height = screenSize.height * 0.43;
     return SizedBox(
       height: height,
       child: SeatMap(
-        seatmapSource: 'assets/seatmap/kspo.svg',
-        mode: const SeatMapWritable(),
+        seatmapSource: seatmapUrl,
+        sourceType: SvgSource.url,
+        mode: const SeatMapReadOnly(reviewCount: {}),
         onSectionSelected: (section) {},
       ),
     );

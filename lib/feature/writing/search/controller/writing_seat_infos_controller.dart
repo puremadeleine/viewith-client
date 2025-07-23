@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/venue/response/seat_detail.dart';
+import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 
 part 'writing_seat_infos_controller.g.dart';
@@ -44,17 +46,36 @@ class SeatBlock extends _$SeatBlock {
   }
 }
 
+class WritingSeatInfoScreenData {
+  final List<SectionInfo> seatDetail;
+  final VenueDetail venueDetail;
+
+  WritingSeatInfoScreenData({required this.seatDetail, required this.venueDetail});
+}
+
 @riverpod
 class SeatDetailController extends _$SeatDetailController {
   @override
-  Future<List<SectionInfo>> build(String venueId) async {
+  Future<WritingSeatInfoScreenData> build(String venueId) async {
     final repository = ref.read(venueRepositoryProvider);
-    final result = await repository.fetchSeatDetail(venueId);
 
-    return result.match(
+    final seatDetailFuture = repository.fetchSeatDetail(venueId);
+    final venueDetailFuture = repository.fetchVenue(venueId);
+
+    final results = await Future.wait([seatDetailFuture, venueDetailFuture]);
+
+    final seatDetailResult = results[0] as Result<List<SectionInfo>, dynamic>;
+    final venueDetailResult = results[1] as Result<VenueDetail, dynamic>;
+
+    final seatDetail = seatDetailResult.match(
       onSuccess: (data) => data,
       onFailure: (error) => throw error,
     );
+    final venueDetail = venueDetailResult.match(
+      onSuccess: (data) => data,
+      onFailure: (error) => throw error,
+    );
+    return WritingSeatInfoScreenData(seatDetail: seatDetail, venueDetail: venueDetail);
   }
 }
 
