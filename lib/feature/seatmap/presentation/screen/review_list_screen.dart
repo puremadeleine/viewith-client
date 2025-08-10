@@ -67,7 +67,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     final state = ref.watch(reviewListControllerProvider(widget.id));
     return Scaffold(
       appBar: _buildAppBar(),
-      backgroundColor: AppDesign.colors.white,
+      backgroundColor: AppDesign.colors.gray100,
       body: state.when(
         data: (data) => Stack(
           children: [_buildSeatMap(data.venueInfo), _buildBottomSheet(data)],
@@ -99,6 +99,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           ],
         ),
       ),
+      backgroundColor: AppDesign.colors.gray100,
       centerTitle: true,
     );
   }

@@ -4,13 +4,17 @@ import '../../model/seat_section.dart';
 class PathPainter extends CustomPainter {
   final List<Section> sections;
   final Map<String, Color> colors;
+  final Map<String, Color> borderColors;
   final Color defaultColor;
+  final Color defaultBorderColor;
   final double scale;
 
   PathPainter({
     required this.sections,
     required this.colors,
+    required this.borderColors,
     required this.defaultColor,
+    required this.defaultBorderColor,
     required this.scale,
   });
 
@@ -19,11 +23,20 @@ class PathPainter extends CustomPainter {
     canvas.scale(scale, scale);
 
     for (final section in sections) {
-      final paint = Paint()
+      final fillPaint = Paint()
         ..color = _getSectionColor(section)
         ..style = PaintingStyle.fill;
+      canvas.drawPath(section.path, fillPaint);
 
-      canvas.drawPath(section.path, paint);
+      final borderColor = borderColors[section.id];
+      if (borderColor != null) {
+        final borderPaint = Paint()
+          ..color = borderColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.0 / scale; // 스케일에 따라 두께 조절
+
+        canvas.drawPath(section.path, borderPaint);
+      }
     }
   }
 
@@ -33,6 +46,6 @@ class PathPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant PathPainter oldDelegate) {
-    return oldDelegate.colors != colors;
+    return oldDelegate.colors != colors || oldDelegate.borderColors != borderColors;
   }
 }

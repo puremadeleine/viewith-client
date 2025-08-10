@@ -54,6 +54,7 @@ class _SeatMapState extends State<SeatMap> {
   List<Section> stages = [];
 
   Map<String, Color> colors = {};
+  Map<String, Color> borderColors = {};
 
   double _svgWidth = 0;
   double _svgHeight = 0;
@@ -62,6 +63,8 @@ class _SeatMapState extends State<SeatMap> {
   final Color defaultColor = AppDesign.colors.gray100;
   final Color selectedColor = AppDesign.colors.gray900;
   final Color disabledColor = AppDesign.colors.gray100;
+  final Color defaultBorderColor = AppDesign.colors.gray300;
+  final Color selectedBorderColor = AppDesign.colors.gray50;
   final Color defaultTextColor = AppDesign.colors.gray900;
   final Color selectedTextColor = AppDesign.colors.gray50;
 
@@ -267,17 +270,20 @@ class _SeatMapState extends State<SeatMap> {
 
   void _setColor(String id, {bool isBackground = false}) {
     if (isBackground) {
-      colors[id] = AppDesign.colors.gray50;
+      colors[id] = AppDesign.colors.white;
       return;
     }
     if (id.startsWith(Strings.disablePrefix)) {
       colors[id] = disabledColor;
+      borderColors[id] = defaultBorderColor;
     } else if (id.contains(Strings.textSuffix)) {
       colors[id] = defaultTextColor;
     } else if (id.startsWith(Strings.seatPrefix)) {
       colors[id] = defaultColor;
+      borderColors[id] = defaultBorderColor;
     } else {
       colors[id] = defaultColor;
+      borderColors[id] = defaultBorderColor;
     }
   }
 
@@ -309,7 +315,9 @@ class _SeatMapState extends State<SeatMap> {
                     painter: PathPainter(
                       sections: sections,
                       colors: colors,
+                      borderColors: borderColors,
                       defaultColor: defaultColor,
+                      defaultBorderColor: defaultBorderColor,
                       scale: scale,
                     ),
                     size: Size(parentWidth, parentHeight),
@@ -355,6 +363,9 @@ class _SeatMapState extends State<SeatMap> {
   void _changeColor(String id) {
     setState(() {
       colors[id] = (colors[id] == selectedColor) ? defaultColor : selectedColor;
+      borderColors[id] = (borderColors[id] == selectedBorderColor)
+          ? defaultBorderColor
+          : selectedBorderColor;
       final textId = id + Strings.textSuffix;
       colors[textId] = (colors[textId] == selectedTextColor) ? defaultTextColor : selectedTextColor;
     });
