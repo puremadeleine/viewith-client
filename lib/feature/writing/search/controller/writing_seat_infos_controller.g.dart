@@ -236,7 +236,7 @@ class _SeatDetailControllerProviderElement
 }
 
 String _$writingSeatInfosControllerHash() =>
-    r'ed3cfb87924cfe5bc740975fb5d19514bc7bd773';
+    r'b0b2a232ea5f3a4fedff4f79138985ffc6ff79a1';
 
 /// See also [WritingSeatInfosController].
 @ProviderFor(WritingSeatInfosController)

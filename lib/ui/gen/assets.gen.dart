@@ -228,10 +228,24 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsSeatmapGen {
+  const $AssetsSeatmapGen();
+
+  /// File path: assets/seatmap/gocheok.svg
+  SvgGenImage get gocheok => const SvgGenImage('assets/seatmap/gocheok.svg');
+
+  /// File path: assets/seatmap/seat_map_test.svg
+  SvgGenImage get seatMapTest => const SvgGenImage('assets/seatmap/seat_map_test.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [gocheok, seatMapTest];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSeatmapGen seatmap = $AssetsSeatmapGen();
 }
 
 class AssetGenImage {

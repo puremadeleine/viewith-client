@@ -249,7 +249,7 @@ Performance _$PerformanceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Performance {
-  String get artist => throw _privateConstructorUsedError;
+  String? get artist => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url')
   String get imageUrl => throw _privateConstructorUsedError;
 
@@ -269,7 +269,7 @@ abstract class $PerformanceCopyWith<$Res> {
           Performance value, $Res Function(Performance) then) =
       _$PerformanceCopyWithImpl<$Res, Performance>;
   @useResult
-  $Res call({String artist, @JsonKey(name: 'image_url') String imageUrl});
+  $Res call({String? artist, @JsonKey(name: 'image_url') String imageUrl});
 }
 
 /// @nodoc
@@ -287,14 +287,14 @@ class _$PerformanceCopyWithImpl<$Res, $Val extends Performance>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? artist = null,
+    Object? artist = freezed,
     Object? imageUrl = null,
   }) {
     return _then(_value.copyWith(
-      artist: null == artist
+      artist: freezed == artist
           ? _value.artist
           : artist // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -311,7 +311,7 @@ abstract class _$$PerformanceImplCopyWith<$Res>
       __$$PerformanceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String artist, @JsonKey(name: 'image_url') String imageUrl});
+  $Res call({String? artist, @JsonKey(name: 'image_url') String imageUrl});
 }
 
 /// @nodoc
@@ -327,14 +327,14 @@ class __$$PerformanceImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? artist = null,
+    Object? artist = freezed,
     Object? imageUrl = null,
   }) {
     return _then(_$PerformanceImpl(
-      artist: null == artist
+      artist: freezed == artist
           ? _value.artist
           : artist // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -354,7 +354,7 @@ class _$PerformanceImpl implements _Performance {
       _$$PerformanceImplFromJson(json);
 
   @override
-  final String artist;
+  final String? artist;
   @override
   @JsonKey(name: 'image_url')
   final String imageUrl;
@@ -396,7 +396,7 @@ class _$PerformanceImpl implements _Performance {
 
 abstract class _Performance implements Performance {
   const factory _Performance(
-          {required final String artist,
+          {required final String? artist,
           @JsonKey(name: 'image_url') required final String imageUrl}) =
       _$PerformanceImpl;
 
@@ -404,7 +404,7 @@ abstract class _Performance implements Performance {
       _$PerformanceImpl.fromJson;
 
   @override
-  String get artist;
+  String? get artist;
   @override
   @JsonKey(name: 'image_url')
   String get imageUrl;

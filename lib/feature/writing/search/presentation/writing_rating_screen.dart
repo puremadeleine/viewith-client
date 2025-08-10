@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../app/route/app_route.dart';
-import '../../../../ui/app_design.dart';
-import '../../../../ui/widgets/button/vi_button.dart';
-import '../../../../ui/widgets/button/vi_button_type.dart';
-import '../../../../ui/widgets/vi_slider.dart';
-import '../controller/writing_rating_controller.dart';
-import '../controller/writing_review_controller.dart';
+import 'package:viewith/feature/writing/search/controller/writing_rating_controller.dart';
+import 'package:viewith/feature/writing/search/controller/writing_review_controller.dart';
+import 'package:viewith/feature/writing/search/controller/writing_seat_infos_controller.dart';
+import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/ui/widgets/button/vi_button.dart';
+import 'package:viewith/ui/widgets/button/vi_button_type.dart';
+import 'package:viewith/ui/widgets/vi_slider.dart';
 import '../controller/writing_venues_controller.dart';
-import '../controller/writing_seat_infos_controller.dart';
 
 class WritingRatingScreen extends ConsumerWidget {
   const WritingRatingScreen({super.key});
@@ -67,15 +65,17 @@ class WritingRatingScreen extends ConsumerWidget {
         }
 
         try {
-          await ref.read(writingReviewProvider.notifier).submitReview(
-            venueId: venue.id,
-            section: seatInfo['section']!,
-            seatRow: seatInfo['row']!,
-            seatColumn: seatInfo['number'],
-            content: 'test',
-            rating: ref.read(writingRatingProvider),
-            images: [], // TODO: Get images from review screen
-          );
+          if (seatInfo['section'] != null && seatInfo['row'] != null) {
+            await ref.read(writingReviewProvider.notifier).submitReview(
+                  venueId: venue.id,
+                  section: seatInfo['section']!,
+                  seatRow: seatInfo['row']!,
+                  seatColumn: seatInfo['number'],
+                  content: seatInfo['content'] ?? '',
+                  rating: ref.read(writingRatingProvider),
+                  images: [], // TODO: Get images from review screen
+                );
+          }
           if (context.mounted) {
             context.pop();
           }

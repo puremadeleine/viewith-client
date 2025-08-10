@@ -93,13 +93,26 @@ class VenueItem extends StatelessWidget {
   }
 
   Widget _buildArtistList() {
+    final colors = [
+      Colors.blue[800]!,
+      Colors.pink[800]!,
+      Colors.green[900]!,
+      Colors.purple[800]!,
+      Colors.orange[900]!,
+    ];
+    int colorIndex = 0;
+
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: venue.performances?.isEmpty ?? true
           ? [_buildNoPerformanceChip()]
           : [
-              ...venue.performances!.map((e) => _buildArtistChip(e.artist)),
+              ...venue.performances!.map((e) {
+                final color = colors[colorIndex % colors.length];
+                colorIndex++;
+                return _buildArtistChip(e.artist ?? '', color);
+              }),
               _buildEtcChip(),
             ],
     );
@@ -127,15 +140,15 @@ class VenueItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey[300]!),
       ),
       child: Text(
-        '외 다수',
+        '···',
         style: TextStyle(
           fontSize: 12,
-          color: Colors.grey[600],
+          color: Colors.grey[800],
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -168,48 +181,19 @@ class VenueItem extends StatelessWidget {
     );
   }
 
-  Widget _buildArtistChip(String artist) {
-    Color backgroundColor;
-    Color textColor;
-
-    final random = artist.hashCode % 5;
-    switch (random) {
-      case 0:
-        backgroundColor = Colors.blue[100]!;
-        textColor = Colors.blue[700]!;
-        break;
-      case 1:
-        backgroundColor = Colors.pink[100]!;
-        textColor = Colors.pink[700]!;
-        break;
-      case 2:
-        backgroundColor = Colors.green[100]!;
-        textColor = Colors.green[700]!;
-        break;
-      case 3:
-        backgroundColor = Colors.purple[100]!;
-        textColor = Colors.purple[700]!;
-        break;
-      case 4:
-        backgroundColor = Colors.orange[100]!;
-        textColor = Colors.orange[700]!;
-        break;
-      default:
-        backgroundColor = Colors.grey[100]!;
-        textColor = Colors.grey[700]!;
-    }
-
+  Widget _buildArtistChip(String artist, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color),
       ),
       child: Text(
         artist,
         style: TextStyle(
           fontSize: 12,
-          color: textColor,
+          color: color,
           fontWeight: FontWeight.w500,
         ),
       ),

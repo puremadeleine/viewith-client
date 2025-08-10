@@ -18,7 +18,7 @@ class Venue with _$Venue {
 @freezed
 class Performance with _$Performance {
   const factory Performance({
-    required String artist,
+    required String? artist,
     @JsonKey(name: 'image_url') required String imageUrl,
   }) = _Performance;
 

@@ -10,6 +10,7 @@ class VIButton extends StatelessWidget {
     required this.type,
     required this.text,
     this.padding,
+    this.isEnabled = true,
   });
 
   final Function() onTap;
@@ -18,7 +19,10 @@ class VIButton extends StatelessWidget {
 
   final EdgeInsets? padding;
 
+  final bool isEnabled;
+
   Color get _backgroundColor {
+    if (!isEnabled) return AppDesign.colors.gray100;
     return switch (type) {
       VIButtonType.primary => AppDesign.colors.gray900,
       VIButtonType.kakao => AppDesign.colors.kakao,
@@ -28,6 +32,7 @@ class VIButton extends StatelessWidget {
   }
 
   Color get _textColor {
+    if (!isEnabled) return AppDesign.colors.gray300;
     return switch (type) {
       VIButtonType.primary => AppDesign.colors.white,
       VIButtonType.kakao => AppDesign.colors.gray900,
@@ -41,7 +46,7 @@ class VIButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedButton(
-      onTap: () => onTap.call(),
+      onTap: isEnabled ? () => onTap.call() : null,
       text: text,
       backgroundColor: _backgroundColor,
       textColor: _textColor,

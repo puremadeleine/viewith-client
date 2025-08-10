@@ -88,6 +88,7 @@ class WritingSeatInfosController extends _$WritingSeatInfosController {
       'row': null,
       'number': null,
       'block': null,
+      'content': null,
     };
   }
 
@@ -96,12 +97,14 @@ class WritingSeatInfosController extends _$WritingSeatInfosController {
     String? row,
     String? number,
     String? block,
+    String? content,
   }) {
     state = {
       'section': section ?? state['section'],
       'row': row ?? state['row'],
       'number': number ?? state['number'],
       'block': block ?? state['block'],
+      'content': content ?? state['content'],
     };
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/writing/search/controller/writing_image_provider.dart';
+import 'package:viewith/feature/writing/search/controller/writing_seat_infos_controller.dart';
 import 'package:viewith/feature/writing/search/presentation/widget/upload_photo_button.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/button/vi_button.dart';
@@ -19,6 +20,23 @@ class WritingReviewScreen extends ConsumerStatefulWidget {
 
 class _WritingVenuesState extends ConsumerState<WritingReviewScreen> {
   final _textEditingController = TextEditingController();
+  bool _isNextButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.addListener(() {
+      setState(() {
+        _isNextButtonEnabled = _textEditingController.text.length >= 20;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +116,15 @@ class _WritingVenuesState extends ConsumerState<WritingReviewScreen> {
 
   Widget _buildNextButton() {
     return VIButton(
-      onTap: () => context.pushNamed(AppRoute.writingRating.name),
+      onTap: () {
+        ref
+            .read(writingSeatInfosControllerProvider.notifier)
+            .updateSeatInfo(content: _textEditingController.text);
+        context.pushNamed(AppRoute.writingRating.name);
+      },
       type: VIButtonType.primary,
       text: '다음',
+      isEnabled: _isNextButtonEnabled,
     );
   }
 

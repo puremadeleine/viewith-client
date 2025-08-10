@@ -13,7 +13,7 @@ class RoundedButton extends StatelessWidget {
     this.padding,
   });
 
-  final Function() onTap;
+  final Function()? onTap;
   final String text;
   final Color textColor;
   final Color backgroundColor;
@@ -23,9 +23,7 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onTap.call();
-      },
+      onTap: onTap,
       child: Container(
         padding: padding ?? AppDesign.spacing.all16,
         decoration: BoxDecoration(

@@ -25,7 +25,7 @@ Map<String, dynamic> _$$VenueImplToJson(_$VenueImpl instance) =>
 
 _$PerformanceImpl _$$PerformanceImplFromJson(Map<String, dynamic> json) =>
     _$PerformanceImpl(
-      artist: json['artist'] as String,
+      artist: json['artist'] as String?,
       imageUrl: json['image_url'] as String,
     );
 

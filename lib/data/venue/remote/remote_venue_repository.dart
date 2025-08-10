@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:viewith/core/result/api_response_parser.dart';
 import 'package:viewith/core/result/base_error.dart';
 import 'package:viewith/core/result/paginated_response.dart';
@@ -72,17 +76,33 @@ class RemoteVenueRepository extends VenueRepository {
     required double rating,
     List<String>? images,
   }) async {
+    final createReviewReqDto = {
+      'venue_id': venueId,
+      'section': section,
+      'seat_row': seatRow,
+      if (seatColumn != null) 'seat_column': seatColumn,
+      'content': content,
+      'rating': rating,
+    };
+
+    final List<MultipartFile> imageFiles = [];
+    if (images != null && images.isNotEmpty) {
+      for (final imagePath in images) {
+        imageFiles.add(await MultipartFile.fromFile(imagePath));
+      }
+    }
+
+    final formData = FormData.fromMap({
+      'CreateReviewReqDto': MultipartFile.fromString(
+        jsonEncode(createReviewReqDto),
+        contentType: MediaType('application', 'json'),
+      ),
+      if (imageFiles.isNotEmpty) 'image': imageFiles,
+    });
+
     final response = await _client.post(
       '/v1/reviews',
-      data: {
-        'venue_id': venueId,
-        'section': section,
-        'seat_row': seatRow,
-        if (seatColumn != null) 'seat_column': seatColumn,
-        'content': content,
-        'rating': rating,
-        if (images != null) 'image': images,
-      },
+      data: formData,
     );
     return response.toVoidResult();
   }
