@@ -32,10 +32,18 @@ class ReviewListScreen extends ConsumerStatefulWidget {
 class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
   double _minChildSize = 0.3;
   bool _isFilterMode = false;
+  final _draggableController = DraggableScrollableController();
+  double _availableHeight = 0;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _draggableController.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,8 +57,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     final Size svgSize = await SvgUtil.getSize(context, 'assets/seatmap/kspo.svg');
     double scaledHeight = screenSize.width * (svgSize.height / svgSize.width);
     scaledHeight += 30;
-    double availableHeight = screenSize.height - kToolbarHeight;
-    _minChildSize = 1 - (scaledHeight / availableHeight);
+    _availableHeight = screenSize.height - kToolbarHeight;
+    _minChildSize = 1 - (scaledHeight / _availableHeight);
     setState(() {});
   }
 
@@ -124,11 +132,14 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       curve: Curves.easeInOut,
       alignment: Alignment.bottomCenter,
       child: DraggableScrollableSheet(
+        controller: _draggableController,
         initialChildSize: _minChildSize,
         minChildSize: _minChildSize,
         maxChildSize: 1.0,
         builder: (BuildContext context, ScrollController scrollController) {
-          return _isFilterMode ? _buildFilterScreen(state.seats, state.selectedFloor, state.selectedRow) : _buildReviews(state.reviews.value ?? [], scrollController);
+          return _isFilterMode
+              ? _buildFilterScreen(state.seats, state.selectedFloor, state.selectedRow, scrollController)
+              : _buildReviews(state.reviews.value ?? [], scrollController);
         },
       ),
     );
@@ -190,7 +201,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     );
   }
 
-  Widget _buildFilterScreen(Map<String, List<String>> seats, String? initialFloor, String? initialRow) {
+  Widget _buildFilterScreen(Map<String, List<String>> seats, String? initialFloor, String? initialRow, ScrollController scrollController) {
     return Container(
       decoration: BoxDecoration(
         color: AppDesign.colors.white,
@@ -205,23 +216,38 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         ],
       ),
       padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          IconButton(icon: const Icon(Icons.arrow_back), onPressed: _closeFilterMode),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return SingleChildScrollView(
+          controller: scrollController,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSortOptions(),
-                AppDesign.spacing.h8,
-                _buildSeatOptions(seats, initialFloor, initialRow),
-                // _buildBottomButtons(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(icon: const Icon(Icons.arrow_back), onPressed: _closeFilterMode),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          _buildSortOptions(),
+                          AppDesign.spacing.h8,
+                          _buildSeatOptions(seats, initialFloor, initialRow),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
-          )
-        ],
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -328,12 +354,32 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
     setState(() {
       _isFilterMode = true;
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_availableHeight > 0) {
+        final targetSize = _draggableController.size + (40 / _availableHeight);
+        _draggableController.animateTo(
+          targetSize.clamp(_minChildSize, 1.0),
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   void _closeFilterMode() {
-    setState(() {
-      ref.read(reviewListControllerProvider(widget.id).notifier).fetchReviews();
-      _isFilterMode = false;
+    _draggableController
+        .animateTo(
+      _minChildSize,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    )
+        .whenComplete(() {
+      if (mounted) {
+        setState(() {
+          ref.read(reviewListControllerProvider(widget.id).notifier).fetchReviews();
+          _isFilterMode = false;
+        });
+      }
     });
   }
 }
