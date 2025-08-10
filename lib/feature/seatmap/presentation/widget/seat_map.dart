@@ -85,6 +85,17 @@ class _SeatMapState extends State<SeatMap> {
   }
 
   @override
+  void didUpdateWidget(covariant SeatMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.seatmapSource != oldWidget.seatmapSource) {
+      _loadSeatMap();
+    }
+    if (widget.stageSource != oldWidget.stageSource) {
+      _loadStages();
+    }
+  }
+
+  @override
   void dispose() {
     _transformationController.dispose();
     super.dispose();
@@ -207,15 +218,55 @@ class _SeatMapState extends State<SeatMap> {
 
   Future<void> _loadStages() async {
     final stageSource = widget.stageSource;
-    if (stageSource == null) return;
+    if (stageSource == null) {
+      setState(() {
+        stages = [];
+      });
+      return;
+    }
     final document = await _loadSvg(stageSource);
 
-    setState(() {
-      stages = document.findAllElements(Strings.path).map((element) {
-        final path = element.getAttribute(Strings.pathData) ?? '';
+    final newStages = <Section>[];
+
+    void processElement(XmlElement element, Matrix4 parentTransform) {
+      final transformStr = element.getAttribute(Strings.transform);
+      final currentTransform = transformStr != null ? SvgUtil.parseTransform(transformStr) : Matrix4.identity();
+      final totalTransform = parentTransform.multiplied(currentTransform);
+
+      if (element.name.local == Strings.g) {
+        for (var child in element.children.whereType<XmlElement>()) {
+          processElement(child, totalTransform);
+        }
+      } else {
+        Path? path;
         final id = element.getAttribute(Strings.id) ?? '';
-        return Section(id, _getPath(path));
-      }).toList();
+
+        switch (element.name.local) {
+          case Strings.rect:
+            path = _getRectPath(element);
+            break;
+          case Strings.path:
+            final pathData = element.getAttribute(Strings.pathData) ?? '';
+            path = _getPath(pathData);
+            break;
+          case Strings.circle:
+            path = _getCirclePath(element);
+            break;
+        }
+
+        if (path != null) {
+          newStages.add(Section(id, path.transform(totalTransform.storage)));
+        }
+      }
+    }
+
+    final svgRoot = document.rootElement;
+    for (var element in svgRoot.children.whereType<XmlElement>()) {
+      processElement(element, Matrix4.identity());
+    }
+
+    setState(() {
+      stages = newStages;
     });
   }
 

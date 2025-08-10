@@ -9,7 +9,7 @@ class VenueDetail with _$VenueDetail {
   factory VenueDetail({
     @JsonKey(name: 'sections') required List<String> sections,
     @Default("") @JsonKey(name: 'venue_url') String seatmapUrl,
-    @JsonKey(name: 'stages') required List<Stage> location,
+    @JsonKey(name: 'stages') required List<Stage> stages,
     @JsonKey(name: 'venue_review_infos') required List<SectionReviewCount> sectionReviewCount,
   }) = _VenueDetail;
 
@@ -22,7 +22,7 @@ class Stage with _$Stage {
     @JsonKey(name: 'stage_id') required int stageId,
     @JsonKey(name: 'type') required String type,
     @JsonKey(name: 'name') required String name,
-    @JsonKey(name: 'svg_url') required String url,
+    @JsonKey(name: 'svg_url') required String svgUrl,
   }) = _Stage;
 
   factory Stage.fromJson(Map<String, dynamic> json) => _$StageFromJson(json);

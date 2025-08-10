@@ -59,7 +59,6 @@ class RemoteAuthRepository extends AuthRepository {
 
   Future<kakao.OAuthToken> _signInWithKakaoWeb() async {
     try {
-      // TODO: Viewit API 호출, Interface 변경
       kakao.OAuthToken token = await kakao.UserApi.instance.loginWithKakaoAccount();
       return token;
     } catch (error) {

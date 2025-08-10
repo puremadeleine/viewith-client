@@ -25,7 +25,7 @@ mixin _$VenueDetail {
   @JsonKey(name: 'venue_url')
   String get seatmapUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'stages')
-  List<Stage> get location => throw _privateConstructorUsedError;
+  List<Stage> get stages => throw _privateConstructorUsedError;
   @JsonKey(name: 'venue_review_infos')
   List<SectionReviewCount> get sectionReviewCount =>
       throw _privateConstructorUsedError;
@@ -49,7 +49,7 @@ abstract class $VenueDetailCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'sections') List<String> sections,
       @JsonKey(name: 'venue_url') String seatmapUrl,
-      @JsonKey(name: 'stages') List<Stage> location,
+      @JsonKey(name: 'stages') List<Stage> stages,
       @JsonKey(name: 'venue_review_infos')
       List<SectionReviewCount> sectionReviewCount});
 }
@@ -71,7 +71,7 @@ class _$VenueDetailCopyWithImpl<$Res, $Val extends VenueDetail>
   $Res call({
     Object? sections = null,
     Object? seatmapUrl = null,
-    Object? location = null,
+    Object? stages = null,
     Object? sectionReviewCount = null,
   }) {
     return _then(_value.copyWith(
@@ -83,9 +83,9 @@ class _$VenueDetailCopyWithImpl<$Res, $Val extends VenueDetail>
           ? _value.seatmapUrl
           : seatmapUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
+      stages: null == stages
+          ? _value.stages
+          : stages // ignore: cast_nullable_to_non_nullable
               as List<Stage>,
       sectionReviewCount: null == sectionReviewCount
           ? _value.sectionReviewCount
@@ -106,7 +106,7 @@ abstract class _$$VenueDetailImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'sections') List<String> sections,
       @JsonKey(name: 'venue_url') String seatmapUrl,
-      @JsonKey(name: 'stages') List<Stage> location,
+      @JsonKey(name: 'stages') List<Stage> stages,
       @JsonKey(name: 'venue_review_infos')
       List<SectionReviewCount> sectionReviewCount});
 }
@@ -126,7 +126,7 @@ class __$$VenueDetailImplCopyWithImpl<$Res>
   $Res call({
     Object? sections = null,
     Object? seatmapUrl = null,
-    Object? location = null,
+    Object? stages = null,
     Object? sectionReviewCount = null,
   }) {
     return _then(_$VenueDetailImpl(
@@ -138,9 +138,9 @@ class __$$VenueDetailImplCopyWithImpl<$Res>
           ? _value.seatmapUrl
           : seatmapUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      location: null == location
-          ? _value._location
-          : location // ignore: cast_nullable_to_non_nullable
+      stages: null == stages
+          ? _value._stages
+          : stages // ignore: cast_nullable_to_non_nullable
               as List<Stage>,
       sectionReviewCount: null == sectionReviewCount
           ? _value._sectionReviewCount
@@ -156,11 +156,11 @@ class _$VenueDetailImpl implements _VenueDetail {
   _$VenueDetailImpl(
       {@JsonKey(name: 'sections') required final List<String> sections,
       @JsonKey(name: 'venue_url') this.seatmapUrl = "",
-      @JsonKey(name: 'stages') required final List<Stage> location,
+      @JsonKey(name: 'stages') required final List<Stage> stages,
       @JsonKey(name: 'venue_review_infos')
       required final List<SectionReviewCount> sectionReviewCount})
       : _sections = sections,
-        _location = location,
+        _stages = stages,
         _sectionReviewCount = sectionReviewCount;
 
   factory _$VenueDetailImpl.fromJson(Map<String, dynamic> json) =>
@@ -178,13 +178,13 @@ class _$VenueDetailImpl implements _VenueDetail {
   @override
   @JsonKey(name: 'venue_url')
   final String seatmapUrl;
-  final List<Stage> _location;
+  final List<Stage> _stages;
   @override
   @JsonKey(name: 'stages')
-  List<Stage> get location {
-    if (_location is EqualUnmodifiableListView) return _location;
+  List<Stage> get stages {
+    if (_stages is EqualUnmodifiableListView) return _stages;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_location);
+    return EqualUnmodifiableListView(_stages);
   }
 
   final List<SectionReviewCount> _sectionReviewCount;
@@ -199,7 +199,7 @@ class _$VenueDetailImpl implements _VenueDetail {
 
   @override
   String toString() {
-    return 'VenueDetail(sections: $sections, seatmapUrl: $seatmapUrl, location: $location, sectionReviewCount: $sectionReviewCount)';
+    return 'VenueDetail(sections: $sections, seatmapUrl: $seatmapUrl, stages: $stages, sectionReviewCount: $sectionReviewCount)';
   }
 
   @override
@@ -210,7 +210,7 @@ class _$VenueDetailImpl implements _VenueDetail {
             const DeepCollectionEquality().equals(other._sections, _sections) &&
             (identical(other.seatmapUrl, seatmapUrl) ||
                 other.seatmapUrl == seatmapUrl) &&
-            const DeepCollectionEquality().equals(other._location, _location) &&
+            const DeepCollectionEquality().equals(other._stages, _stages) &&
             const DeepCollectionEquality()
                 .equals(other._sectionReviewCount, _sectionReviewCount));
   }
@@ -221,7 +221,7 @@ class _$VenueDetailImpl implements _VenueDetail {
       runtimeType,
       const DeepCollectionEquality().hash(_sections),
       seatmapUrl,
-      const DeepCollectionEquality().hash(_location),
+      const DeepCollectionEquality().hash(_stages),
       const DeepCollectionEquality().hash(_sectionReviewCount));
 
   /// Create a copy of VenueDetail
@@ -244,7 +244,7 @@ abstract class _VenueDetail implements VenueDetail {
   factory _VenueDetail(
           {@JsonKey(name: 'sections') required final List<String> sections,
           @JsonKey(name: 'venue_url') final String seatmapUrl,
-          @JsonKey(name: 'stages') required final List<Stage> location,
+          @JsonKey(name: 'stages') required final List<Stage> stages,
           @JsonKey(name: 'venue_review_infos')
           required final List<SectionReviewCount> sectionReviewCount}) =
       _$VenueDetailImpl;
@@ -260,7 +260,7 @@ abstract class _VenueDetail implements VenueDetail {
   String get seatmapUrl;
   @override
   @JsonKey(name: 'stages')
-  List<Stage> get location;
+  List<Stage> get stages;
   @override
   @JsonKey(name: 'venue_review_infos')
   List<SectionReviewCount> get sectionReviewCount;
@@ -286,7 +286,7 @@ mixin _$Stage {
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'svg_url')
-  String get url => throw _privateConstructorUsedError;
+  String get svgUrl => throw _privateConstructorUsedError;
 
   /// Serializes this Stage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -306,7 +306,7 @@ abstract class $StageCopyWith<$Res> {
       {@JsonKey(name: 'stage_id') int stageId,
       @JsonKey(name: 'type') String type,
       @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'svg_url') String url});
+      @JsonKey(name: 'svg_url') String svgUrl});
 }
 
 /// @nodoc
@@ -327,7 +327,7 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
     Object? stageId = null,
     Object? type = null,
     Object? name = null,
-    Object? url = null,
+    Object? svgUrl = null,
   }) {
     return _then(_value.copyWith(
       stageId: null == stageId
@@ -342,9 +342,9 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      svgUrl: null == svgUrl
+          ? _value.svgUrl
+          : svgUrl // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -361,7 +361,7 @@ abstract class _$$StageImplCopyWith<$Res> implements $StageCopyWith<$Res> {
       {@JsonKey(name: 'stage_id') int stageId,
       @JsonKey(name: 'type') String type,
       @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'svg_url') String url});
+      @JsonKey(name: 'svg_url') String svgUrl});
 }
 
 /// @nodoc
@@ -380,7 +380,7 @@ class __$$StageImplCopyWithImpl<$Res>
     Object? stageId = null,
     Object? type = null,
     Object? name = null,
-    Object? url = null,
+    Object? svgUrl = null,
   }) {
     return _then(_$StageImpl(
       stageId: null == stageId
@@ -395,9 +395,9 @@ class __$$StageImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      svgUrl: null == svgUrl
+          ? _value.svgUrl
+          : svgUrl // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -410,7 +410,7 @@ class _$StageImpl implements _Stage {
       {@JsonKey(name: 'stage_id') required this.stageId,
       @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'name') required this.name,
-      @JsonKey(name: 'svg_url') required this.url});
+      @JsonKey(name: 'svg_url') required this.svgUrl});
 
   factory _$StageImpl.fromJson(Map<String, dynamic> json) =>
       _$$StageImplFromJson(json);
@@ -426,11 +426,11 @@ class _$StageImpl implements _Stage {
   final String name;
   @override
   @JsonKey(name: 'svg_url')
-  final String url;
+  final String svgUrl;
 
   @override
   String toString() {
-    return 'Stage(stageId: $stageId, type: $type, name: $name, url: $url)';
+    return 'Stage(stageId: $stageId, type: $type, name: $name, svgUrl: $svgUrl)';
   }
 
   @override
@@ -441,12 +441,12 @@ class _$StageImpl implements _Stage {
             (identical(other.stageId, stageId) || other.stageId == stageId) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.svgUrl, svgUrl) || other.svgUrl == svgUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, stageId, type, name, url);
+  int get hashCode => Object.hash(runtimeType, stageId, type, name, svgUrl);
 
   /// Create a copy of Stage
   /// with the given fields replaced by the non-null parameter values.
@@ -469,7 +469,7 @@ abstract class _Stage implements Stage {
       {@JsonKey(name: 'stage_id') required final int stageId,
       @JsonKey(name: 'type') required final String type,
       @JsonKey(name: 'name') required final String name,
-      @JsonKey(name: 'svg_url') required final String url}) = _$StageImpl;
+      @JsonKey(name: 'svg_url') required final String svgUrl}) = _$StageImpl;
 
   factory _Stage.fromJson(Map<String, dynamic> json) = _$StageImpl.fromJson;
 
@@ -484,7 +484,7 @@ abstract class _Stage implements Stage {
   String get name;
   @override
   @JsonKey(name: 'svg_url')
-  String get url;
+  String get svgUrl;
 
   /// Create a copy of Stage
   /// with the given fields replaced by the non-null parameter values.

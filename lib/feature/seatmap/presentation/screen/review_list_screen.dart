@@ -18,6 +18,9 @@ import '../../../../data/venue/response/review.dart';
 import '../../../../ui/gen/assets.gen.dart';
 import '../widget/review_item.dart';
 import '../widget/seat_map.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:viewith/ui/widgets/custom_toggle_switch.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
   final String id;
@@ -34,6 +37,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
   bool _isFilterMode = false;
   final _draggableController = DraggableScrollableController();
   double _availableHeight = 0;
+  bool _isStageToggleOn = false;
+  String? _selectedStageUrl;
+  String? _selectedStageName;
 
   @override
   void initState() {
@@ -70,7 +76,19 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       backgroundColor: AppDesign.colors.gray100,
       body: state.when(
         data: (data) => Stack(
-          children: [_buildSeatMap(data.venueInfo), _buildBottomSheet(data)],
+          children: [
+            _buildSeatMap(data.venueInfo),
+            _buildBottomSheet(data),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: CustomToggleSwitch(
+                text: '무대 오버레이',
+                value: _isStageToggleOn,
+                onChanged: _onStageToggleChanged,
+              ),
+            ),
+          ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
@@ -118,6 +136,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       padding: const EdgeInsets.only(top: 10),
       child: SeatMap(
         seatmapSource: value.seatmapUrl,
+        stageSource: _selectedStageUrl,
         sourceType: SvgSource.url,
         mode: SeatMapReadOnly(reviewCount: value.sectionReviewCountMap),
         onSectionSelected: (id) {
@@ -144,6 +163,95 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         },
       ),
     );
+  }
+
+  void _onStageToggleChanged(bool value) {
+    setState(() {
+      _isStageToggleOn = value;
+      if (_isStageToggleOn) {
+        final stages = ref.read(reviewListControllerProvider(widget.id)).value?.venueInfo.value?.stages;
+        if (stages != null && stages.isNotEmpty) {
+          _showStageSelectionBottomSheet(stages);
+        }
+      } else {
+        _selectedStageUrl = null;
+        _selectedStageName = null;
+      }
+    });
+  }
+
+  void _showStageSelectionBottomSheet(List<Stage> stages) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      backgroundColor: AppDesign.colors.white,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Wrap(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text('📌 무대 오버레이란?', style: AppDesign.typo.h2()),
+                    ],
+                  ),
+                  AppDesign.spacing.h8,
+                  Text(
+                    '플로어 구역의 경우 무대 연출에 따라 매번 달라지기 때문에\nviewith에서 임의로 플로어 구역을 나누었어요.\n배치도 위에 무대를 겹쳐보며 어떤 구역의 후기를 볼 지 결정해보세요.',
+                    style: AppDesign.typo.body2(),
+                  ),
+                  AppDesign.spacing.h20,
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: stages.length,
+                    itemBuilder: (context, index) {
+                      final stage = stages[index];
+                      return ListTile(
+                        leading: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: ClipRect(
+                            child: Transform.scale(
+                              scale: 2.0,
+                              child: SvgPicture.network(
+                                stage.svgUrl,
+                                placeholderBuilder: (BuildContext context) => const CircularProgressIndicator(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(stage.name, style: AppDesign.typo.body1()),
+                        onTap: () {
+                          setState(() {
+                            _selectedStageUrl = stage.svgUrl;
+                            _selectedStageName = stage.name;
+                            _isStageToggleOn = true;
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Divider(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    ).whenComplete(() {
+      if (_selectedStageUrl == null) {
+        setState(() {
+          _isStageToggleOn = false;
+        });
+      }
+    });
   }
 
   Widget _buildReviews(List<Review> reviews, ScrollController scrollController) {
