@@ -78,7 +78,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         data: (data) => Stack(
           children: [
             _buildSeatMap(data.venueInfo),
-            _buildBottomSheet(data),
             Positioned(
               top: 10,
               right: 10,
@@ -88,6 +87,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
                 onChanged: _onStageToggleChanged,
               ),
             ),
+             _buildBottomSheet(data),
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
