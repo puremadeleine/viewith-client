@@ -214,7 +214,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
     return Row(
       children: [
         Expanded(
-          child: _buildStatCard('내가 작성한 리뷰', data.writtenReviewsCount.toString(), () {}),
+          child: _buildStatCard('내가 작성한 리뷰', data.writtenReviewsCount.toString(), () {
+            context.pushNamed(AppRoute.writtenReviews.name);
+          }),
         ),
         const SizedBox(width: 16),
         Expanded(

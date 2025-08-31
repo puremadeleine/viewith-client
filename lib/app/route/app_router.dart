@@ -12,6 +12,7 @@ import 'package:viewith/feature/help/presentation/help_list_screen.dart';
 import 'package:viewith/feature/home/presentation/screen/home_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/profile_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/bookmark_screen.dart';
+import 'package:viewith/feature/profile/presentation/screen/written_reviews_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_detail_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_list_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_performance_screen.dart';
@@ -90,7 +91,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                   path: AppRoute.bookmarkedReviews.path,
                   name: AppRoute.bookmarkedReviews.name,
                   builder: (context, state) => const BookmarkScreen(),
-                )
+                ),
+                GoRoute(
+                  path: AppRoute.writtenReviews.path,
+                  name: AppRoute.writtenReviews.name,
+                  builder: (context, state) => const WrittenReviewsScreen(),
+                ),
               ],
             ),
           ]),

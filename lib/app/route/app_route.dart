@@ -11,6 +11,7 @@ enum AppRoute {
   writingReview,
   writingRating,
   reviewDetail,
+  writtenReviews,
   bookmarkedReviews;
 
   String get path => '/$name';
