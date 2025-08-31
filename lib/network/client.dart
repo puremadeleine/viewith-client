@@ -1,13 +1,26 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 import '../app_environment.dart';
 import 'package:viewith/network/token_handler.dart';
+
+// HttpOverrides must be set from within an executable context, not at top-level.
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 class Client {
   late Dio _dio;
   final TokenHandler _tokenHandler;
 
   Client(this._tokenHandler, {String baseUrl = baseURL}) {
+    // Allow self-signed certificates (development only)
+    HttpOverrides.global = MyHttpOverrides();
     _dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
@@ -148,7 +161,10 @@ class Client {
           path,
           data: data,
           queryParameters: queryParameters,
-          options: Options(extra: {'requiresAuth': requiresAuth}),
+          options: Options(
+            extra: {'requiresAuth': requiresAuth},
+            contentType: data is FormData ? 'multipart/form-data' : null,
+          ),
         ),
         retryIf: (error) => error is DioException && error.type != DioExceptionType.cancel && error.type != DioExceptionType.badResponse,
         maxAttempts: maxRetries,

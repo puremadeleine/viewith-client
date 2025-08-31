@@ -78,6 +78,7 @@ extension ApiResponseParser on Response {
     try {
       switch (statusCode) {
         case 200:
+        case 201:
           return const Success(null);
         default:
           _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');

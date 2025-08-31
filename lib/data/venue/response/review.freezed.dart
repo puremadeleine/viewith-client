@@ -25,7 +25,7 @@ mixin _$Review {
   String get content => throw _privateConstructorUsedError;
   double get rating =>
       throw _privateConstructorUsedError; // @JsonKey(name: 'create_time') required String createTime,
-  @JsonKey(name: 'image_list')
+  @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_info')
   UserInfo get userInfo => throw _privateConstructorUsedError;
@@ -52,7 +52,8 @@ abstract class $ReviewCopyWith<$Res> {
       {@JsonKey(name: 'review_id') int reviewId,
       String content,
       double rating,
-      @JsonKey(name: 'image_list') List<String> imageList,
+      @JsonKey(name: 'image_list', defaultValue: <String>[])
+      List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
       @JsonKey(name: 'seat_info') SeatRawData seatRawData,
       @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo});
@@ -163,7 +164,8 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       {@JsonKey(name: 'review_id') int reviewId,
       String content,
       double rating,
-      @JsonKey(name: 'image_list') List<String> imageList,
+      @JsonKey(name: 'image_list', defaultValue: <String>[])
+      List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
       @JsonKey(name: 'seat_info') SeatRawData seatRawData,
       @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo});
@@ -237,7 +239,8 @@ class _$ReviewImpl implements _Review {
       {@JsonKey(name: 'review_id') required this.reviewId,
       required this.content,
       required this.rating,
-      @JsonKey(name: 'image_list') required final List<String> imageList,
+      @JsonKey(name: 'image_list', defaultValue: <String>[])
+      required final List<String> imageList,
       @JsonKey(name: 'user_info') required this.userInfo,
       @JsonKey(name: 'seat_info') required this.seatRawData,
       @JsonKey(name: 'seat_bookmark_info') this.bookmarkInfo})
@@ -257,7 +260,7 @@ class _$ReviewImpl implements _Review {
   final List<String> _imageList;
 // @JsonKey(name: 'create_time') required String createTime,
   @override
-  @JsonKey(name: 'image_list')
+  @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList {
     if (_imageList is EqualUnmodifiableListView) return _imageList;
     // ignore: implicit_dynamic_type
@@ -331,7 +334,8 @@ abstract class _Review implements Review {
       {@JsonKey(name: 'review_id') required final int reviewId,
       required final String content,
       required final double rating,
-      @JsonKey(name: 'image_list') required final List<String> imageList,
+      @JsonKey(name: 'image_list', defaultValue: <String>[])
+      required final List<String> imageList,
       @JsonKey(name: 'user_info') required final UserInfo userInfo,
       @JsonKey(name: 'seat_info') required final SeatRawData seatRawData,
       @JsonKey(name: 'seat_bookmark_info')
@@ -348,7 +352,7 @@ abstract class _Review implements Review {
   double
       get rating; // @JsonKey(name: 'create_time') required String createTime,
   @override
-  @JsonKey(name: 'image_list')
+  @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList;
   @override
   @JsonKey(name: 'user_info')
@@ -559,9 +563,9 @@ mixin _$SeatRawData {
   @JsonKey(name: 'section')
   String get section => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_row')
-  int get row => throw _privateConstructorUsedError;
+  String get row => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_column')
-  int get column => throw _privateConstructorUsedError;
+  String get column => throw _privateConstructorUsedError;
   @JsonKey(name: 'block')
   String? get block => throw _privateConstructorUsedError;
 
@@ -584,8 +588,8 @@ abstract class $SeatRawDataCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
-      @JsonKey(name: 'seat_row') int row,
-      @JsonKey(name: 'seat_column') int column,
+      @JsonKey(name: 'seat_row') String row,
+      @JsonKey(name: 'seat_column') String column,
       @JsonKey(name: 'block') String? block});
 }
 
@@ -622,11 +626,11 @@ class _$SeatRawDataCopyWithImpl<$Res, $Val extends SeatRawData>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -646,8 +650,8 @@ abstract class _$$SeatRawDataImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
-      @JsonKey(name: 'seat_row') int row,
-      @JsonKey(name: 'seat_column') int column,
+      @JsonKey(name: 'seat_row') String row,
+      @JsonKey(name: 'seat_column') String column,
       @JsonKey(name: 'block') String? block});
 }
 
@@ -682,11 +686,11 @@ class __$$SeatRawDataImplCopyWithImpl<$Res>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -716,10 +720,10 @@ class _$SeatRawDataImpl implements _SeatRawData {
   final String section;
   @override
   @JsonKey(name: 'seat_row')
-  final int row;
+  final String row;
   @override
   @JsonKey(name: 'seat_column')
-  final int column;
+  final String column;
   @override
   @JsonKey(name: 'block')
   final String? block;
@@ -766,8 +770,8 @@ abstract class _SeatRawData implements SeatRawData {
   const factory _SeatRawData(
       {@JsonKey(name: 'floor') required final String floor,
       @JsonKey(name: 'section') required final String section,
-      @JsonKey(name: 'seat_row') required final int row,
-      @JsonKey(name: 'seat_column') required final int column,
+      @JsonKey(name: 'seat_row') required final String row,
+      @JsonKey(name: 'seat_column') required final String column,
       @JsonKey(name: 'block') final String? block}) = _$SeatRawDataImpl;
 
   factory _SeatRawData.fromJson(Map<String, dynamic> json) =
@@ -781,10 +785,10 @@ abstract class _SeatRawData implements SeatRawData {
   String get section;
   @override
   @JsonKey(name: 'seat_row')
-  int get row;
+  String get row;
   @override
   @JsonKey(name: 'seat_column')
-  int get column;
+  String get column;
   @override
   @JsonKey(name: 'block')
   String? get block;
@@ -808,9 +812,9 @@ mixin _$BookmarkData {
   @JsonKey(name: 'section')
   String get section => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_row')
-  int get row => throw _privateConstructorUsedError;
+  String get row => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_column')
-  int get column => throw _privateConstructorUsedError;
+  String get column => throw _privateConstructorUsedError;
   @JsonKey(name: 'block')
   String? get block => throw _privateConstructorUsedError;
   @JsonKey(name: 'bookmarked')
@@ -835,8 +839,8 @@ abstract class $BookmarkDataCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
-      @JsonKey(name: 'seat_row') int row,
-      @JsonKey(name: 'seat_column') int column,
+      @JsonKey(name: 'seat_row') String row,
+      @JsonKey(name: 'seat_column') String column,
       @JsonKey(name: 'block') String? block,
       @JsonKey(name: 'bookmarked') bool bookmarked});
 }
@@ -875,11 +879,11 @@ class _$BookmarkDataCopyWithImpl<$Res, $Val extends BookmarkData>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -903,8 +907,8 @@ abstract class _$$BookmarkDataImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
-      @JsonKey(name: 'seat_row') int row,
-      @JsonKey(name: 'seat_column') int column,
+      @JsonKey(name: 'seat_row') String row,
+      @JsonKey(name: 'seat_column') String column,
       @JsonKey(name: 'block') String? block,
       @JsonKey(name: 'bookmarked') bool bookmarked});
 }
@@ -941,11 +945,11 @@ class __$$BookmarkDataImplCopyWithImpl<$Res>
       row: null == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       column: null == column
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       block: freezed == block
           ? _value.block
           : block // ignore: cast_nullable_to_non_nullable
@@ -980,10 +984,10 @@ class _$BookmarkDataImpl implements _BookmarkData {
   final String section;
   @override
   @JsonKey(name: 'seat_row')
-  final int row;
+  final String row;
   @override
   @JsonKey(name: 'seat_column')
-  final int column;
+  final String column;
   @override
   @JsonKey(name: 'block')
   final String? block;
@@ -1035,8 +1039,8 @@ abstract class _BookmarkData implements BookmarkData {
   const factory _BookmarkData(
           {@JsonKey(name: 'floor') required final String floor,
           @JsonKey(name: 'section') required final String section,
-          @JsonKey(name: 'seat_row') required final int row,
-          @JsonKey(name: 'seat_column') required final int column,
+          @JsonKey(name: 'seat_row') required final String row,
+          @JsonKey(name: 'seat_column') required final String column,
           @JsonKey(name: 'block') final String? block,
           @JsonKey(name: 'bookmarked') required final bool bookmarked}) =
       _$BookmarkDataImpl;
@@ -1052,10 +1056,10 @@ abstract class _BookmarkData implements BookmarkData {
   String get section;
   @override
   @JsonKey(name: 'seat_row')
-  int get row;
+  String get row;
   @override
   @JsonKey(name: 'seat_column')
-  int get column;
+  String get column;
   @override
   @JsonKey(name: 'block')
   String? get block;

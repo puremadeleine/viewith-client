@@ -10,9 +10,10 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       reviewId: (json['review_id'] as num).toInt(),
       content: json['content'] as String,
       rating: (json['rating'] as num).toDouble(),
-      imageList: (json['image_list'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      imageList: (json['image_list'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
       userInfo: UserInfo.fromJson(json['user_info'] as Map<String, dynamic>),
       seatRawData:
           SeatRawData.fromJson(json['seat_info'] as Map<String, dynamic>),
@@ -49,8 +50,8 @@ _$SeatRawDataImpl _$$SeatRawDataImplFromJson(Map<String, dynamic> json) =>
     _$SeatRawDataImpl(
       floor: json['floor'] as String,
       section: json['section'] as String,
-      row: (json['seat_row'] as num).toInt(),
-      column: (json['seat_column'] as num).toInt(),
+      row: json['seat_row'] as String,
+      column: json['seat_column'] as String,
       block: json['block'] as String?,
     );
 
@@ -67,8 +68,8 @@ _$BookmarkDataImpl _$$BookmarkDataImplFromJson(Map<String, dynamic> json) =>
     _$BookmarkDataImpl(
       floor: json['floor'] as String,
       section: json['section'] as String,
-      row: (json['seat_row'] as num).toInt(),
-      column: (json['seat_column'] as num).toInt(),
+      row: json['seat_row'] as String,
+      column: json['seat_column'] as String,
       block: json['block'] as String?,
       bookmarked: json['bookmarked'] as bool,
     );

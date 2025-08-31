@@ -1,6 +1,5 @@
 // review_model.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl/intl.dart';
 
 part 'review.freezed.dart';
 
@@ -13,7 +12,7 @@ class Review with _$Review {
     required String content,
     required double rating,
     // @JsonKey(name: 'create_time') required String createTime,
-    @JsonKey(name: 'image_list') required List<String> imageList,
+    @JsonKey(name: 'image_list', defaultValue: <String>[]) required List<String> imageList,
     @JsonKey(name: 'user_info') required UserInfo userInfo,
     @JsonKey(name: 'seat_info') required SeatRawData seatRawData,
     @JsonKey(name: 'seat_bookmark_info') BookmarkData? bookmarkInfo,
@@ -37,8 +36,8 @@ class SeatRawData with _$SeatRawData {
   const factory SeatRawData({
     @JsonKey(name: 'floor') required String floor,
     @JsonKey(name: 'section') required String section,
-    @JsonKey(name: 'seat_row') required int row,
-    @JsonKey(name: 'seat_column') required int column,
+    @JsonKey(name: 'seat_row') required String row,
+    @JsonKey(name: 'seat_column') required String column,
     @JsonKey(name: 'block') String? block,
   }) = _SeatRawData;
 
@@ -50,8 +49,8 @@ class BookmarkData with _$BookmarkData {
   const factory BookmarkData({
     @JsonKey(name: 'floor') required String floor,
     @JsonKey(name: 'section') required String section,
-    @JsonKey(name: 'seat_row') required int row,
-    @JsonKey(name: 'seat_column') required int column,
+    @JsonKey(name: 'seat_row') required String row,
+    @JsonKey(name: 'seat_column') required String column,
     @JsonKey(name: 'block') String? block,
     @JsonKey(name: 'bookmarked') required bool bookmarked,
   }) = _BookmarkData;

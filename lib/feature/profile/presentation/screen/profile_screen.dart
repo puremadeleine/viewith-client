@@ -219,7 +219,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
         const SizedBox(width: 16),
         Expanded(
           child: _buildStatCard('즐겨찾기한 리뷰', data.bookmarkCount.toString(), () {
-            context.push(AppRoute.bookmarkedReviews.path);
+            context.pushNamed(AppRoute.bookmarkedReviews.name);
           }),
         ),
       ],

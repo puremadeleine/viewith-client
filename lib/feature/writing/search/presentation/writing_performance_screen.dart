@@ -7,6 +7,8 @@ import 'package:viewith/feature/writing/search/presentation/search_screen_templa
 import 'package:viewith/feature/writing/search/presentation/search_list_item.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/data/performance/response/performance.dart';
+import 'package:viewith/ui/widgets/button/vi_button.dart';
+import 'package:viewith/ui/widgets/button/vi_button_type.dart';
 
 class WritingPerformanceScreen extends ConsumerWidget {
   const WritingPerformanceScreen({super.key});
@@ -40,8 +42,16 @@ class WritingPerformanceScreen extends ConsumerWidget {
         },
         separatorBuilder: (context, index) => Divider(color: AppDesign.colors.gray200),
         onSearch: (text) {
+          print("Searching for performances: $text");
           controller.searchPerformances(text);
         },
+        bottomButton: VIButton(
+          type: VIButtonType.primary,
+          text: '건너뛰기',
+          onTap: () {
+            context.pushNamed(AppRoute.writingReview.name);
+          },
+        ),
       ),
     );
   }

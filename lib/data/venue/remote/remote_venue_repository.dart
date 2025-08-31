@@ -88,7 +88,8 @@ class RemoteVenueRepository extends VenueRepository {
     final List<MultipartFile> imageFiles = [];
     if (images != null && images.isNotEmpty) {
       for (final imagePath in images) {
-        imageFiles.add(await MultipartFile.fromFile(imagePath));
+        final fileName = imagePath.split('/').isNotEmpty ? imagePath.split('/').last : 'image';
+        imageFiles.add(await MultipartFile.fromFile(imagePath, filename: fileName));
       }
     }
 
@@ -97,7 +98,7 @@ class RemoteVenueRepository extends VenueRepository {
         jsonEncode(createReviewReqDto),
         contentType: MediaType('application', 'json'),
       ),
-      if (imageFiles.isNotEmpty) 'image': imageFiles,
+      if (imageFiles.isNotEmpty) 'images': imageFiles,
     });
 
     final response = await _client.post(

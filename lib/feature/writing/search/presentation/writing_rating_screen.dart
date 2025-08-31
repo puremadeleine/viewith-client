@@ -9,6 +9,7 @@ import 'package:viewith/ui/widgets/button/vi_button.dart';
 import 'package:viewith/ui/widgets/button/vi_button_type.dart';
 import 'package:viewith/ui/widgets/vi_slider.dart';
 import '../controller/writing_venues_controller.dart';
+import 'package:viewith/feature/writing/search/controller/writing_image_provider.dart';
 
 class WritingRatingScreen extends ConsumerWidget {
   const WritingRatingScreen({super.key});
@@ -57,6 +58,8 @@ class WritingRatingScreen extends ConsumerWidget {
   Widget _buildButton(BuildContext context, WidgetRef ref, venue, seatInfo) {
     return VIButton(
       onTap: () async {
+        final images = ref.read(writingImageProviderProvider);
+        final imagePaths = images.map((x) => x.path).toList();
         if (seatInfo['section'] == null || seatInfo['row'] == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('좌석 정보가 올바르지 않습니다.')),
@@ -73,7 +76,7 @@ class WritingRatingScreen extends ConsumerWidget {
                   seatColumn: seatInfo['number'],
                   content: seatInfo['content'] ?? '',
                   rating: ref.read(writingRatingProvider),
-                  images: [], // TODO: Get images from review screen
+                  images: imagePaths,
                 );
           }
           if (context.mounted) {
