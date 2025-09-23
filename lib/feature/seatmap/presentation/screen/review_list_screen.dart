@@ -280,10 +280,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         ],
       ),
       itemBuilder: (context, review) {
+        // 좌석 정보를 문자열로 조합
+        final seatInfo = '${review.seatRawData.floor}층 ${review.seatRawData.section}구역 ${review.seatRawData.row}열 ${review.seatRawData.column}번';
+        
         return ReviewItem(
-          imageUrl: 'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg',
-          concert: "공연명",
-          seat: review.seatName,
+          imageUrl: review.imageList.isNotEmpty ? review.imageList.first : '',
+          concert: "공연명", // TODO: 실제 공연명 데이터가 필요할 경우 추가
+          seat: seatInfo,
           rating: review.rating,
           review: review.content,
           date: review.createdAt,

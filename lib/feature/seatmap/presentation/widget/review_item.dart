@@ -19,6 +19,66 @@ class ReviewItem extends StatelessWidget {
     required this.date,
   });
 
+  Widget _buildImage() {
+    // 이미지 URL이 비어있거나 유효하지 않은 경우 기본 이미지 표시
+    if (imageUrl.isEmpty) {
+      return Container(
+        height: 120,
+        width: 120,
+        decoration: BoxDecoration(
+          color: AppDesign.colors.gray200,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Icon(
+          Icons.image_not_supported,
+          size: 40,
+          color: AppDesign.colors.gray400,
+        ),
+      );
+    }
+
+    return Image.network(
+      imageUrl,
+      fit: BoxFit.cover,
+      height: 120,
+      width: 120,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Container(
+          height: 120,
+          width: 120,
+          decoration: BoxDecoration(
+            color: AppDesign.colors.gray200,
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                  : null,
+              color: AppDesign.colors.gray400,
+            ),
+          ),
+        );
+      },
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          height: 120,
+          width: 120,
+          decoration: BoxDecoration(
+            color: AppDesign.colors.gray200,
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Icon(
+            Icons.broken_image,
+            size: 40,
+            color: AppDesign.colors.gray400,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,12 +89,7 @@ class ReviewItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                height: 120,
-                width: 120,
-              ),
+              child: _buildImage(),
             ),
             const SizedBox(width: 4),
             Expanded(
