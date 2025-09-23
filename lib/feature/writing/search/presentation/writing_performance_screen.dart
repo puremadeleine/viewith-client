@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/writing/search/controller/writing_performances_controller.dart';
+import 'package:viewith/feature/writing/search/controller/writing_venues_controller.dart';
 import 'package:viewith/feature/writing/search/presentation/search_screen_template.dart';
 import 'package:viewith/feature/writing/search/presentation/search_list_item.dart';
 import 'package:viewith/ui/app_design.dart';
@@ -17,6 +18,15 @@ class WritingPerformanceScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final performances = ref.watch(writingPerformancesControllerProvider);
     final controller = ref.read(writingPerformancesControllerProvider.notifier);
+    final selectedVenue = ref.watch(selectedVenueProvider);
+    
+    if (selectedVenue == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('공연장을 먼저 선택해주세요'),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -42,8 +52,8 @@ class WritingPerformanceScreen extends ConsumerWidget {
         },
         separatorBuilder: (context, index) => Divider(color: AppDesign.colors.gray200),
         onSearch: (text) {
-          print("Searching for performances: $text");
-          controller.searchPerformances(text);
+          print("Searching for performances: $text with venue_id: ${selectedVenue.id}");
+          controller.searchPerformances(text, selectedVenue.id.toString());
         },
         bottomButton: VIButton(
           type: VIButtonType.primary,

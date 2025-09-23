@@ -17,11 +17,11 @@ class WritingPerformancesController extends _$WritingPerformancesController {
     return [];
   }
 
-  Future<List<Performance>> searchPerformances(String keyword) async {
+  Future<List<Performance>> searchPerformances(String keyword, String venueId) async {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     return Future.delayed(const Duration(milliseconds: 300), () async {
-      final result = await ref.read(performanceRepositoryProvider).searchPerformances(keyword);
+      final result = await ref.read(performanceRepositoryProvider).searchPerformances(keyword, venueId);
       return result.match(
         onSuccess: (performances) {
           state = performances;

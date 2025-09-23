@@ -11,10 +11,13 @@ class RemotePerformanceRepository extends PerformanceRepository {
   RemotePerformanceRepository(this._client);
 
   @override
-  Future<Result<List<Performance>, BaseError>> searchPerformances(String keyword) async {
+  Future<Result<List<Performance>, BaseError>> searchPerformances(String keyword, String venueId) async {
     final response = await _client.get(
       '/v1/performances/search',
-      queryParameters: {'keyword': keyword},
+      queryParameters: {
+        'keyword': keyword,
+        'venue_id': venueId,
+      },
     );
 
     return response.toListResult(fromJson: Performance.fromJson, key: 'performances');

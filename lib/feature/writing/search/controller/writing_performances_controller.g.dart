@@ -7,7 +7,7 @@ part of 'writing_performances_controller.dart';
 // **************************************************************************
 
 String _$writingPerformancesControllerHash() =>
-    r'2f579d53f9c6acc26bbd4c299071f101921c1a9b';
+    r'2257245d8a8260c40c814b05b49163cb207a7c09';
 
 /// See also [WritingPerformancesController].
 @ProviderFor(WritingPerformancesController)
