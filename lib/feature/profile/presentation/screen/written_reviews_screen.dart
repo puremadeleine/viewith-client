@@ -59,9 +59,7 @@ class _ContentState extends State<_Content> {
         itemCount: widget.reviews.length,
         itemBuilder: (context, index) {
           final review = widget.reviews[index];
-          final imageUrl = (review.imageList.isNotEmpty)
-              ? review.imageList.first
-              : 'https://tkfile.yes24.com/upload2/PerfBlog/202409/20240927/20240927-51057.jpg';
+          final imageUrl = review.imageList.isNotEmpty ? review.imageList.first : '';
           return GestureDetector(
             onTap: () {
              context.push('${AppRoute.reviewDetail.path}/${review.reviewId}');
