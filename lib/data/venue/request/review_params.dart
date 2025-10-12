@@ -9,6 +9,9 @@ class ReviewParams with _$ReviewParams {
     @Default(1) int page,
     @Default(10) int size,
 
+    @JsonKey(name: 'venue_id', includeIfNull: false)
+    String? venueId,
+
     @JsonKey(name: 'sort_type')
     @Default(ReviewSortType.latest) ReviewSortType sortType,
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/data/auth/auth_repository_providers.dart';
 import 'package:viewith/data/member/response/profile_response.dart';
@@ -8,6 +9,7 @@ import 'package:viewith/di/app_providers.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
 import 'package:viewith/feature/profile/presentation/model/profile_enum.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/ui/widgets/dialog/withdraw_dialog.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -169,26 +171,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
     );
   }
 
-  Widget _buildVerificationBadge() {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 2),
-        ),
-        child: const Icon(
-          Icons.check_circle,
-          color: Colors.white,
-          size: 16,
-        ),
-      ),
-    );
-  }
-
   Widget _buildProfileName(ProfileResponse data) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -297,7 +279,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
             }
             break;
           case ProfileMenu.contact:
-            // TODO: Handle contact tap
+            _launchEmail();
             break;
           case ProfileMenu.termsOfService:
             // TODO: Handle terms tap
@@ -305,11 +287,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
           case ProfileMenu.license:
             // TODO: Handle privacy tap
             break;
-          case ProfileMenu.version:
-            // TODO: Handle contact tap
-            break;
           case ProfileMenu.withdraw:
-            // TODO: Handle withdraw tap
+            showWithdrawDialog(context, () async {
+              final withdrawController = ref.read(withdrawControllerProvider.notifier);
+              final result = await withdrawController.withdrawMember();
+              
+              if (mounted) {
+                result.match(
+                  onSuccess: (_) {
+                    // 회원 탈퇴 성공 시 토큰 삭제 및 로그인 화면으로 이동
+                    ref.read(authRepositoryProvider).signOut();
+                    context.go(AppRoute.signIn.path);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('회원 탈퇴가 완료되었습니다.')),
+                    );
+                  },
+                  onFailure: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('회원 탈퇴에 실패했습니다: ${error.message}')),
+                    );
+                  },
+                );
+              }
+            });
             break;
         }
       },
@@ -344,5 +344,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
         ],
       ),
     );
+  }
+
+  Future<void> _launchEmail() async {
+    const String email = 'puremadeleine@gmail.com';
+    
+    try {
+      final Uri emailUri = Uri.parse('mailto:$email');
+      await launchUrl(emailUri);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('메일 앱을 실행할 수 없습니다. puremadeleine@gmail.com으로 직접 문의해주세요.'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    }
   }
 }

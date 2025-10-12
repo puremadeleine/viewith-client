@@ -289,7 +289,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           seat: seatInfo,
           rating: review.rating,
           review: review.content,
-          date: review.createdAt,
+          date: "날짜", // TODO: Review 모델에 createdAt 필드가 주석 처리되어 있음
         );
       },
     );

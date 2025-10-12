@@ -37,13 +37,16 @@ class ReviewItem extends StatelessWidget {
       );
     }
 
+    // 리뷰 상세 화면과 동일한 방식으로 단순하게 처리
     return Image.network(
       imageUrl,
       fit: BoxFit.cover,
       height: 120,
       width: 120,
       loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
+        if (loadingProgress == null) {
+          return child;
+        }
         return Container(
           height: 120,
           width: 120,

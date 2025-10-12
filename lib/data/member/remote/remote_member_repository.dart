@@ -34,4 +34,10 @@ class RemoteMemberRepository extends MemberRepository {
     );
     return response.toPaginatedResult((json) => (json as List).map((e) => Review.fromJson(e as Map<String, dynamic>)).toList());
   }
+
+  @override
+  Future<Result<void, BaseError>> deleteMember() async {
+    final response = await _client.delete('/v1/members', requiresAuth: true);
+    return response.toVoidResult();
+  }
 }

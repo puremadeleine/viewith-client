@@ -11,3 +11,22 @@ Future<Result<ProfileResponse, BaseError>> fetchProfile(Ref ref) async {
   final repository = ref.watch(memberRepositoryProvider);
   return repository.fetchProfile();
 }
+
+@riverpod
+class WithdrawController extends _$WithdrawController {
+  @override
+  FutureOr<void> build() {}
+
+  Future<Result<void, BaseError>> withdrawMember() async {
+    state = const AsyncLoading();
+    final repository = ref.watch(memberRepositoryProvider);
+    final result = await repository.deleteMember();
+    
+    state = result.match(
+      onSuccess: (_) => const AsyncData(null),
+      onFailure: (error) => AsyncError(error, StackTrace.current),
+    );
+    
+    return result;
+  }
+}

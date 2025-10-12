@@ -10,6 +10,7 @@ _$ReviewParamsImpl _$$ReviewParamsImplFromJson(Map<String, dynamic> json) =>
     _$ReviewParamsImpl(
       page: (json['page'] as num?)?.toInt() ?? 1,
       size: (json['size'] as num?)?.toInt() ?? 10,
+      venueId: json['venue_id'] as String?,
       sortType:
           $enumDecodeNullable(_$ReviewSortTypeEnumMap, json['sort_type']) ??
               ReviewSortType.latest,
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$ReviewParamsImplToJson(_$ReviewParamsImpl instance) =>
     <String, dynamic>{
       'page': instance.page,
       'size': instance.size,
+      if (instance.venueId case final value?) 'venue_id': value,
       'sort_type': _$ReviewSortTypeEnumMap[instance.sortType]!,
       if (instance.floor case final value?) 'floor': value,
       if (instance.section case final value?) 'section': value,

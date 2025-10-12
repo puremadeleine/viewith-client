@@ -7,7 +7,7 @@ part of 'review_list_controller.dart';
 // **************************************************************************
 
 String _$reviewListControllerHash() =>
-    r'61d4bc9d514abb33b093dd3e12b881b0354ab9d8';
+    r'39f7b0862279131925cd0fa44c990a9c478b82b6';
 
 /// Copied from Dart SDK
 class _SystemHash {

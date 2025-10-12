@@ -22,6 +22,8 @@ ReviewParams _$ReviewParamsFromJson(Map<String, dynamic> json) {
 mixin _$ReviewParams {
   int get page => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
+  @JsonKey(name: 'venue_id', includeIfNull: false)
+  String? get venueId => throw _privateConstructorUsedError;
   @JsonKey(name: 'sort_type')
   ReviewSortType get sortType => throw _privateConstructorUsedError;
   @JsonKey(name: 'floor', includeIfNull: false)
@@ -52,6 +54,7 @@ abstract class $ReviewParamsCopyWith<$Res> {
   $Res call(
       {int page,
       int size,
+      @JsonKey(name: 'venue_id', includeIfNull: false) String? venueId,
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) String? floor,
       @JsonKey(name: 'section', includeIfNull: false) String? section,
@@ -76,6 +79,7 @@ class _$ReviewParamsCopyWithImpl<$Res, $Val extends ReviewParams>
   $Res call({
     Object? page = null,
     Object? size = null,
+    Object? venueId = freezed,
     Object? sortType = null,
     Object? floor = freezed,
     Object? section = freezed,
@@ -91,6 +95,10 @@ class _$ReviewParamsCopyWithImpl<$Res, $Val extends ReviewParams>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
+      venueId: freezed == venueId
+          ? _value.venueId
+          : venueId // ignore: cast_nullable_to_non_nullable
+              as String?,
       sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
@@ -126,6 +134,7 @@ abstract class _$$ReviewParamsImplCopyWith<$Res>
   $Res call(
       {int page,
       int size,
+      @JsonKey(name: 'venue_id', includeIfNull: false) String? venueId,
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) String? floor,
       @JsonKey(name: 'section', includeIfNull: false) String? section,
@@ -148,6 +157,7 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
   $Res call({
     Object? page = null,
     Object? size = null,
+    Object? venueId = freezed,
     Object? sortType = null,
     Object? floor = freezed,
     Object? section = freezed,
@@ -163,6 +173,10 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
+      venueId: freezed == venueId
+          ? _value.venueId
+          : venueId // ignore: cast_nullable_to_non_nullable
+              as String?,
       sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
@@ -193,6 +207,7 @@ class _$ReviewParamsImpl implements _ReviewParams {
   const _$ReviewParamsImpl(
       {this.page = 1,
       this.size = 10,
+      @JsonKey(name: 'venue_id', includeIfNull: false) this.venueId,
       @JsonKey(name: 'sort_type') this.sortType = ReviewSortType.latest,
       @JsonKey(name: 'floor', includeIfNull: false) this.floor = "1",
       @JsonKey(name: 'section', includeIfNull: false) this.section,
@@ -208,6 +223,9 @@ class _$ReviewParamsImpl implements _ReviewParams {
   @override
   @JsonKey()
   final int size;
+  @override
+  @JsonKey(name: 'venue_id', includeIfNull: false)
+  final String? venueId;
   @override
   @JsonKey(name: 'sort_type')
   final ReviewSortType sortType;
@@ -226,7 +244,7 @@ class _$ReviewParamsImpl implements _ReviewParams {
 
   @override
   String toString() {
-    return 'ReviewParams(page: $page, size: $size, sortType: $sortType, floor: $floor, section: $section, row: $row, isSummary: $isSummary)';
+    return 'ReviewParams(page: $page, size: $size, venueId: $venueId, sortType: $sortType, floor: $floor, section: $section, row: $row, isSummary: $isSummary)';
   }
 
   @override
@@ -236,6 +254,7 @@ class _$ReviewParamsImpl implements _ReviewParams {
             other is _$ReviewParamsImpl &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.size, size) || other.size == size) &&
+            (identical(other.venueId, venueId) || other.venueId == venueId) &&
             (identical(other.sortType, sortType) ||
                 other.sortType == sortType) &&
             (identical(other.floor, floor) || other.floor == floor) &&
@@ -247,8 +266,8 @@ class _$ReviewParamsImpl implements _ReviewParams {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, page, size, sortType, floor, section, row, isSummary);
+  int get hashCode => Object.hash(runtimeType, page, size, venueId, sortType,
+      floor, section, row, isSummary);
 
   /// Create a copy of ReviewParams
   /// with the given fields replaced by the non-null parameter values.
@@ -270,6 +289,7 @@ abstract class _ReviewParams implements ReviewParams {
   const factory _ReviewParams(
       {final int page,
       final int size,
+      @JsonKey(name: 'venue_id', includeIfNull: false) final String? venueId,
       @JsonKey(name: 'sort_type') final ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) final String? floor,
       @JsonKey(name: 'section', includeIfNull: false) final String? section,
@@ -283,6 +303,9 @@ abstract class _ReviewParams implements ReviewParams {
   int get page;
   @override
   int get size;
+  @override
+  @JsonKey(name: 'venue_id', includeIfNull: false)
+  String? get venueId;
   @override
   @JsonKey(name: 'sort_type')
   ReviewSortType get sortType;

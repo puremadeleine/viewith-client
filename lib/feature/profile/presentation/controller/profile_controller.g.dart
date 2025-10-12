@@ -23,5 +23,22 @@ final fetchProfileProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FetchProfileRef = FutureProviderRef<Result<ProfileResponse, BaseError>>;
+String _$withdrawControllerHash() =>
+    r'd8d1e87e94b59343e6ca107b2f4c9b94642a350a';
+
+/// See also [WithdrawController].
+@ProviderFor(WithdrawController)
+final withdrawControllerProvider =
+    AutoDisposeAsyncNotifierProvider<WithdrawController, void>.internal(
+  WithdrawController.new,
+  name: r'withdrawControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$withdrawControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$WithdrawController = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

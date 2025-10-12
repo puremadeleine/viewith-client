@@ -24,7 +24,7 @@ class ReviewListController extends _$ReviewListController {
         onFailure: (error) => throw Exception('Venue API 호출 실패: $error'),
       );
 
-      final reviewsResult = await fetchReviews();
+      final reviewsResult = await fetchReviews(id);
       final PaginatedResponse<List<Review>> reviews = await reviewsResult.match(
         onSuccess: (data) => data,
         onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
@@ -52,23 +52,27 @@ class ReviewListController extends _$ReviewListController {
     }
   }
 
-  Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchReviews() async {
+  Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchReviews([String? venueId]) async {
     final currentState = state.value;
-    final ReviewParams params;
-    if (currentState == null) {
-      params = const ReviewParams();
-    } else {
-      int? parsedSeatRow;
-      if (currentState.selectedFloor != null && currentState.selectedRow != null) {
-        parsedSeatRow = int.parse(currentState.selectedRow!);
-      }
-
-      params = ReviewParams(
-        sortType: currentState.sortType,
-        floor: currentState.selectedFloor,
-        row: parsedSeatRow,
-      );
+    
+    // venueId가 제공되지 않으면 currentState에서 가져오기
+    final targetVenueId = venueId ?? currentState?.id;
+    if (targetVenueId == null) {
+      throw Exception('Venue ID is required');
     }
+    
+    int? parsedSeatRow;
+    if (currentState?.selectedFloor != null && currentState?.selectedRow != null) {
+      parsedSeatRow = int.parse(currentState!.selectedRow!);
+    }
+
+    final params = ReviewParams(
+      venueId: targetVenueId,
+      sortType: currentState?.sortType ?? ReviewSortType.latest,
+      floor: currentState?.selectedFloor,
+      row: parsedSeatRow,
+    );
+    
     final reviewsResult = await ref.read(venueRepositoryProvider).fetchReviews(params);
     return reviewsResult;
   }

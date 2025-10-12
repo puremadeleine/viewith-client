@@ -11,4 +11,6 @@ abstract class MemberRepository {
   Future<Result<ProfileResponse, BaseError>> fetchProfile();
 
   Future<Result<PaginatedResponse<List<Review>>, BaseError>> fetchWrittenReviews({int page = 1, int size = 10});
+
+  Future<Result<void, BaseError>> deleteMember();
 }
