@@ -73,7 +73,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: [
-          if (!isMyReview) // 내 리뷰인 경우 삭제 버튼
+          if (isMyReview) // 내 리뷰인 경우 삭제 버튼
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -266,19 +266,19 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
         ),
         actions: [
           // 로그인한 사용자만 햄버거 메뉴 표시
-          // if (currentUserId.value != null)
+          if (currentUserId.value != null)
             response.when(
               data: (result) => result.match(
                 onSuccess: (review) {
                   final isMyReview = currentUserId.value == review.userInfo.userId;
                   // 메뉴 아이템이 있는 경우에만 버튼 표시
-                  // if (isMyReview || currentUserId.value != null) {
+                  if (isMyReview || currentUserId.value != null) {
                     return IconButton(
                       icon: const Icon(Icons.more_vert),
                       onPressed: () => _showActionSheet(context, currentUserId.value, review),
                     );
-                  // }
-                  // return const SizedBox.shrink();
+                  }
+                  return const SizedBox.shrink();
                 },
                 onFailure: (_) => const SizedBox.shrink(),
               ),
