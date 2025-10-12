@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
 import 'package:viewith/core/utils/text_span.dart';
 import 'package:viewith/ui/app_design.dart';
 
@@ -39,7 +40,13 @@ class VIBottomSheet<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (titleBuilder != null) titleBuilder!(context),
+          // 헤더 영역을 별도 SingleChildScrollView로 감싸서 드래그 가능하게 만듦
+          if (titleBuilder != null) 
+            SingleChildScrollView(
+              controller: controller,
+              physics: const ClampingScrollPhysics(),
+              child: titleBuilder!(context),
+            ),
           if (titleBuilder != null) AppDesign.spacing.h8,
           _buildListView(),
         ],
