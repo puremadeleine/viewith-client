@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:viewith/feature/writing/search/controller/writing_image_provider.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/gen/assets.gen.dart';
 
-class UploadPhotoButton extends StatelessWidget {
-  const UploadPhotoButton({super.key, this.uploadedCount = 0, required this.maxCount, required this.onUploaded});
+class UploadPhotoButton extends ConsumerWidget {
+  const UploadPhotoButton({super.key, required this.maxCount, required this.onUploaded});
 
-  final int uploadedCount;
   final int maxCount;
   final Function(List<XFile>) onUploaded;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final images = ref.watch(writingImageProviderProvider);
+    final uploadedCount = images.length;
+
     return GestureDetector(
       onTap: () async {
         final ImagePicker picker = ImagePicker();
-        final List<XFile> files = await picker.pickMultiImage(limit: maxCount);
+        final remainingSlots = maxCount - uploadedCount;
+        if (remainingSlots <= 0) return;
+        
+        final List<XFile> files = await picker.pickMultiImage(limit: remainingSlots);
         onUploaded.call(files);
       },
       child: Container(
@@ -32,7 +39,7 @@ class UploadPhotoButton extends StatelessWidget {
           child: Column(
             children: [
               Assets.images.cameraFill.svg(),
-              _buildText(),
+              _buildText(uploadedCount),
             ],
           ),
         ),
@@ -40,7 +47,7 @@ class UploadPhotoButton extends StatelessWidget {
     );
   }
 
-  Widget _buildText() {
+  Widget _buildText(int uploadedCount) {
     return Text('$uploadedCount / $maxCount', style: AppDesign.typo.body2Bold(),);
   }
 }

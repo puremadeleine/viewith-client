@@ -64,10 +64,27 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final response = ref.watch(venueRepositoryProvider).fetchReview(widget.id);
+    
+    // GoRouterState에서 extra 정보 확인
+    final goRouterState = GoRouterState.of(context);
+    final extra = goRouterState.extra as Map<String, dynamic>?;
+    final fromHome = extra?['fromHome'] == true;
 
     return Scaffold(
       appBar: AppBar(
         title: Text("리뷰 상세", style: AppDesign.typo.title2bold()),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (fromHome) {
+              // 홈에서 온 경우 홈으로 이동
+              context.go(AppRoute.home.path);
+            } else {
+              // 일반적인 뒤로가기
+              context.pop();
+            }
+          },
+        ),
       ),
       body: FutureBuilder<Result<Review, BaseError>>(
         future: response,

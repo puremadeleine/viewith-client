@@ -4,6 +4,7 @@ import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/data/venue/response/seat_detail.dart';
+import 'package:viewith/data/venue/response/create_review_response.dart';
 import 'request/review_params.dart';
 import 'response/review.dart';
 import 'response/venue.dart';
@@ -23,7 +24,7 @@ abstract class VenueRepository {
 
   Future<Result<List<SectionInfo>, BaseError>> fetchSeatDetail(String id);
 
-  Future<Result<void, BaseError>> createReview({
+  Future<Result<CreateReviewResponse, BaseError>> createReview({
     required int venueId,
     required String section,
     required String seatRow,

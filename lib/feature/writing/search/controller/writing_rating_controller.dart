@@ -4,17 +4,13 @@ part 'writing_rating_controller.g.dart';
 
 @riverpod
 class WritingRating extends _$WritingRating {
-  double _rating = 0.0;
-
   @override
   double build() {
-    return _rating;
+    return 0.0;
   }
 
   void updateRating(double rating) {
-    _rating = rating;
+    print('🎯 별점 업데이트: $rating'); // 디버그 로그
     state = rating;
   }
-
-  
 }

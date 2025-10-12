@@ -10,6 +10,7 @@ import 'package:viewith/data/venue/request/review_params.dart';
 import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
+import 'package:viewith/data/venue/response/create_review_response.dart';
 import 'package:viewith/network/client.dart';
 
 import '../response/venue.dart';
@@ -67,7 +68,7 @@ class RemoteVenueRepository extends VenueRepository {
   }
 
   @override
-  Future<Result<void, BaseError>> createReview({
+  Future<Result<CreateReviewResponse, BaseError>> createReview({
     required int venueId,
     required String section,
     required String seatRow,
@@ -105,6 +106,6 @@ class RemoteVenueRepository extends VenueRepository {
       '/v1/reviews',
       data: formData,
     );
-    return response.toVoidResult();
+    return response.toResult(fromJson: CreateReviewResponse.fromJson);
   }
 }

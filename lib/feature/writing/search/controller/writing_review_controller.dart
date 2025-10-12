@@ -8,7 +8,7 @@ class WritingReview extends _$WritingReview {
   @override
   Future<void> build() async {}
 
-  Future<void> submitReview({
+  Future<int> submitReview({
     required int venueId,
     required String section,
     required String seatRow,
@@ -29,7 +29,7 @@ class WritingReview extends _$WritingReview {
     );
 
     return result.match(
-      onSuccess: (_) {},
+      onSuccess: (response) => response.reviewId,
       onFailure: (error) => throw error,
     );
   }

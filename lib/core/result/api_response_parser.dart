@@ -15,6 +15,7 @@ extension ApiResponseParser on Response {
     try {
       switch (statusCode) {
         case 200:
+        case 201:
           final jsonData = data as Map<String, dynamic>;
           final targetData = key != null ? jsonData[key] : jsonData;
           return Success(fromJson(targetData));
@@ -36,6 +37,7 @@ extension ApiResponseParser on Response {
     try {
       switch (statusCode) {
         case 200:
+        case 201:
           final jsonData = data as Map<String, dynamic>;
           final List targetList = key != null ? jsonData[key] : jsonData;
 
@@ -57,7 +59,7 @@ extension ApiResponseParser on Response {
     T Function(Object?) fromJsonT,
   ) {
     try {
-      if (statusCode != 200) {
+      if (statusCode != 200 && statusCode != 201) {
         _logError('API Error', 'Status Code: $statusCode, Message: $statusMessage');
         return Failure(ApiError(code: statusCode ?? -1, message: statusMessage ?? ''));
       }

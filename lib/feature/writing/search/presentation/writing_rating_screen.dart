@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/feature/writing/search/controller/writing_rating_controller.dart';
 import 'package:viewith/feature/writing/search/controller/writing_review_controller.dart';
 import 'package:viewith/feature/writing/search/controller/writing_seat_infos_controller.dart';
@@ -18,6 +19,7 @@ class WritingRatingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final venue = ref.watch(selectedVenueProvider);
     final seatInfo = ref.watch(writingSeatInfosControllerProvider);
+    final currentRating = ref.watch(writingRatingProvider);
 
     if (venue == null) {
       return const Scaffold(
@@ -35,6 +37,7 @@ class WritingRatingScreen extends ConsumerWidget {
             _buildTitle('이 자리 어떠셨어요?'),
             _buildSubTitle('5점 만점에 몇 점이신가요? 신중한 평가 부탁드려요!'),
             VISlider(
+              initialRating: currentRating,
               onRatingChanged: (double rating) {
                 ref.read(writingRatingProvider.notifier).updateRating(rating);
               },
@@ -69,18 +72,29 @@ class WritingRatingScreen extends ConsumerWidget {
 
         try {
           if (seatInfo['section'] != null && seatInfo['row'] != null) {
-            await ref.read(writingReviewProvider.notifier).submitReview(
+            final rating = ref.read(writingRatingProvider);
+            print('🔥 업로드 시 별점 값: $rating'); // 디버그 로그
+            
+            final reviewId = await ref.read(writingReviewProvider.notifier).submitReview(
                   venueId: venue.id,
                   section: seatInfo['section']!,
                   seatRow: seatInfo['row']!,
                   seatColumn: seatInfo['number'],
                   content: seatInfo['content'] ?? '',
-                  rating: ref.read(writingRatingProvider),
+                  rating: rating,
                   images: imagePaths,
                 );
-          }
-          if (context.mounted) {
-            context.pop();
+            
+            print('🎉 생성된 리뷰 ID: $reviewId'); // 디버그 로그
+            
+            if (context.mounted) {
+              // 모든 스택을 제거하고 홈 -> 리뷰 상세 순서로 네비게이션 스택 구성
+              context.goNamed(
+                AppRoute.reviewDetail.name,
+                pathParameters: {'id': reviewId.toString()},
+                extra: {'fromHome': true}, // 홈에서 온 것처럼 처리
+              );
+            }
           }
         } catch (e) {
           if (context.mounted) {
