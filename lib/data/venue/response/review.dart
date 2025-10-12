@@ -1,5 +1,6 @@
 // review_model.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 part 'review.freezed.dart';
 
@@ -11,7 +12,7 @@ class Review with _$Review {
     @JsonKey(name: 'review_id') required int reviewId,
     required String content,
     required double rating,
-    // @JsonKey(name: 'create_time') required String createTime,
+    @JsonKey(name: 'create_time') required int createTime,
     @JsonKey(name: 'image_list', defaultValue: <String>[]) required List<String> imageList,
     @JsonKey(name: 'user_info') required UserInfo userInfo,
     @JsonKey(name: 'seat_info') required SeatRawData seatRawData,
@@ -60,11 +61,9 @@ class BookmarkData with _$BookmarkData {
 
 extension ReviewX on Review {
   String get createdAt {
-    // final createTime = this.createTime;
-    // if (createTime == null) return '';
-    // DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(createTime);
-    // String formattedDate = DateFormat('yyyy년 MM월 dd일').format(dateTime);
-    return 'formattedDate';
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(createTime);
+    String formattedDate = DateFormat('yyyy년 MM월 dd일').format(dateTime);
+    return formattedDate;
   }
 
   String get seatName => '${seatRawData.section}구역 ${seatRawData.row}열 ${seatRawData.column}번';

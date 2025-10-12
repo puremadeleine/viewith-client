@@ -10,6 +10,7 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       reviewId: (json['review_id'] as num).toInt(),
       content: json['content'] as String,
       rating: (json['rating'] as num).toDouble(),
+      createTime: (json['create_time'] as num).toInt(),
       imageList: (json['image_list'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'review_id': instance.reviewId,
       'content': instance.content,
       'rating': instance.rating,
+      'create_time': instance.createTime,
       'image_list': instance.imageList,
       'user_info': instance.userInfo,
       'seat_info': instance.seatRawData,

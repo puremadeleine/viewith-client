@@ -77,35 +77,103 @@ class ReviewListController extends _$ReviewListController {
     return reviewsResult;
   }
 
-  void setSortOption(ReviewSortType option) {
+  void setSortOption(ReviewSortType option) async {
     final currentState = state.value;
     if (currentState == null) return;
+    
+    // 상태 먼저 업데이트
     final newState = currentState.copyWith(sortType: option);
     state = AsyncData(newState);
+    
+    // 새로운 정렬 조건으로 리뷰 데이터 다시 가져오기
+    try {
+      final reviewsResult = await fetchReviews();
+      final reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+      
+      final updatedState = newState.copyWith(reviews: AsyncData(reviews.list));
+      state = AsyncData(updatedState);
+    } catch (error) {
+      final errorState = newState.copyWith(reviews: AsyncError(error, StackTrace.current));
+      state = AsyncData(errorState);
+    }
   }
 
-  void setFloor(String floor) {
+  void setFloor(String floor) async {
     final currentState = state.value;
     if (currentState == null) return;
+    
+    // 상태 먼저 업데이트
     final newState = currentState.copyWith(selectedFloor: floor);
     state = AsyncData(newState);
+    
+    // 새로운 필터 조건으로 리뷰 데이터 다시 가져오기
+    try {
+      final reviewsResult = await fetchReviews();
+      final reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+      
+      final updatedState = newState.copyWith(reviews: AsyncData(reviews.list));
+      state = AsyncData(updatedState);
+    } catch (error) {
+      final errorState = newState.copyWith(reviews: AsyncError(error, StackTrace.current));
+      state = AsyncData(errorState);
+    }
   }
 
-  void setRow(String row) {
+  void setRow(String row) async {
     final currentState = state.value;
     if (currentState == null) return;
+    
+    // 상태 먼저 업데이트
     final newState = currentState.copyWith(selectedRow: row);
     state = AsyncData(newState);
+    
+    // 새로운 필터 조건으로 리뷰 데이터 다시 가져오기
+    try {
+      final reviewsResult = await fetchReviews();
+      final reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+      
+      final updatedState = newState.copyWith(reviews: AsyncData(reviews.list));
+      state = AsyncData(updatedState);
+    } catch (error) {
+      final errorState = newState.copyWith(reviews: AsyncError(error, StackTrace.current));
+      state = AsyncData(errorState);
+    }
   }
 
-  void removeFilterChip(FilterChipData chip) {
+  void removeFilterChip(FilterChipData chip) async {
     final currentState = state.value;
     if (currentState == null) return;
+    
+    // 상태 먼저 업데이트
     final newState = currentState.copyWith(
       sortType: chip.type == FilterType.sort ? ReviewSortType.defaultSort : currentState.sortType,
       selectedFloor: chip.type == FilterType.seat ? null : currentState.selectedFloor,
       selectedRow: chip.type == FilterType.seat ? null : currentState.selectedRow,
     );
     state = AsyncData(newState);
+    
+    // 새로운 필터 조건으로 리뷰 데이터 다시 가져오기
+    try {
+      final reviewsResult = await fetchReviews();
+      final reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+      
+      final updatedState = newState.copyWith(reviews: AsyncData(reviews.list));
+      state = AsyncData(updatedState);
+    } catch (error) {
+      final errorState = newState.copyWith(reviews: AsyncError(error, StackTrace.current));
+      state = AsyncData(errorState);
+    }
   }
 }

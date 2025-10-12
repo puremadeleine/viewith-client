@@ -23,8 +23,9 @@ mixin _$Review {
   @JsonKey(name: 'review_id')
   int get reviewId => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  double get rating =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'create_time') required String createTime,
+  double get rating => throw _privateConstructorUsedError;
+  @JsonKey(name: 'create_time')
+  int get createTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_info')
@@ -52,6 +53,7 @@ abstract class $ReviewCopyWith<$Res> {
       {@JsonKey(name: 'review_id') int reviewId,
       String content,
       double rating,
+      @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list', defaultValue: <String>[])
       List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
@@ -81,6 +83,7 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
     Object? reviewId = null,
     Object? content = null,
     Object? rating = null,
+    Object? createTime = null,
     Object? imageList = null,
     Object? userInfo = null,
     Object? seatRawData = null,
@@ -99,6 +102,10 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double,
+      createTime: null == createTime
+          ? _value.createTime
+          : createTime // ignore: cast_nullable_to_non_nullable
+              as int,
       imageList: null == imageList
           ? _value.imageList
           : imageList // ignore: cast_nullable_to_non_nullable
@@ -164,6 +171,7 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       {@JsonKey(name: 'review_id') int reviewId,
       String content,
       double rating,
+      @JsonKey(name: 'create_time') int createTime,
       @JsonKey(name: 'image_list', defaultValue: <String>[])
       List<String> imageList,
       @JsonKey(name: 'user_info') UserInfo userInfo,
@@ -194,6 +202,7 @@ class __$$ReviewImplCopyWithImpl<$Res>
     Object? reviewId = null,
     Object? content = null,
     Object? rating = null,
+    Object? createTime = null,
     Object? imageList = null,
     Object? userInfo = null,
     Object? seatRawData = null,
@@ -212,6 +221,10 @@ class __$$ReviewImplCopyWithImpl<$Res>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double,
+      createTime: null == createTime
+          ? _value.createTime
+          : createTime // ignore: cast_nullable_to_non_nullable
+              as int,
       imageList: null == imageList
           ? _value._imageList
           : imageList // ignore: cast_nullable_to_non_nullable
@@ -239,6 +252,7 @@ class _$ReviewImpl implements _Review {
       {@JsonKey(name: 'review_id') required this.reviewId,
       required this.content,
       required this.rating,
+      @JsonKey(name: 'create_time') required this.createTime,
       @JsonKey(name: 'image_list', defaultValue: <String>[])
       required final List<String> imageList,
       @JsonKey(name: 'user_info') required this.userInfo,
@@ -256,9 +270,10 @@ class _$ReviewImpl implements _Review {
   final String content;
   @override
   final double rating;
-// @JsonKey(name: 'create_time') required String createTime,
+  @override
+  @JsonKey(name: 'create_time')
+  final int createTime;
   final List<String> _imageList;
-// @JsonKey(name: 'create_time') required String createTime,
   @override
   @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList {
@@ -279,7 +294,7 @@ class _$ReviewImpl implements _Review {
 
   @override
   String toString() {
-    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, imageList: $imageList, userInfo: $userInfo, seatRawData: $seatRawData, bookmarkInfo: $bookmarkInfo)';
+    return 'Review(reviewId: $reviewId, content: $content, rating: $rating, createTime: $createTime, imageList: $imageList, userInfo: $userInfo, seatRawData: $seatRawData, bookmarkInfo: $bookmarkInfo)';
   }
 
   @override
@@ -291,6 +306,8 @@ class _$ReviewImpl implements _Review {
                 other.reviewId == reviewId) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.rating, rating) || other.rating == rating) &&
+            (identical(other.createTime, createTime) ||
+                other.createTime == createTime) &&
             const DeepCollectionEquality()
                 .equals(other._imageList, _imageList) &&
             (identical(other.userInfo, userInfo) ||
@@ -308,6 +325,7 @@ class _$ReviewImpl implements _Review {
       reviewId,
       content,
       rating,
+      createTime,
       const DeepCollectionEquality().hash(_imageList),
       userInfo,
       seatRawData,
@@ -334,6 +352,7 @@ abstract class _Review implements Review {
       {@JsonKey(name: 'review_id') required final int reviewId,
       required final String content,
       required final double rating,
+      @JsonKey(name: 'create_time') required final int createTime,
       @JsonKey(name: 'image_list', defaultValue: <String>[])
       required final List<String> imageList,
       @JsonKey(name: 'user_info') required final UserInfo userInfo,
@@ -349,8 +368,10 @@ abstract class _Review implements Review {
   @override
   String get content;
   @override
-  double
-      get rating; // @JsonKey(name: 'create_time') required String createTime,
+  double get rating;
+  @override
+  @JsonKey(name: 'create_time')
+  int get createTime;
   @override
   @JsonKey(name: 'image_list', defaultValue: <String>[])
   List<String> get imageList;
