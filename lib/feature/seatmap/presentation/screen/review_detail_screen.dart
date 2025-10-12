@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,10 +8,14 @@ import 'package:viewith/app/route/app_route.dart';
 import 'package:viewith/data/venue/venue_repository_providers.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/data/venue/response/review.dart';
-import 'package:viewith/core/result/result.dart';
 import 'package:viewith/core/result/base_error.dart';
 import 'package:dio/dio.dart';
 import 'package:viewith/di/app_providers.dart';
+import 'package:viewith/core/providers/current_user_provider.dart';
+import 'package:viewith/data/venue/request/report_reason.dart';
+import 'package:viewith/data/venue/request/report_review_request.dart';
+import 'package:viewith/feature/seatmap/presentation/controller/review_detail_controller.dart';
+import 'package:viewith/feature/seatmap/presentation/controller/review_list_controller.dart';
 
 class ReviewDetailScreen extends ConsumerStatefulWidget {
   final int id;
@@ -61,9 +66,183 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     }
   }
 
+  void _showActionSheet(BuildContext context, int? currentUserId, Review review) {
+    final isMyReview = currentUserId == review.userInfo.userId;
+    
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: [
+          if (!isMyReview) // 내 리뷰인 경우 삭제 버튼
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showDeleteDialog(context);
+              },
+              child: Text(
+                '삭제',
+                style: AppDesign.typo.body1SemiBold(color: AppDesign.colors.red900),
+              ),
+            ),
+          if (!isMyReview) // 다른 사람의 리뷰인 경우 신고 버튼
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showReportDialog(context);
+              },
+              child: Text(
+                '신고',
+                style: AppDesign.typo.body1SemiBold(color: AppDesign.colors.red900),
+              ),
+            ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            '취소',
+            style: AppDesign.typo.body2(),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  Future<void> _showDeleteDialog(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              '정말 삭제하시겠어요?',
+              style: AppDesign.typo.title2bold(color: AppDesign.colors.gray900),
+            ),
+          ),
+          content: Text(
+            '삭제 후 정보는 복구할 수 없어요.\n정말로 삭제하시겠습니까?',
+            style: AppDesign.typo.body1(color: AppDesign.colors.gray900),
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '취소',
+                style: AppDesign.typo.body1(color: AppDesign.colors.gray600),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: Text(
+                '삭제',
+                style: AppDesign.typo.body1SemiBold(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          backgroundColor: AppDesign.colors.white,
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      await _deleteReview();
+    }
+  }
+
+  Future<void> _showReportDialog(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _ReportBottomSheet(
+        onReport: (reason, detail) => _reportReview(reason, detail),
+      ),
+    );
+  }
+
+  Future<void> _deleteReview() async {
+    try {
+      final repository = ref.read(venueRepositoryProvider);
+      final result = await repository.deleteReview(widget.id);
+      
+      result.match(
+        onSuccess: (_) {
+          if (mounted) {
+            // 리뷰 리스트 업데이트 - 모든 venue의 리뷰 리스트를 무효화
+            ref.invalidate(reviewListControllerProvider);
+            
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('리뷰가 삭제되었습니다.')),
+            );
+            context.pop();
+          }
+        },
+        onFailure: (error) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('삭제 실패: ${error.message}')),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _reportReview(ReportReason reason, String? detail) async {
+    try {
+      final repository = ref.read(venueRepositoryProvider);
+      final request = ReportReviewRequest(
+        reportReason: reason.value,
+        reportReasonDetail: detail,
+      );
+      final result = await repository.reportReview(widget.id, request);
+      
+      result.match(
+        onSuccess: (_) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('신고가 접수되었습니다.')),
+            );
+          }
+        },
+        onFailure: (error) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('신고 실패: ${error.message}')),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('신고 중 오류가 발생했습니다: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final response = ref.watch(venueRepositoryProvider).fetchReview(widget.id);
+    final response = ref.watch(reviewDetailProvider(widget.id));
+    final currentUserId = ref.watch(currentUserProvider);
     
     // GoRouterState에서 extra 정보 확인
     final goRouterState = GoRouterState.of(context);
@@ -85,21 +264,57 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
             }
           },
         ),
+        actions: [
+          // 로그인한 사용자만 햄버거 메뉴 표시
+          // if (currentUserId.value != null)
+            response.when(
+              data: (result) => result.match(
+                onSuccess: (review) {
+                  final isMyReview = currentUserId.value == review.userInfo.userId;
+                  // 메뉴 아이템이 있는 경우에만 버튼 표시
+                  // if (isMyReview || currentUserId.value != null) {
+                    return IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () => _showActionSheet(context, currentUserId.value, review),
+                    );
+                  // }
+                  // return const SizedBox.shrink();
+                },
+                onFailure: (_) => const SizedBox.shrink(),
+              ),
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const SizedBox.shrink(),
+            ),
+        ],
       ),
-      body: FutureBuilder<Result<Review, BaseError>>(
-        future: response,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            if (_isAuthError(snapshot.error!)) {
+      body: response.when(
+        data: (result) => result.match(
+          onSuccess: (review) => SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildUserInfo(review),
+                  if (review.imageList.isNotEmpty) _buildImageSlider(review.imageList),
+                  _buildReviewContent(review),
+                  AppDesign.spacing.h16,
+                  _buildFavoriteSection(review),
+                ],
+              ),
+            ),
+          ),
+          onFailure: (error) {
+            if (_isAuthError(error)) {
               _handleAuthError();
             }
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(_getErrorMessage(snapshot.error!)),
+                  Text(_getErrorMessage(error)),
                   const SizedBox(height: 16),
-                  if (_isAuthError(snapshot.error!))
+                  if (_isAuthError(error))
                     ElevatedButton(
                       onPressed: () async {
                         await ref.read(tokenHandlerProvider).clearTokens();
@@ -112,52 +327,31 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
                 ],
               ),
             );
+          },
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) {
+          if (_isAuthError(error)) {
+            _handleAuthError();
           }
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          return snapshot.data!.match(
-            onSuccess: (review) => SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildUserInfo(review),
-                    if (review.imageList.isNotEmpty) _buildImageSlider(review.imageList),
-                    _buildReviewContent(review),
-                    AppDesign.spacing.h16,
-                    _buildFavoriteSection(review),
-                  ],
-                ),
-              ),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(_getErrorMessage(error)),
+                const SizedBox(height: 16),
+                if (_isAuthError(error))
+                  ElevatedButton(
+                    onPressed: () async {
+                      await ref.read(tokenHandlerProvider).clearTokens();
+                      if (mounted) {
+                        context.goNamed(AppRoute.signIn.name);
+                      }
+                    },
+                    child: const Text('로그인하기'),
+                  ),
+              ],
             ),
-            onFailure: (error) {
-              if (_isAuthError(error)) {
-                _handleAuthError();
-              }
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(_getErrorMessage(error)),
-                    const SizedBox(height: 16),
-                    if (_isAuthError(error))
-                      ElevatedButton(
-                        onPressed: () async {
-                          await ref.read(tokenHandlerProvider).clearTokens();
-                          if (mounted) {
-                            context.goNamed(AppRoute.signIn.name);
-                          }
-                        },
-                        child: const Text('로그인하기'),
-                      ),
-                  ],
-                ),
-              );
-            },
           );
         },
       ),
@@ -307,5 +501,194 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
         size: 16,
       ),
     );
+  }
+}
+
+class _ReportBottomSheet extends StatefulWidget {
+  final Function(ReportReason reason, String? detail) onReport;
+
+  const _ReportBottomSheet({required this.onReport});
+
+  @override
+  State<_ReportBottomSheet> createState() => _ReportBottomSheetState();
+}
+
+class _ReportBottomSheetState extends State<_ReportBottomSheet> {
+  ReportReason? _selectedReason;
+  final TextEditingController _detailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _detailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 12,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 핸들 바
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // 제목
+            Center(
+              child: Text(
+                '신고하기',
+                style: AppDesign.typo.h3(),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            Divider(
+              color: AppDesign.colors.gray200,
+              height: 1,
+            ),
+            const SizedBox(height: 16),
+            
+            // 신고 사유 선택
+            Text(
+              '신고 사유',
+              style: AppDesign.typo.h3(),
+            ),
+            
+            // 라디오 버튼들
+            ...ReportReason.values.map((reason) => RadioListTile<ReportReason>(
+              title: Text(
+                reason.displayName,
+                style: AppDesign.typo.body2(),
+              ),
+              value: reason,
+              groupValue: _selectedReason,
+              onChanged: (value) {
+                setState(() {
+                  _selectedReason = value;
+                  // OTHER가 아닌 경우 텍스트 필드 초기화
+                  if (value != ReportReason.other) {
+                    _detailController.clear();
+                  }
+                });
+              },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+              dense: true,
+              visualDensity: VisualDensity.compact,
+            )),
+            
+            // 상세 사유 입력 (OTHER 선택 시에만 표시)
+            if (_selectedReason == ReportReason.other) ...[
+              const SizedBox(height: 16),
+              Text(
+                '상세 사유',
+                style: AppDesign.typo.h3(),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _detailController,
+                decoration: InputDecoration(
+                  hintText: '신고 사유를 입력해주세요.',
+                  hintStyle: AppDesign.typo.body2(color: Colors.grey[600]),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppDesign.colors.gray900),
+                  ),
+                  contentPadding: const EdgeInsets.all(16),
+                ),
+                maxLines: 4,
+                style: AppDesign.typo.body2(),
+                onChanged: (value) {
+                  setState(() {}); // 버튼 상태 업데이트를 위해
+                },
+              ),
+            ],
+            
+            const SizedBox(height: 32),
+            
+            // 완료 버튼
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: _canSubmit() ? _handleSubmit : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _canSubmit() 
+                      ? AppDesign.colors.gray900 
+                      : AppDesign.colors.gray400,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  '완료',
+                  style: AppDesign.typo.body1Bold(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _canSubmit() {
+    if (_selectedReason == null) return false;
+    
+    // OTHER 선택 시 상세 사유가 필수
+    if (_selectedReason == ReportReason.other) {
+      return _detailController.text.trim().isNotEmpty;
+    }
+    
+    // OTHER가 아닌 경우 사유만 선택하면 됨
+    return true;
+  }
+
+  void _handleSubmit() {
+    if (_selectedReason == null) return;
+    
+    String? detail;
+    if (_selectedReason == ReportReason.other) {
+      detail = _detailController.text.trim();
+      if (detail.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('기타 선택 시 상세 사유를 입력해주세요.')),
+        );
+        return;
+      }
+    }
+    
+    widget.onReport(_selectedReason!, detail);
+    Navigator.of(context).pop();
   }
 }

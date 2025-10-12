@@ -7,6 +7,7 @@ import 'package:viewith/core/result/base_error.dart';
 import 'package:viewith/core/result/paginated_response.dart';
 import 'package:viewith/core/result/result.dart';
 import 'package:viewith/data/venue/request/review_params.dart';
+import 'package:viewith/data/venue/request/report_review_request.dart';
 import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
@@ -107,5 +108,24 @@ class RemoteVenueRepository extends VenueRepository {
       data: formData,
     );
     return response.toResult(fromJson: CreateReviewResponse.fromJson);
+  }
+
+  @override
+  Future<Result<void, BaseError>> deleteReview(int reviewId) async {
+    final response = await _client.delete(
+      '/v1/reviews/$reviewId',
+      requiresAuth: true,
+    );
+    return response.toVoidResult();
+  }
+
+  @override
+  Future<Result<void, BaseError>> reportReview(int reviewId, ReportReviewRequest request) async {
+    final response = await _client.post(
+      '/v1/reviews/$reviewId/report',
+      data: request.toJson(),
+      requiresAuth: true,
+    );
+    return response.toVoidResult();
   }
 }

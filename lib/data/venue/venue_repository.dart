@@ -1,6 +1,7 @@
 import 'package:viewith/core/result/base_error.dart';
 import 'package:viewith/core/result/paginated_response.dart';
 import 'package:viewith/core/result/result.dart';
+import 'package:viewith/data/venue/request/report_review_request.dart';
 import 'package:viewith/data/venue/response/seat_info.dart';
 import 'package:viewith/data/venue/response/venue_detail.dart';
 import 'package:viewith/data/venue/response/seat_detail.dart';
@@ -33,4 +34,8 @@ abstract class VenueRepository {
     required double rating,
     List<String>? images,
   });
+
+  Future<Result<void, BaseError>> deleteReview(int reviewId);
+
+  Future<Result<void, BaseError>> reportReview(int reviewId, ReportReviewRequest request);
 }

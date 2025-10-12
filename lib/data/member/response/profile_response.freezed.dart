@@ -20,12 +20,16 @@ ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProfileResponse {
+  @JsonKey(name: 'user_id')
+  int? get userId => throw _privateConstructorUsedError;
   @JsonKey(name: 'nickname')
   String get nickname => throw _privateConstructorUsedError;
   @JsonKey(name: 'written_reviews_count')
   int get writtenReviewsCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'bookmarks_count')
   int get bookmarkCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'profile_image_url')
+  String? get profileImageUrl => throw _privateConstructorUsedError;
 
   /// Serializes this ProfileResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,9 +48,11 @@ abstract class $ProfileResponseCopyWith<$Res> {
       _$ProfileResponseCopyWithImpl<$Res, ProfileResponse>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'nickname') String nickname,
+      {@JsonKey(name: 'user_id') int? userId,
+      @JsonKey(name: 'nickname') String nickname,
       @JsonKey(name: 'written_reviews_count') int writtenReviewsCount,
-      @JsonKey(name: 'bookmarks_count') int bookmarkCount});
+      @JsonKey(name: 'bookmarks_count') int bookmarkCount,
+      @JsonKey(name: 'profile_image_url') String? profileImageUrl});
 }
 
 /// @nodoc
@@ -64,11 +70,17 @@ class _$ProfileResponseCopyWithImpl<$Res, $Val extends ProfileResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = freezed,
     Object? nickname = null,
     Object? writtenReviewsCount = null,
     Object? bookmarkCount = null,
+    Object? profileImageUrl = freezed,
   }) {
     return _then(_value.copyWith(
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int?,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -81,6 +93,10 @@ class _$ProfileResponseCopyWithImpl<$Res, $Val extends ProfileResponse>
           ? _value.bookmarkCount
           : bookmarkCount // ignore: cast_nullable_to_non_nullable
               as int,
+      profileImageUrl: freezed == profileImageUrl
+          ? _value.profileImageUrl
+          : profileImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -94,9 +110,11 @@ abstract class _$$ProfileResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'nickname') String nickname,
+      {@JsonKey(name: 'user_id') int? userId,
+      @JsonKey(name: 'nickname') String nickname,
       @JsonKey(name: 'written_reviews_count') int writtenReviewsCount,
-      @JsonKey(name: 'bookmarks_count') int bookmarkCount});
+      @JsonKey(name: 'bookmarks_count') int bookmarkCount,
+      @JsonKey(name: 'profile_image_url') String? profileImageUrl});
 }
 
 /// @nodoc
@@ -112,11 +130,17 @@ class __$$ProfileResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = freezed,
     Object? nickname = null,
     Object? writtenReviewsCount = null,
     Object? bookmarkCount = null,
+    Object? profileImageUrl = freezed,
   }) {
     return _then(_$ProfileResponseImpl(
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int?,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -129,6 +153,10 @@ class __$$ProfileResponseImplCopyWithImpl<$Res>
           ? _value.bookmarkCount
           : bookmarkCount // ignore: cast_nullable_to_non_nullable
               as int,
+      profileImageUrl: freezed == profileImageUrl
+          ? _value.profileImageUrl
+          : profileImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -137,13 +165,18 @@ class __$$ProfileResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProfileResponseImpl implements _ProfileResponse {
   const _$ProfileResponseImpl(
-      {@JsonKey(name: 'nickname') required this.nickname,
+      {@JsonKey(name: 'user_id') this.userId,
+      @JsonKey(name: 'nickname') required this.nickname,
       @JsonKey(name: 'written_reviews_count') required this.writtenReviewsCount,
-      @JsonKey(name: 'bookmarks_count') required this.bookmarkCount});
+      @JsonKey(name: 'bookmarks_count') required this.bookmarkCount,
+      @JsonKey(name: 'profile_image_url') this.profileImageUrl});
 
   factory _$ProfileResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileResponseImplFromJson(json);
 
+  @override
+  @JsonKey(name: 'user_id')
+  final int? userId;
   @override
   @JsonKey(name: 'nickname')
   final String nickname;
@@ -153,10 +186,13 @@ class _$ProfileResponseImpl implements _ProfileResponse {
   @override
   @JsonKey(name: 'bookmarks_count')
   final int bookmarkCount;
+  @override
+  @JsonKey(name: 'profile_image_url')
+  final String? profileImageUrl;
 
   @override
   String toString() {
-    return 'ProfileResponse(nickname: $nickname, writtenReviewsCount: $writtenReviewsCount, bookmarkCount: $bookmarkCount)';
+    return 'ProfileResponse(userId: $userId, nickname: $nickname, writtenReviewsCount: $writtenReviewsCount, bookmarkCount: $bookmarkCount, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -164,18 +200,21 @@ class _$ProfileResponseImpl implements _ProfileResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileResponseImpl &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.writtenReviewsCount, writtenReviewsCount) ||
                 other.writtenReviewsCount == writtenReviewsCount) &&
             (identical(other.bookmarkCount, bookmarkCount) ||
-                other.bookmarkCount == bookmarkCount));
+                other.bookmarkCount == bookmarkCount) &&
+            (identical(other.profileImageUrl, profileImageUrl) ||
+                other.profileImageUrl == profileImageUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, nickname, writtenReviewsCount, bookmarkCount);
+  int get hashCode => Object.hash(runtimeType, userId, nickname,
+      writtenReviewsCount, bookmarkCount, profileImageUrl);
 
   /// Create a copy of ProfileResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -196,15 +235,20 @@ class _$ProfileResponseImpl implements _ProfileResponse {
 
 abstract class _ProfileResponse implements ProfileResponse {
   const factory _ProfileResponse(
-          {@JsonKey(name: 'nickname') required final String nickname,
+          {@JsonKey(name: 'user_id') final int? userId,
+          @JsonKey(name: 'nickname') required final String nickname,
           @JsonKey(name: 'written_reviews_count')
           required final int writtenReviewsCount,
-          @JsonKey(name: 'bookmarks_count') required final int bookmarkCount}) =
+          @JsonKey(name: 'bookmarks_count') required final int bookmarkCount,
+          @JsonKey(name: 'profile_image_url') final String? profileImageUrl}) =
       _$ProfileResponseImpl;
 
   factory _ProfileResponse.fromJson(Map<String, dynamic> json) =
       _$ProfileResponseImpl.fromJson;
 
+  @override
+  @JsonKey(name: 'user_id')
+  int? get userId;
   @override
   @JsonKey(name: 'nickname')
   String get nickname;
@@ -214,6 +258,9 @@ abstract class _ProfileResponse implements ProfileResponse {
   @override
   @JsonKey(name: 'bookmarks_count')
   int get bookmarkCount;
+  @override
+  @JsonKey(name: 'profile_image_url')
+  String? get profileImageUrl;
 
   /// Create a copy of ProfileResponse
   /// with the given fields replaced by the non-null parameter values.
