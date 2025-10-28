@@ -7,6 +7,7 @@ import 'package:viewith/data/auth/auth_repository_providers.dart';
 import 'package:viewith/data/member/response/profile_response.dart';
 import 'package:viewith/di/app_providers.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
+import 'package:viewith/core/providers/current_user_provider.dart';
 import 'package:viewith/feature/profile/presentation/model/profile_enum.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/dialog/withdraw_dialog.dart';
@@ -273,6 +274,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
       onTap: () async {
         switch (menu) {
           case ProfileMenu.logout:
+            // 프로필 관련 provider 먼저 무효화
+            ref.invalidate(fetchProfileProvider);
+            ref.invalidate(currentUserProvider);
             await ref.read(authRepositoryProvider).signOut();
             if (mounted) {
               context.go(AppRoute.signIn.path);
@@ -296,6 +300,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                 result.match(
                   onSuccess: (_) {
                     // 회원 탈퇴 성공 시 토큰 삭제 및 로그인 화면으로 이동
+                    // 프로필 관련 provider 먼저 무효화
+                    ref.invalidate(fetchProfileProvider);
+                    ref.invalidate(currentUserProvider);
                     ref.read(authRepositoryProvider).signOut();
                     context.go(AppRoute.signIn.path);
                     ScaffoldMessenger.of(context).showSnackBar(
