@@ -8,7 +8,8 @@ import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/feature/seatmap/presentation/widget/review_item.dart';
 
-final _writtenReviewsProvider = FutureProvider<PaginatedResponse<List<Review>>>((ref) async {
+// export for use in other screens
+final writtenReviewsProvider = FutureProvider<PaginatedResponse<List<Review>>>((ref) async {
   final repo = ref.read(memberRepositoryProvider);
   final result = await repo.fetchWrittenReviews();
   return result.match(
@@ -24,7 +25,7 @@ class WrittenReviewsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: Text('내가 작성한 리뷰', style: AppDesign.typo.title2bold())),
-      body: ref.watch(_writtenReviewsProvider).when(
+      body: ref.watch(writtenReviewsProvider).when(
             data: (page) => _Content(reviews: page.list),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err')),

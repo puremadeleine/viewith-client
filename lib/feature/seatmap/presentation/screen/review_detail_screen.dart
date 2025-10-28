@@ -16,6 +16,7 @@ import 'package:viewith/data/venue/request/report_reason.dart';
 import 'package:viewith/data/venue/request/report_review_request.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/review_detail_controller.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/review_list_controller.dart';
+import 'package:viewith/feature/profile/presentation/screen/written_reviews_screen.dart';
 
 class ReviewDetailScreen extends ConsumerStatefulWidget {
   final int id;
@@ -181,6 +182,8 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
           if (mounted) {
             // 리뷰 리스트 업데이트 - 모든 venue의 리뷰 리스트를 무효화
             ref.invalidate(reviewListControllerProvider);
+            // 내가 작성한 리뷰 목록도 업데이트
+            ref.invalidate(writtenReviewsProvider);
             
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('리뷰가 삭제되었습니다.')),

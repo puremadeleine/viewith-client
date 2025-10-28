@@ -13,7 +13,7 @@ class CurrentUser extends _$CurrentUser {
       final result = await repository.fetchProfile();
       
       return result.match(
-        onSuccess: (profile) => profile.userId,
+        onSuccess: (profile) => profile.memberId,
         onFailure: (error) {
           print('🔍 CurrentUser Debug: Failed to fetch profile - ${error.message}');
           return null;

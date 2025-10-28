@@ -6,7 +6,7 @@ part 'profile_response.g.dart';
 @freezed
 class ProfileResponse with _$ProfileResponse {
   const factory ProfileResponse({
-    @JsonKey(name: 'user_id') int? userId,
+    @JsonKey(name: 'member_id') int? memberId,
     @JsonKey(name: 'nickname') required String nickname,
     @JsonKey(name: 'written_reviews_count') required int writtenReviewsCount,
     @JsonKey(name: 'bookmarks_count') required int bookmarkCount,

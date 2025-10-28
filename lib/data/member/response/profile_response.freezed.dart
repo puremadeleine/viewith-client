@@ -20,8 +20,8 @@ ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProfileResponse {
-  @JsonKey(name: 'user_id')
-  int? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'member_id')
+  int? get memberId => throw _privateConstructorUsedError;
   @JsonKey(name: 'nickname')
   String get nickname => throw _privateConstructorUsedError;
   @JsonKey(name: 'written_reviews_count')
@@ -48,7 +48,7 @@ abstract class $ProfileResponseCopyWith<$Res> {
       _$ProfileResponseCopyWithImpl<$Res, ProfileResponse>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'user_id') int? userId,
+      {@JsonKey(name: 'member_id') int? memberId,
       @JsonKey(name: 'nickname') String nickname,
       @JsonKey(name: 'written_reviews_count') int writtenReviewsCount,
       @JsonKey(name: 'bookmarks_count') int bookmarkCount,
@@ -70,16 +70,16 @@ class _$ProfileResponseCopyWithImpl<$Res, $Val extends ProfileResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? nickname = null,
     Object? writtenReviewsCount = null,
     Object? bookmarkCount = null,
     Object? profileImageUrl = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: freezed == memberId
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int?,
       nickname: null == nickname
           ? _value.nickname
@@ -110,7 +110,7 @@ abstract class _$$ProfileResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'user_id') int? userId,
+      {@JsonKey(name: 'member_id') int? memberId,
       @JsonKey(name: 'nickname') String nickname,
       @JsonKey(name: 'written_reviews_count') int writtenReviewsCount,
       @JsonKey(name: 'bookmarks_count') int bookmarkCount,
@@ -130,16 +130,16 @@ class __$$ProfileResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? nickname = null,
     Object? writtenReviewsCount = null,
     Object? bookmarkCount = null,
     Object? profileImageUrl = freezed,
   }) {
     return _then(_$ProfileResponseImpl(
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: freezed == memberId
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int?,
       nickname: null == nickname
           ? _value.nickname
@@ -165,7 +165,7 @@ class __$$ProfileResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProfileResponseImpl implements _ProfileResponse {
   const _$ProfileResponseImpl(
-      {@JsonKey(name: 'user_id') this.userId,
+      {@JsonKey(name: 'member_id') this.memberId,
       @JsonKey(name: 'nickname') required this.nickname,
       @JsonKey(name: 'written_reviews_count') required this.writtenReviewsCount,
       @JsonKey(name: 'bookmarks_count') required this.bookmarkCount,
@@ -175,8 +175,8 @@ class _$ProfileResponseImpl implements _ProfileResponse {
       _$$ProfileResponseImplFromJson(json);
 
   @override
-  @JsonKey(name: 'user_id')
-  final int? userId;
+  @JsonKey(name: 'member_id')
+  final int? memberId;
   @override
   @JsonKey(name: 'nickname')
   final String nickname;
@@ -192,7 +192,7 @@ class _$ProfileResponseImpl implements _ProfileResponse {
 
   @override
   String toString() {
-    return 'ProfileResponse(userId: $userId, nickname: $nickname, writtenReviewsCount: $writtenReviewsCount, bookmarkCount: $bookmarkCount, profileImageUrl: $profileImageUrl)';
+    return 'ProfileResponse(memberId: $memberId, nickname: $nickname, writtenReviewsCount: $writtenReviewsCount, bookmarkCount: $bookmarkCount, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -200,7 +200,8 @@ class _$ProfileResponseImpl implements _ProfileResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileResponseImpl &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.memberId, memberId) ||
+                other.memberId == memberId) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.writtenReviewsCount, writtenReviewsCount) ||
@@ -213,7 +214,7 @@ class _$ProfileResponseImpl implements _ProfileResponse {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, userId, nickname,
+  int get hashCode => Object.hash(runtimeType, memberId, nickname,
       writtenReviewsCount, bookmarkCount, profileImageUrl);
 
   /// Create a copy of ProfileResponse
@@ -235,7 +236,7 @@ class _$ProfileResponseImpl implements _ProfileResponse {
 
 abstract class _ProfileResponse implements ProfileResponse {
   const factory _ProfileResponse(
-          {@JsonKey(name: 'user_id') final int? userId,
+          {@JsonKey(name: 'member_id') final int? memberId,
           @JsonKey(name: 'nickname') required final String nickname,
           @JsonKey(name: 'written_reviews_count')
           required final int writtenReviewsCount,
@@ -247,8 +248,8 @@ abstract class _ProfileResponse implements ProfileResponse {
       _$ProfileResponseImpl.fromJson;
 
   @override
-  @JsonKey(name: 'user_id')
-  int? get userId;
+  @JsonKey(name: 'member_id')
+  int? get memberId;
   @override
   @JsonKey(name: 'nickname')
   String get nickname;

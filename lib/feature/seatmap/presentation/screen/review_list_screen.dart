@@ -21,6 +21,8 @@ import '../widget/seat_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:viewith/ui/widgets/custom_toggle_switch.dart';
+import 'package:viewith/ui/widgets/dialog/guest_dialog.dart';
+import 'package:viewith/di/app_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
   final String id;
@@ -263,7 +265,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
       widget: widget,
       items: reviews,
       onItemSelected: (item) {
-        context.push('${AppRoute.reviewDetail.path}/${item.reviewId}');
+        // 비회원 체크
+        final isGuest = ref.read(isGuestModeProvider);
+        if (isGuest) {
+          showGuestDialog(context, ref);
+        } else {
+          context.push('${AppRoute.reviewDetail.path}/${item.reviewId}');
+        }
       },
       titleBuilder: (context) => Row(
         children: [
