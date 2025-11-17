@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:viewith/core/result/base_error.dart';
+import 'package:viewith/core/utils/global_error_handler.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:dio/dio.dart';
 
@@ -12,17 +13,34 @@ import 'package:dio/dio.dart';
 ///   onRetry: () => ref.invalidate(someProvider),
 /// )
 /// ```
-class ErrorWidget extends StatelessWidget {
+class ErrorWidget extends StatefulWidget {
   final BaseError error;
   final VoidCallback? onRetry;
   final String? customMessage;
+  final DioException? dioException; // 화면 전체 에러 위젯인 경우 전달
 
   const ErrorWidget({
     super.key,
     required this.error,
     this.onRetry,
     this.customMessage,
+    this.dioException,
   });
+
+  @override
+  State<ErrorWidget> createState() => _ErrorWidgetState();
+}
+
+class _ErrorWidgetState extends State<ErrorWidget> {
+  @override
+  void initState() {
+    super.initState();
+    // 화면 전체에 에러 위젯이 표시되는 경우, 해당 에러를 "처리됨"으로 표시
+    // 이렇게 하면 전역 알림이 중복으로 표시되지 않음
+    if (widget.dioException != null) {
+      GlobalErrorHandler.markErrorAsHandled(widget.dioException!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +57,11 @@ class ErrorWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              customMessage ?? _getErrorMessage(error),
+              widget.customMessage ?? _getErrorMessage(widget.error),
               style: AppDesign.typo.body1(color: AppDesign.colors.gray900),
               textAlign: TextAlign.center,
             ),
-            if (onRetry != null) ...[
+            if (widget.onRetry != null) ...[
               const SizedBox(height: 24),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -51,7 +69,7 @@ class ErrorWidget extends StatelessWidget {
                   foregroundColor: AppDesign.colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                onPressed: onRetry,
+                onPressed: widget.onRetry,
                 child: Text(
                   '다시 시도',
                   style: AppDesign.typo.body1Bold(color: AppDesign.colors.white),

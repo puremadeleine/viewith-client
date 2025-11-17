@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:viewith/app/route/app_router.dart';
+import 'package:viewith/core/utils/global_error_handler.dart';
 import 'package:viewith/ui/app_design.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
+      scaffoldMessengerKey: GlobalErrorHandler.scaffoldMessengerKey,
       theme: ThemeData(
         fontFamily: 'Pretendard',
         appBarTheme: AppBarTheme(backgroundColor: AppDesign.colors.white),

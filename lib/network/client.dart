@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 import '../app_environment.dart';
+import 'package:viewith/core/utils/global_error_handler.dart';
 import 'package:viewith/network/token_handler.dart';
 
 // HttpOverrides must be set from within an executable context, not at top-level.
@@ -86,10 +87,13 @@ class Client {
           return handler.next(response);
         },
         onError: (error, handler) async {
+          bool errorHandled = false;
+          
           if (error.response?.statusCode == 401 && error.requestOptions.extra['requiresAuth'] == true) {
             final refreshToken = await _tokenHandler.getRefreshToken();
             if (refreshToken == null) {
               await _tokenHandler.clearTokens();
+              errorHandled = true; // 401 에러는 이미 UI에서 처리되므로 전역 알림 스킵
               return handler.next(error);
             }
 
@@ -103,18 +107,30 @@ class Client {
                     accessToken: accessToken,
                     refreshToken: refreshToken,
                   );
+                  error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
+                  final retryResponse = await _dio.fetch(error.requestOptions);
+                  return handler.resolve(retryResponse);
                 } else {
                   await _tokenHandler.clearTokens();
+                  errorHandled = true; // 토큰 리프레시 실패는 이미 처리됨
                   return handler.next(error);
                 }
-                error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-                final retryResponse = await _dio.fetch(error.requestOptions);
-                return handler.resolve(retryResponse);
               }
             } catch (e) {
               await _tokenHandler.clearTokens();
+              errorHandled = true; // 토큰 리프레시 실패는 이미 처리됨
             }
           }
+          
+          // 처리되지 않은 에러만 전역 알림 표시
+          if (!errorHandled) {
+            // skipGlobalError 플래그가 있으면 스킵
+            final skipGlobalError = error.requestOptions.extra['skipGlobalError'] == true;
+            if (!skipGlobalError) {
+              GlobalErrorHandler.showError(error);
+            }
+          }
+          
           return handler.next(error);
         },
       ),
