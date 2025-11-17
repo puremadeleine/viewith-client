@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viewith/feature/profile/presentation/controller/bookmark_controller.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 import 'package:viewith/data/member/response/bookmark_response.dart';
 
 class BookmarkScreen extends ConsumerStatefulWidget {
@@ -109,12 +110,18 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> with SingleTick
                   ),
                 );
               },
-              onFailure: (error) => Center(child: Text('Error: $error')),
+              onFailure: (error) => error_widget.ErrorWidget(
+                error: error,
+                onRetry: () => ref.invalidate(fetchBookmarksProvider),
+              ),
             ),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
-            error: (err, stack) => Center(child: Text('Error: $err')),
+            error: (err, stack) => error_widget.ErrorWidget(
+              error: error_widget.mapExceptionToError(err),
+              onRetry: () => ref.invalidate(fetchBookmarksProvider),
+            ),
           ),
     );
   }

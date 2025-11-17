@@ -17,6 +17,7 @@ import 'package:viewith/data/venue/request/report_review_request.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/review_detail_controller.dart';
 import 'package:viewith/feature/seatmap/presentation/controller/review_list_controller.dart';
 import 'package:viewith/feature/profile/presentation/screen/written_reviews_screen.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 
 class ReviewDetailScreen extends ConsumerStatefulWidget {
   final int id;
@@ -30,26 +31,6 @@ class ReviewDetailScreen extends ConsumerStatefulWidget {
 class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   int _currentIndex = 0;
   final CarouselSliderController _carouselController = CarouselSliderController();
-
-  String _getErrorMessage(Object error) {
-    if (error is DioException) {
-      if (error.response?.statusCode == 401) {
-        return '로그인이 필요한 기능입니다. 로그인 후 다시 시도해주세요.';
-      }
-      if (error.response?.statusCode == 404) {
-        return '존재하지 않는 리뷰입니다.';
-      }
-    } else if (error is BaseError) {
-      if (error.code == 401) {
-        return '로그인이 필요한 기능입니다. 로그인 후 다시 시도해주세요.';
-      }
-      if (error.code == 404) {
-        return '존재하지 않는 리뷰입니다.';
-      }
-      return error.message;
-    }
-    return '알 수 없는 에러가 발생했습니다. 잠시 후 다시 시도해주세요.';
-  }
 
   bool _isAuthError(Object error) {
     if (error is DioException) {
@@ -311,50 +292,44 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
             if (_isAuthError(error)) {
               _handleAuthError();
             }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_getErrorMessage(error)),
-                  const SizedBox(height: 16),
-                  if (_isAuthError(error))
-                    ElevatedButton(
-                      onPressed: () async {
-                        await ref.read(tokenHandlerProvider).clearTokens();
-                        if (mounted) {
-                          context.goNamed(AppRoute.signIn.name);
-                        }
-                      },
-                      child: const Text('로그인하기'),
-                    ),
-                ],
-              ),
+            return error_widget.ErrorWidget(
+              error: error,
+              customMessage: _isAuthError(error) 
+                  ? '로그인이 필요한 기능입니다.\n로그인 후 다시 시도해주세요.'
+                  : null,
+              onRetry: _isAuthError(error)
+                  ? () async {
+                      await ref.read(tokenHandlerProvider).clearTokens();
+                      if (mounted) {
+                        context.goNamed(AppRoute.signIn.name);
+                      }
+                    }
+                  : () => ref.invalidate(reviewDetailProvider(widget.id)),
             );
           },
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) {
-          if (_isAuthError(error)) {
+          final baseError = error_widget.mapExceptionToError(error);
+          final isAuthError = _isAuthError(error);
+          
+          if (isAuthError) {
             _handleAuthError();
           }
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(_getErrorMessage(error)),
-                const SizedBox(height: 16),
-                if (_isAuthError(error))
-                  ElevatedButton(
-                    onPressed: () async {
-                      await ref.read(tokenHandlerProvider).clearTokens();
-                      if (mounted) {
-                        context.goNamed(AppRoute.signIn.name);
-                      }
-                    },
-                    child: const Text('로그인하기'),
-                  ),
-              ],
-            ),
+          
+          return error_widget.ErrorWidget(
+            error: baseError,
+            customMessage: isAuthError
+                ? '로그인이 필요한 기능입니다.\n로그인 후 다시 시도해주세요.'
+                : null,
+            onRetry: isAuthError
+                ? () async {
+                    await ref.read(tokenHandlerProvider).clearTokens();
+                    if (mounted) {
+                      context.goNamed(AppRoute.signIn.name);
+                    }
+                  }
+                : () => ref.invalidate(reviewDetailProvider(widget.id)),
           );
         },
       ),

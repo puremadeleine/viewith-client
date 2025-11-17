@@ -6,6 +6,7 @@ import 'package:viewith/feature/home/presentation/controller/home_controller.dar
 import 'package:viewith/feature/home/presentation/widget/venue_item.dart';
 import 'package:viewith/feature/profile/presentation/controller/profile_controller.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 import 'package:viewith/di/app_providers.dart';
 
 import '../../../../data/venue/response/venue.dart';
@@ -51,11 +52,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       body: state.when(
         data: (venues) => _buildBody(venues, nickname),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(
-            'Error: $err',
-            style: AppDesign.typo.body1(color: AppDesign.colors.gray500),
-          ),
+        error: (err, stack) => error_widget.ErrorWidget(
+          error: error_widget.mapExceptionToError(err),
+          onRetry: () => ref.invalidate(homeControllerProvider),
         ),
       ),
     );

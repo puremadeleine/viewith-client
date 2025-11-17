@@ -22,6 +22,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:viewith/ui/widgets/custom_toggle_switch.dart';
 import 'package:viewith/ui/widgets/dialog/guest_dialog.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 import 'package:viewith/di/app_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -93,7 +94,10 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => error_widget.ErrorWidget(
+          error: error_widget.mapExceptionToError(err),
+          onRetry: () => ref.invalidate(reviewListControllerProvider(widget.id)),
+        ),
       ),
     );
   }

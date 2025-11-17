@@ -6,6 +6,7 @@ import 'package:viewith/core/result/paginated_response.dart';
 import 'package:viewith/data/member/member_repository_providers.dart';
 import 'package:viewith/data/venue/response/review.dart';
 import 'package:viewith/ui/app_design.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 import 'package:viewith/feature/seatmap/presentation/widget/review_item.dart';
 
 // export for use in other screens
@@ -28,7 +29,10 @@ class WrittenReviewsScreen extends ConsumerWidget {
       body: ref.watch(writtenReviewsProvider).when(
             data: (page) => _Content(reviews: page.list),
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err')),
+            error: (err, stack) => error_widget.ErrorWidget(
+              error: error_widget.mapExceptionToError(err),
+              onRetry: () => ref.invalidate(writtenReviewsProvider),
+            ),
           ),
     );
   }

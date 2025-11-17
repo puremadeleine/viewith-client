@@ -11,6 +11,7 @@ import 'package:viewith/core/providers/current_user_provider.dart';
 import 'package:viewith/feature/profile/presentation/model/profile_enum.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/widgets/dialog/withdraw_dialog.dart';
+import 'package:viewith/ui/widgets/error_widget.dart' as error_widget;
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -88,10 +89,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
     return ref.watch(fetchProfileProvider).when(
           data: (data) => data.match(
             onSuccess: (profile) => _buildBody(profile),
-            onFailure: (error) => Center(child: Text('Error: $error')),
+            onFailure: (error) => error_widget.ErrorWidget(
+              error: error,
+              onRetry: () => ref.invalidate(fetchProfileProvider),
+            ),
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Center(child: Text('Error: $err')),
+          error: (err, stack) => error_widget.ErrorWidget(
+            error: error_widget.mapExceptionToError(err),
+            onRetry: () => ref.invalidate(fetchProfileProvider),
+          ),
         );
   }
 
