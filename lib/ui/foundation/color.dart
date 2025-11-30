@@ -14,6 +14,12 @@ class AppColors {
 
   final Color red900 = const Color(0xFFF64C4C);
 
+  final Color green500 = const Color(0xFFE5F5EC);
+  final Color green600 = const Color(0xFF8FE0B0);
+  final Color green700 = const Color(0xFF97D4B4);
+  final Color green800 = const Color(0xFF6BC497);
+  final Color green900 = const Color(0xFF06C755);
+
   final Color white = const Color(0xFFFFFFFF);
   final Color kakao = const Color(0xFFFEE500);
 }

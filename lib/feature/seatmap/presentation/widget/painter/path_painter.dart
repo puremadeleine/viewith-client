@@ -28,15 +28,15 @@ class PathPainter extends CustomPainter {
         ..style = PaintingStyle.fill;
       canvas.drawPath(section.path, fillPaint);
 
-      final borderColor = borderColors[section.id];
-      if (borderColor != null) {
-        final borderPaint = Paint()
-          ..color = borderColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.0 / scale; // 스케일에 따라 두께 조절
+      // final borderColor = borderColors[section.id];
+      // if (borderColor != null) {
+      //   final borderPaint = Paint()
+      //     ..color = borderColor
+      //     ..style = PaintingStyle.stroke
+      //     ..strokeWidth = 1.0 / scale; // 스케일에 따라 두께 조절
 
-        canvas.drawPath(section.path, borderPaint);
-      }
+      //   canvas.drawPath(section.path, borderPaint);
+      // }
     }
   }
 

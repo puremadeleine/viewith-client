@@ -123,7 +123,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
           ],
         ),
       ),
-      backgroundColor: AppDesign.colors.gray100,
+      backgroundColor: AppDesign.colors.white,
       centerTitle: true,
     );
   }

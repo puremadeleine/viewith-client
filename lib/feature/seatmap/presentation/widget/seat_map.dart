@@ -60,9 +60,9 @@ class _SeatMapState extends State<SeatMap> {
   double _svgHeight = 0;
   final double _initialScale = 1.0;
 
-  final Color defaultColor = AppDesign.colors.gray100;
+  final Color defaultColor = AppDesign.colors.white;
   final Color selectedColor = AppDesign.colors.gray900;
-  final Color disabledColor = AppDesign.colors.gray100;
+  final Color disabledColor = AppDesign.colors.gray300;
   final Color defaultBorderColor = AppDesign.colors.gray300;
   final Color selectedBorderColor = AppDesign.colors.gray50;
   final Color defaultTextColor = AppDesign.colors.gray900;
@@ -275,12 +275,32 @@ class _SeatMapState extends State<SeatMap> {
       case SeatMapWritable():
         return;
       case SeatMapReadOnly(:final reviewCount):
+        if (reviewCount.isEmpty) return;
+
+  
+        Color getColorForCount(int count) {
+          if (count <= 0) {
+            return defaultColor;
+          }
+          
+          if (0 < count && count < 10) {
+            return AppDesign.colors.green500;
+          } else if (10 < count && count < 30) {
+            return AppDesign.colors.green700;
+          } else {
+            return AppDesign.colors.green900;
+          }
+        }
+
         for (var section in sections) {
           final count = reviewCount[section.id];
           if (count == null) continue;
-          if (count < 10) {
-            // 갯수에 따라 조정 필요함
-            colors[section.id] = AppDesign.colors.gray50;
+
+          // 배경/텍스트/비활성 섹션은 그대로 두고, 실제 좌석 섹션만 색상 반영
+          if (section.id.startsWith(Strings.seatPrefix)) {
+            final color = getColorForCount(count);
+            colors[section.id] = color;
+            borderColors[section.id] = defaultBorderColor;
           }
         }
     }
@@ -321,7 +341,7 @@ class _SeatMapState extends State<SeatMap> {
 
   void _setColor(String id, {bool isBackground = false}) {
     if (isBackground) {
-      colors[id] = AppDesign.colors.white;
+      colors[id] = AppDesign.colors.gray200;
       return;
     }
     if (id.startsWith(Strings.disablePrefix)) {
