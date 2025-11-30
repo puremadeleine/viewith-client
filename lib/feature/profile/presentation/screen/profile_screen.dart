@@ -95,10 +95,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
             ),
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => error_widget.ErrorWidget(
-            error: error_widget.mapExceptionToError(err),
-            onRetry: () => ref.invalidate(fetchProfileProvider),
-          ),
+          error: (err, stack) {
+            final baseError = error_widget.mapExceptionToError(err);
+
+            // 프로필 조회 시 401(Unauthorized) → 토큰 만료/로그인 필요 상황
+            // 이 경우 단순 에러 위젯 대신 게스트 전용 뷰를 보여준다.
+            if (baseError.code == 401) {
+              return _buildGuestModeBody();
+            }
+
+            return error_widget.ErrorWidget(
+              error: baseError,
+              onRetry: () => ref.invalidate(fetchProfileProvider),
+            );
+          },
         );
   }
 
