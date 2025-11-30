@@ -42,50 +42,56 @@ class _WritingVenuesState extends ConsumerState<WritingReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTitle('후기를 작성해주세요.'),
-            _buildSubTitle('보다 생생한 시야 후기를 위해 사진을 첨부해주면 더 좋아요.\n다른 관람객분들의 얼굴이 나온 사진은 꼭 가려주세요!'),
-            AppDesign.spacing.h12,
-            Row(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildUploadButton(),
-                AppDesign.spacing.w8,
-                Expanded(child: _buildPhotoList()),
+                _buildTitle('후기를 작성해주세요.'),
+                _buildSubTitle('보다 생생한 시야 후기를 위해 사진을 첨부해주면 더 좋아요.\n다른 관람객분들의 얼굴이 나온 사진은 꼭 가려주세요!'),
+                AppDesign.spacing.h12,
+                Row(
+                  children: [
+                    _buildUploadButton(),
+                    AppDesign.spacing.w8,
+                    Expanded(child: _buildPhotoList()),
+                  ],
+                ),
+                AppDesign.spacing.h12,
+                TextField(
+                  controller: _textEditingController,
+                  maxLines: 6,
+                  maxLength: 300,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.5),
+                    ),
+                    hintText: '내용을 입력하세요',
+                  ),
+                  buildCounter: (
+                    BuildContext context, {
+                    required int currentLength,
+                    required bool isFocused,
+                    int? maxLength,
+                  }) {
+                    return null;
+                  },
+                ),
+                AppDesign.spacing.h4,
+                _buildCounter(300),
+                AppDesign.spacing.h24,
+                _buildNextButton(),
+                AppDesign.spacing.h24,
               ],
             ),
-            AppDesign.spacing.h12,
-            TextField(
-              controller: _textEditingController,
-              maxLines: 6,
-              maxLength: 300,
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.5),
-                ),
-                hintText: '내용을 입력하세요',
-              ),
-              buildCounter: (
-                BuildContext context, {
-                required int currentLength,
-                required bool isFocused,
-                int? maxLength,
-              }) {
-                return null;
-              },
-            ),
-            AppDesign.spacing.h4,
-            _buildCounter(300),
-            const Spacer(),
-            _buildNextButton(),
-          ],
+          ),
         ),
       ),
     );

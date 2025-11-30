@@ -389,10 +389,28 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
                 });
               },
             ),
-            items: images.map((url) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(url, fit: BoxFit.cover, width: double.infinity),
+            items: images.asMap().entries.map((entry) {
+              final index = entry.key;
+              final url = entry.value;
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => FullscreenImageViewer(
+                        images: images,
+                        initialIndex: index,
+                      ),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                ),
               );
             }).toList(),
           ),
@@ -477,6 +495,77 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
       child: Icon(
         bookmarked ? Icons.bookmark : Icons.bookmark_border,
         size: 16,
+      ),
+    );
+  }
+}
+
+class FullscreenImageViewer extends StatefulWidget {
+  final List<String> images;
+  final int initialIndex;
+
+  const FullscreenImageViewer({
+    super.key,
+    required this.images,
+    required this.initialIndex,
+  });
+
+  @override
+  State<FullscreenImageViewer> createState() => _FullscreenImageViewerState();
+}
+
+class _FullscreenImageViewerState extends State<FullscreenImageViewer> {
+  late final PageController _pageController;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+    _pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        title: Text(
+          '${_currentIndex + 1} / ${widget.images.length}',
+          style: AppDesign.typo.body1Bold(color: Colors.white),
+        ),
+      ),
+      body: PageView.builder(
+        controller: _pageController,
+        itemCount: widget.images.length,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        itemBuilder: (context, index) {
+          final url = widget.images[index];
+          return Center(
+            child: InteractiveViewer(
+              minScale: 1.0,
+              maxScale: 4.0,
+              child: Image.network(
+                url,
+                fit: BoxFit.contain,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
