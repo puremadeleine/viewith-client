@@ -122,8 +122,8 @@ class _FloorRowSelectorState extends State<FloorRowSelector> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
+        return ListView(
+          shrinkWrap: true,
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),

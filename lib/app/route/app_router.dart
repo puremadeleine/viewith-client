@@ -13,6 +13,7 @@ import 'package:viewith/feature/home/presentation/screen/home_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/profile_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/bookmark_screen.dart';
 import 'package:viewith/feature/profile/presentation/screen/written_reviews_screen.dart';
+import 'package:viewith/feature/profile/presentation/screen/bookmarked_seat_reviews_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_detail_screen.dart';
 import 'package:viewith/feature/seatmap/presentation/screen/review_list_screen.dart';
 import 'package:viewith/feature/writing/search/presentation/writing_performance_screen.dart';
@@ -166,6 +167,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final id = state.pathParameters['id']!;
           return ReviewDetailScreen(id: int.parse(id));
+        },
+      ),
+      GoRoute(
+        path: AppRoute.bookmarkedSeatReviews.path,
+        name: AppRoute.bookmarkedSeatReviews.name,
+        builder: (context, state) {
+          final args = state.extra as BookmarkedSeatReviewsArgs;
+          return BookmarkedSeatReviewsScreen(args: args);
         },
       ),
     ],

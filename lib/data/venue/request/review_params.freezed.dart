@@ -31,7 +31,7 @@ mixin _$ReviewParams {
   @JsonKey(name: 'section', includeIfNull: false)
   String? get section => throw _privateConstructorUsedError;
   @JsonKey(name: 'seat_row', includeIfNull: false)
-  int? get row => throw _privateConstructorUsedError;
+  String? get row => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_summary')
   bool get isSummary => throw _privateConstructorUsedError;
 
@@ -58,7 +58,7 @@ abstract class $ReviewParamsCopyWith<$Res> {
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) String? floor,
       @JsonKey(name: 'section', includeIfNull: false) String? section,
-      @JsonKey(name: 'seat_row', includeIfNull: false) int? row,
+      @JsonKey(name: 'seat_row', includeIfNull: false) String? row,
       @JsonKey(name: 'is_summary') bool isSummary});
 }
 
@@ -114,7 +114,7 @@ class _$ReviewParamsCopyWithImpl<$Res, $Val extends ReviewParams>
       row: freezed == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       isSummary: null == isSummary
           ? _value.isSummary
           : isSummary // ignore: cast_nullable_to_non_nullable
@@ -138,7 +138,7 @@ abstract class _$$ReviewParamsImplCopyWith<$Res>
       @JsonKey(name: 'sort_type') ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) String? floor,
       @JsonKey(name: 'section', includeIfNull: false) String? section,
-      @JsonKey(name: 'seat_row', includeIfNull: false) int? row,
+      @JsonKey(name: 'seat_row', includeIfNull: false) String? row,
       @JsonKey(name: 'is_summary') bool isSummary});
 }
 
@@ -192,7 +192,7 @@ class __$$ReviewParamsImplCopyWithImpl<$Res>
       row: freezed == row
           ? _value.row
           : row // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       isSummary: null == isSummary
           ? _value.isSummary
           : isSummary // ignore: cast_nullable_to_non_nullable
@@ -237,7 +237,7 @@ class _$ReviewParamsImpl implements _ReviewParams {
   final String? section;
   @override
   @JsonKey(name: 'seat_row', includeIfNull: false)
-  final int? row;
+  final String? row;
   @override
   @JsonKey(name: 'is_summary')
   final bool isSummary;
@@ -293,7 +293,7 @@ abstract class _ReviewParams implements ReviewParams {
       @JsonKey(name: 'sort_type') final ReviewSortType sortType,
       @JsonKey(name: 'floor', includeIfNull: false) final String? floor,
       @JsonKey(name: 'section', includeIfNull: false) final String? section,
-      @JsonKey(name: 'seat_row', includeIfNull: false) final int? row,
+      @JsonKey(name: 'seat_row', includeIfNull: false) final String? row,
       @JsonKey(name: 'is_summary') final bool isSummary}) = _$ReviewParamsImpl;
 
   factory _ReviewParams.fromJson(Map<String, dynamic> json) =
@@ -317,7 +317,7 @@ abstract class _ReviewParams implements ReviewParams {
   String? get section;
   @override
   @JsonKey(name: 'seat_row', includeIfNull: false)
-  int? get row;
+  String? get row;
   @override
   @JsonKey(name: 'is_summary')
   bool get isSummary;

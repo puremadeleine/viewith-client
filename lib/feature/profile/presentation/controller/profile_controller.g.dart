@@ -11,7 +11,7 @@ String _$fetchProfileHash() => r'9b542dc71ae1d5e2e0e15f0fe8b3775a99815f96';
 /// See also [fetchProfile].
 @ProviderFor(fetchProfile)
 final fetchProfileProvider =
-    FutureProvider<Result<ProfileResponse, BaseError>>.internal(
+    AutoDisposeFutureProvider<Result<ProfileResponse, BaseError>>.internal(
   fetchProfile,
   name: r'fetchProfileProvider',
   debugGetCreateSourceHash:
@@ -22,7 +22,8 @@ final fetchProfileProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef FetchProfileRef = FutureProviderRef<Result<ProfileResponse, BaseError>>;
+typedef FetchProfileRef
+    = AutoDisposeFutureProviderRef<Result<ProfileResponse, BaseError>>;
 String _$withdrawControllerHash() =>
     r'd8d1e87e94b59343e6ca107b2f4c9b94642a350a';
 

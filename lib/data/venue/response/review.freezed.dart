@@ -828,6 +828,8 @@ BookmarkData _$BookmarkDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookmarkData {
+  @JsonKey(name: 'seat_id')
+  int get seatId => throw _privateConstructorUsedError;
   @JsonKey(name: 'floor')
   String get floor => throw _privateConstructorUsedError;
   @JsonKey(name: 'section')
@@ -858,7 +860,8 @@ abstract class $BookmarkDataCopyWith<$Res> {
       _$BookmarkDataCopyWithImpl<$Res, BookmarkData>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'floor') String floor,
+      {@JsonKey(name: 'seat_id') int seatId,
+      @JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
       @JsonKey(name: 'seat_row') String row,
       @JsonKey(name: 'seat_column') String column,
@@ -881,6 +884,7 @@ class _$BookmarkDataCopyWithImpl<$Res, $Val extends BookmarkData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? seatId = null,
     Object? floor = null,
     Object? section = null,
     Object? row = null,
@@ -889,6 +893,10 @@ class _$BookmarkDataCopyWithImpl<$Res, $Val extends BookmarkData>
     Object? bookmarked = null,
   }) {
     return _then(_value.copyWith(
+      seatId: null == seatId
+          ? _value.seatId
+          : seatId // ignore: cast_nullable_to_non_nullable
+              as int,
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -926,7 +934,8 @@ abstract class _$$BookmarkDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'floor') String floor,
+      {@JsonKey(name: 'seat_id') int seatId,
+      @JsonKey(name: 'floor') String floor,
       @JsonKey(name: 'section') String section,
       @JsonKey(name: 'seat_row') String row,
       @JsonKey(name: 'seat_column') String column,
@@ -947,6 +956,7 @@ class __$$BookmarkDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? seatId = null,
     Object? floor = null,
     Object? section = null,
     Object? row = null,
@@ -955,6 +965,10 @@ class __$$BookmarkDataImplCopyWithImpl<$Res>
     Object? bookmarked = null,
   }) {
     return _then(_$BookmarkDataImpl(
+      seatId: null == seatId
+          ? _value.seatId
+          : seatId // ignore: cast_nullable_to_non_nullable
+              as int,
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -987,7 +1001,8 @@ class __$$BookmarkDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BookmarkDataImpl implements _BookmarkData {
   const _$BookmarkDataImpl(
-      {@JsonKey(name: 'floor') required this.floor,
+      {@JsonKey(name: 'seat_id') required this.seatId,
+      @JsonKey(name: 'floor') required this.floor,
       @JsonKey(name: 'section') required this.section,
       @JsonKey(name: 'seat_row') required this.row,
       @JsonKey(name: 'seat_column') required this.column,
@@ -997,6 +1012,9 @@ class _$BookmarkDataImpl implements _BookmarkData {
   factory _$BookmarkDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookmarkDataImplFromJson(json);
 
+  @override
+  @JsonKey(name: 'seat_id')
+  final int seatId;
   @override
   @JsonKey(name: 'floor')
   final String floor;
@@ -1018,7 +1036,7 @@ class _$BookmarkDataImpl implements _BookmarkData {
 
   @override
   String toString() {
-    return 'BookmarkData(floor: $floor, section: $section, row: $row, column: $column, block: $block, bookmarked: $bookmarked)';
+    return 'BookmarkData(seatId: $seatId, floor: $floor, section: $section, row: $row, column: $column, block: $block, bookmarked: $bookmarked)';
   }
 
   @override
@@ -1026,6 +1044,7 @@ class _$BookmarkDataImpl implements _BookmarkData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BookmarkDataImpl &&
+            (identical(other.seatId, seatId) || other.seatId == seatId) &&
             (identical(other.floor, floor) || other.floor == floor) &&
             (identical(other.section, section) || other.section == section) &&
             (identical(other.row, row) || other.row == row) &&
@@ -1037,8 +1056,8 @@ class _$BookmarkDataImpl implements _BookmarkData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, floor, section, row, column, block, bookmarked);
+  int get hashCode => Object.hash(
+      runtimeType, seatId, floor, section, row, column, block, bookmarked);
 
   /// Create a copy of BookmarkData
   /// with the given fields replaced by the non-null parameter values.
@@ -1058,7 +1077,8 @@ class _$BookmarkDataImpl implements _BookmarkData {
 
 abstract class _BookmarkData implements BookmarkData {
   const factory _BookmarkData(
-          {@JsonKey(name: 'floor') required final String floor,
+          {@JsonKey(name: 'seat_id') required final int seatId,
+          @JsonKey(name: 'floor') required final String floor,
           @JsonKey(name: 'section') required final String section,
           @JsonKey(name: 'seat_row') required final String row,
           @JsonKey(name: 'seat_column') required final String column,
@@ -1069,6 +1089,9 @@ abstract class _BookmarkData implements BookmarkData {
   factory _BookmarkData.fromJson(Map<String, dynamic> json) =
       _$BookmarkDataImpl.fromJson;
 
+  @override
+  @JsonKey(name: 'seat_id')
+  int get seatId;
   @override
   @JsonKey(name: 'floor')
   String get floor;

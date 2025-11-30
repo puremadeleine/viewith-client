@@ -92,7 +92,10 @@ class WritingRatingScreen extends ConsumerWidget {
               context.goNamed(
                 AppRoute.reviewDetail.name,
                 pathParameters: {'id': reviewId.toString()},
-                extra: {'fromHome': true}, // 홈에서 온 것처럼 처리
+                extra: {
+                  'fromHome': true, // 홈에서 온 것처럼 처리
+                  'venueId': venue.id.toString(),
+                },
               );
             }
           }

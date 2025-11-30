@@ -423,11 +423,13 @@ mixin _$BookmarkedSeat {
   @JsonKey(name: 'bookmark_id')
   int get bookmarkId => throw _privateConstructorUsedError;
   @JsonKey(name: 'bookmark_section')
-  String? get bookmarkSection => throw _privateConstructorUsedError;
+  String? get bookmarkSection =>
+      throw _privateConstructorUsedError; // 서버 응답: "bookmark_row": "B" 와 같이 문자열이므로 String? 으로 정의
   @JsonKey(name: 'bookmark_row')
-  int? get bookmarkRow => throw _privateConstructorUsedError;
+  String? get bookmarkRow =>
+      throw _privateConstructorUsedError; // 서버 응답: "last_update_date": 1764511533916 (epoch millis) 이므로 int? 로 정의
   @JsonKey(name: 'last_update_date')
-  DateTime? get lastUpdateDate => throw _privateConstructorUsedError;
+  int? get lastUpdateDate => throw _privateConstructorUsedError;
 
   /// Serializes this BookmarkedSeat to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -448,8 +450,8 @@ abstract class $BookmarkedSeatCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'bookmark_id') int bookmarkId,
       @JsonKey(name: 'bookmark_section') String? bookmarkSection,
-      @JsonKey(name: 'bookmark_row') int? bookmarkRow,
-      @JsonKey(name: 'last_update_date') DateTime? lastUpdateDate});
+      @JsonKey(name: 'bookmark_row') String? bookmarkRow,
+      @JsonKey(name: 'last_update_date') int? lastUpdateDate});
 }
 
 /// @nodoc
@@ -484,11 +486,11 @@ class _$BookmarkedSeatCopyWithImpl<$Res, $Val extends BookmarkedSeat>
       bookmarkRow: freezed == bookmarkRow
           ? _value.bookmarkRow
           : bookmarkRow // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       lastUpdateDate: freezed == lastUpdateDate
           ? _value.lastUpdateDate
           : lastUpdateDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int?,
     ) as $Val);
   }
 }
@@ -504,8 +506,8 @@ abstract class _$$BookmarkedSeatImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'bookmark_id') int bookmarkId,
       @JsonKey(name: 'bookmark_section') String? bookmarkSection,
-      @JsonKey(name: 'bookmark_row') int? bookmarkRow,
-      @JsonKey(name: 'last_update_date') DateTime? lastUpdateDate});
+      @JsonKey(name: 'bookmark_row') String? bookmarkRow,
+      @JsonKey(name: 'last_update_date') int? lastUpdateDate});
 }
 
 /// @nodoc
@@ -538,11 +540,11 @@ class __$$BookmarkedSeatImplCopyWithImpl<$Res>
       bookmarkRow: freezed == bookmarkRow
           ? _value.bookmarkRow
           : bookmarkRow // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       lastUpdateDate: freezed == lastUpdateDate
           ? _value.lastUpdateDate
           : lastUpdateDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int?,
     ));
   }
 }
@@ -565,12 +567,14 @@ class _$BookmarkedSeatImpl implements _BookmarkedSeat {
   @override
   @JsonKey(name: 'bookmark_section')
   final String? bookmarkSection;
+// 서버 응답: "bookmark_row": "B" 와 같이 문자열이므로 String? 으로 정의
   @override
   @JsonKey(name: 'bookmark_row')
-  final int? bookmarkRow;
+  final String? bookmarkRow;
+// 서버 응답: "last_update_date": 1764511533916 (epoch millis) 이므로 int? 로 정의
   @override
   @JsonKey(name: 'last_update_date')
-  final DateTime? lastUpdateDate;
+  final int? lastUpdateDate;
 
   @override
   String toString() {
@@ -618,8 +622,8 @@ abstract class _BookmarkedSeat implements BookmarkedSeat {
   const factory _BookmarkedSeat(
           {@JsonKey(name: 'bookmark_id') required final int bookmarkId,
           @JsonKey(name: 'bookmark_section') final String? bookmarkSection,
-          @JsonKey(name: 'bookmark_row') final int? bookmarkRow,
-          @JsonKey(name: 'last_update_date') final DateTime? lastUpdateDate}) =
+          @JsonKey(name: 'bookmark_row') final String? bookmarkRow,
+          @JsonKey(name: 'last_update_date') final int? lastUpdateDate}) =
       _$BookmarkedSeatImpl;
 
   factory _BookmarkedSeat.fromJson(Map<String, dynamic> json) =
@@ -630,13 +634,15 @@ abstract class _BookmarkedSeat implements BookmarkedSeat {
   int get bookmarkId;
   @override
   @JsonKey(name: 'bookmark_section')
-  String? get bookmarkSection;
+  String?
+      get bookmarkSection; // 서버 응답: "bookmark_row": "B" 와 같이 문자열이므로 String? 으로 정의
   @override
   @JsonKey(name: 'bookmark_row')
-  int? get bookmarkRow;
+  String?
+      get bookmarkRow; // 서버 응답: "last_update_date": 1764511533916 (epoch millis) 이므로 int? 로 정의
   @override
   @JsonKey(name: 'last_update_date')
-  DateTime? get lastUpdateDate;
+  int? get lastUpdateDate;
 
   /// Create a copy of BookmarkedSeat
   /// with the given fields replaced by the non-null parameter values.

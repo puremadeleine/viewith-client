@@ -16,7 +16,7 @@ _$ReviewParamsImpl _$$ReviewParamsImplFromJson(Map<String, dynamic> json) =>
               ReviewSortType.latest,
       floor: json['floor'] as String? ?? "1",
       section: json['section'] as String?,
-      row: (json['seat_row'] as num?)?.toInt(),
+      row: json['seat_row'] as String?,
       isSummary: json['is_summary'] as bool? ?? false,
     );
 

@@ -29,8 +29,10 @@ class BookmarkedSeat with _$BookmarkedSeat {
   const factory BookmarkedSeat({
     @JsonKey(name: 'bookmark_id') required int bookmarkId,
     @JsonKey(name: 'bookmark_section') String? bookmarkSection,
-    @JsonKey(name: 'bookmark_row') int? bookmarkRow,
-    @JsonKey(name: 'last_update_date') DateTime? lastUpdateDate,
+    // 서버 응답: "bookmark_row": "B" 와 같이 문자열이므로 String? 으로 정의
+    @JsonKey(name: 'bookmark_row') String? bookmarkRow,
+    // 서버 응답: "last_update_date": 1764511533916 (epoch millis) 이므로 int? 로 정의
+    @JsonKey(name: 'last_update_date') int? lastUpdateDate,
   }) = _BookmarkedSeat;
 
   factory BookmarkedSeat.fromJson(Map<String, dynamic> json) => _$BookmarkedSeatFromJson(json);

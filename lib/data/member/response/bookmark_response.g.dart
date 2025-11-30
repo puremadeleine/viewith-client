@@ -41,10 +41,8 @@ _$BookmarkedSeatImpl _$$BookmarkedSeatImplFromJson(Map<String, dynamic> json) =>
     _$BookmarkedSeatImpl(
       bookmarkId: (json['bookmark_id'] as num).toInt(),
       bookmarkSection: json['bookmark_section'] as String?,
-      bookmarkRow: (json['bookmark_row'] as num?)?.toInt(),
-      lastUpdateDate: json['last_update_date'] == null
-          ? null
-          : DateTime.parse(json['last_update_date'] as String),
+      bookmarkRow: json['bookmark_row'] as String?,
+      lastUpdateDate: (json['last_update_date'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$BookmarkedSeatImplToJson(
@@ -53,5 +51,5 @@ Map<String, dynamic> _$$BookmarkedSeatImplToJson(
       'bookmark_id': instance.bookmarkId,
       'bookmark_section': instance.bookmarkSection,
       'bookmark_row': instance.bookmarkRow,
-      'last_update_date': instance.lastUpdateDate?.toIso8601String(),
+      'last_update_date': instance.lastUpdateDate,
     };

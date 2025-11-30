@@ -31,6 +31,7 @@ class ReviewDetailScreen extends ConsumerStatefulWidget {
 class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   int _currentIndex = 0;
   final CarouselSliderController _carouselController = CarouselSliderController();
+  bool _isBookmarkLoading = false;
 
   bool _isAuthError(Object error) {
     if (error is DioException) {
@@ -219,6 +220,97 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('신고 중 오류가 발생했습니다: $e')),
         );
+      }
+    }
+  }
+
+  Future<void> _onBookmarkTapped(Review review) async {
+    if (_isBookmarkLoading) return;
+
+    final goRouterState = GoRouterState.of(context);
+    final extra = goRouterState.extra as Map<String, dynamic>?;
+    final venueIdString = extra?['venueId'] as String?;
+
+    if (venueIdString == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('공연장 정보가 없어 즐겨찾기할 수 없습니다.')),
+        );
+      }
+      return;
+    }
+
+    final seatId = review.bookmarkInfo?.seatId;
+    if (seatId == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('좌석 정보가 없어 즐겨찾기할 수 없습니다.')),
+        );
+      }
+      return;
+    }
+
+    setState(() {
+      _isBookmarkLoading = true;
+    });
+
+    try {
+      final repository = ref.read(venueRepositoryProvider);
+      final venueId = int.tryParse(venueIdString);
+
+      if (venueId == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('공연장 ID 형식이 올바르지 않습니다.')),
+          );
+        }
+        return;
+      }
+
+      final isBookmarked = review.bookmarkInfo?.bookmarked ?? false;
+      final result = isBookmarked
+          ? await repository.deleteSeatBookmark(
+              venueId: venueId,
+              seatId: seatId,
+            )
+          : await repository.bookmarkSeat(
+              venueId: venueId,
+              seatId: seatId,
+            );
+
+      result.match(
+        onSuccess: (_) {
+          if (!mounted) return;
+
+          // 즐겨찾기 상태 최신화
+          ref.invalidate(reviewDetailProvider(widget.id));
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                isBookmarked ? '좌석 즐겨찾기가 해제되었습니다.' : '좌석이 즐겨찾기에 추가되었습니다.',
+              ),
+            ),
+          );
+        },
+        onFailure: (error) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('즐겨찾기 실패: ${error.message}')),
+          );
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('즐겨찾기 중 오류가 발생했습니다: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBookmarkLoading = false;
+        });
       }
     }
   }
@@ -461,7 +553,10 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
           const SizedBox(height: 12),
           Row(
             children: [
-              _buildTagButton("${review.seatRawData.floor}층 ${review.seatRawData.row}열", review.bookmarkInfo?.bookmarked ?? false),
+              _buildTagButton(
+                "${review.seatRawData.floor}층 ${review.seatRawData.row}열",
+                review,
+              ),
             ],
           ),
         ],
@@ -469,7 +564,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     );
   }
 
-  Widget _buildTagButton(String label, bool bookmarked) {
+  Widget _buildTagButton(String label, Review review) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
@@ -479,7 +574,7 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
       ),
       child: Row(
         children: [
-          _buildBookmarkButton(bookmarked),
+          _buildBookmarkButton(review),
           const SizedBox(width: 4),
           Text(label, style: const TextStyle(fontSize: 14)),
         ],
@@ -487,15 +582,21 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
     );
   }
 
-  Widget _buildBookmarkButton(bool bookmarked) {
+  Widget _buildBookmarkButton(Review review) {
+    final bookmarked = review.bookmarkInfo?.bookmarked ?? false;
+
     return GestureDetector(
-      onTap: () {
-        // TODO: Implement bookmark toggle
-      },
-      child: Icon(
-        bookmarked ? Icons.bookmark : Icons.bookmark_border,
-        size: 16,
-      ),
+      onTap: _isBookmarkLoading ? null : () => _onBookmarkTapped(review),
+      child: _isBookmarkLoading
+          ? const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Icon(
+              bookmarked ? Icons.bookmark : Icons.bookmark_border,
+              size: 16,
+            ),
     );
   }
 }

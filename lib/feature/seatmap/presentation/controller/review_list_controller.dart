@@ -61,16 +61,12 @@ class ReviewListController extends _$ReviewListController {
       throw Exception('Venue ID is required');
     }
     
-    int? parsedSeatRow;
-    if (currentState?.selectedFloor != null && currentState?.selectedRow != null) {
-      parsedSeatRow = int.parse(currentState!.selectedRow!);
-    }
-
     final params = ReviewParams(
       venueId: targetVenueId,
       sortType: currentState?.sortType ?? ReviewSortType.latest,
       floor: currentState?.selectedFloor,
-      row: parsedSeatRow,
+      // seat_row는 서버에서 문자열로 처리되므로 그대로 전달
+      row: currentState?.selectedRow,
     );
     
     final reviewsResult = await ref.read(venueRepositoryProvider).fetchReviews(params);

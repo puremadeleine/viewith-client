@@ -68,6 +68,7 @@ Map<String, dynamic> _$$SeatRawDataImplToJson(_$SeatRawDataImpl instance) =>
 
 _$BookmarkDataImpl _$$BookmarkDataImplFromJson(Map<String, dynamic> json) =>
     _$BookmarkDataImpl(
+      seatId: (json['seat_id'] as num).toInt(),
       floor: json['floor'] as String,
       section: json['section'] as String,
       row: json['seat_row'] as String,
@@ -78,6 +79,7 @@ _$BookmarkDataImpl _$$BookmarkDataImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$BookmarkDataImplToJson(_$BookmarkDataImpl instance) =>
     <String, dynamic>{
+      'seat_id': instance.seatId,
       'floor': instance.floor,
       'section': instance.section,
       'seat_row': instance.row,

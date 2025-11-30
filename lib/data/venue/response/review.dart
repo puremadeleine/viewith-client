@@ -48,6 +48,7 @@ class SeatRawData with _$SeatRawData {
 @freezed
 class BookmarkData with _$BookmarkData {
   const factory BookmarkData({
+    @JsonKey(name: 'seat_id') required int seatId,
     @JsonKey(name: 'floor') required String floor,
     @JsonKey(name: 'section') required String section,
     @JsonKey(name: 'seat_row') required String row,

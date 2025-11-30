@@ -128,4 +128,28 @@ class RemoteVenueRepository extends VenueRepository {
     );
     return response.toVoidResult();
   }
+
+  @override
+  Future<Result<void, BaseError>> bookmarkSeat({
+    required int venueId,
+    required int seatId,
+  }) async {
+    final response = await _client.post(
+      '/v1/venues/$venueId/seats/$seatId/bookmarks',
+      requiresAuth: true,
+    );
+    return response.toVoidResult();
+  }
+
+  @override
+  Future<Result<void, BaseError>> deleteSeatBookmark({
+    required int venueId,
+    required int seatId,
+  }) async {
+    final response = await _client.delete(
+      '/v1/venues/$venueId/seats/$seatId/bookmarks',
+      requiresAuth: true,
+    );
+    return response.toVoidResult();
+  }
 }

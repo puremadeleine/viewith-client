@@ -22,7 +22,7 @@ class ReviewParams with _$ReviewParams {
     String? section,
 
     @JsonKey(name: 'seat_row', includeIfNull: false)
-    int? row,
+    String? row,
 
     @JsonKey(name: 'is_summary')
     @Default(false) bool isSummary,

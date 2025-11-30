@@ -274,7 +274,12 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         if (isGuest) {
           showGuestDialog(context, ref);
         } else {
-          context.push('${AppRoute.reviewDetail.path}/${item.reviewId}');
+          context.push(
+            '${AppRoute.reviewDetail.path}/${item.reviewId}',
+            extra: {
+              'venueId': widget.id,
+            },
+          );
         }
       },
       titleBuilder: (context) => Row(

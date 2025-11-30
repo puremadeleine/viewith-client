@@ -6,8 +6,8 @@ import 'package:viewith/data/member/member_repository_providers.dart';
 import 'package:viewith/data/member/response/profile_response.dart';
 part 'profile_controller.g.dart';
 
-@Riverpod(keepAlive: true)
-Future<Result<ProfileResponse, BaseError>> fetchProfile(Ref ref) async {
+@riverpod
+Future<Result<ProfileResponse, BaseError>> fetchProfile(FetchProfileRef ref) async {
   final repository = ref.watch(memberRepositoryProvider);
   return repository.fetchProfile();
 }

@@ -38,4 +38,14 @@ abstract class VenueRepository {
   Future<Result<void, BaseError>> deleteReview(int reviewId);
 
   Future<Result<void, BaseError>> reportReview(int reviewId, ReportReviewRequest request);
+
+  Future<Result<void, BaseError>> bookmarkSeat({
+    required int venueId,
+    required int seatId,
+  });
+
+  Future<Result<void, BaseError>> deleteSeatBookmark({
+    required int venueId,
+    required int seatId,
+  });
 }
