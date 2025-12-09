@@ -275,9 +275,6 @@ class _SeatMapState extends State<SeatMap> {
       case SeatMapWritable():
         return;
       case SeatMapReadOnly(:final reviewCount):
-        if (reviewCount.isEmpty) return;
-
-  
         Color getColorForCount(int count) {
           if (count <= 0) {
             return defaultColor;
@@ -350,10 +347,10 @@ class _SeatMapState extends State<SeatMap> {
     } else if (id.contains(Strings.textSuffix)) {
       colors[id] = defaultTextColor;
     } else if (id.startsWith(Strings.seatPrefix)) {
-      colors[id] = defaultColor;
+      colors[id] =  widget.mode == const SeatMapReadOnly(reviewCount: {}) ? AppDesign.colors.gray300 : defaultColor;
       borderColors[id] = defaultBorderColor;
     } else {
-      colors[id] = defaultColor;
+      colors[id] = widget.mode == const SeatMapReadOnly(reviewCount: {}) ? AppDesign.colors.gray300 : defaultColor;
       borderColors[id] = defaultBorderColor;
     }
   }
