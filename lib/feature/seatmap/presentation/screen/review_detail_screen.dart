@@ -429,36 +429,39 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
   }
 
   Widget _buildUserInfo(Review review) {
-    return Row(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              review.userInfo.userNickname,
-              style: AppDesign.typo.body1Bold(),
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                RatingBarIndicator(
-                  rating: review.rating,
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star_rounded,
-                    color: AppDesign.colors.red900,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                review.userInfo.userNickname,
+                style: AppDesign.typo.body1Bold(),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  RatingBarIndicator(
+                    rating: review.rating,
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star_rounded,
+                      color: AppDesign.colors.red900,
+                    ),
+                    itemCount: 5,
+                    itemSize: 18.0,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 0),
+                    unratedColor: AppDesign.colors.gray300,
                   ),
-                  itemCount: 5,
-                  itemSize: 18.0,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 0),
-                  unratedColor: AppDesign.colors.gray300,
-                ),
-                const SizedBox(width: 8),
-                Text("${review.rating} / 5.0", style: AppDesign.typo.body2Bold()),
-              ],
-            ),
-          ],
-        ),
-      ],
+                  const SizedBox(width: 8),
+                  Text("${review.rating} / 5.0", style: AppDesign.typo.body2Bold()),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -467,11 +470,11 @@ class _ReviewDetailScreenState extends ConsumerState<ReviewDetailScreen> {
       alignment: Alignment.topRight,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.only(top: 0, bottom: 16.0),
           child: CarouselSlider(
             carouselController: _carouselController,
             options: CarouselOptions(
-              height: 300.0,
+              height: 400.0,
               enlargeCenterPage: false,
               enableInfiniteScroll: false,
               viewportFraction: 1.0,
@@ -654,15 +657,22 @@ class _FullscreenImageViewerState extends State<FullscreenImageViewer> {
         },
         itemBuilder: (context, index) {
           final url = widget.images[index];
-          return Center(
-            child: InteractiveViewer(
-              minScale: 1.0,
-              maxScale: 4.0,
-              child: Image.network(
-                url,
-                fit: BoxFit.contain,
-                width: double.infinity,
-                height: double.infinity,
+          final appBarHeight = AppBar().preferredSize.height;
+          final statusBarHeight = MediaQuery.of(context).padding.top;
+          final totalTopHeight = appBarHeight + statusBarHeight;
+          
+          return Transform.translate(
+            offset: Offset(0, -totalTopHeight / 2),
+            child: Center(
+              child: InteractiveViewer(
+                minScale: 1.0,
+                maxScale: 4.0,
+                child: Image.network(
+                  url,
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
               ),
             ),
           );

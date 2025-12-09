@@ -12,11 +12,18 @@ import 'package:viewith/ui/widgets/vi_slider.dart';
 import '../controller/writing_venues_controller.dart';
 import 'package:viewith/feature/writing/search/controller/writing_image_provider.dart';
 
-class WritingRatingScreen extends ConsumerWidget {
+class WritingRatingScreen extends ConsumerStatefulWidget {
   const WritingRatingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WritingRatingScreen> createState() => _WritingRatingScreenState();
+}
+
+class _WritingRatingScreenState extends ConsumerState<WritingRatingScreen> {
+  bool _isUploading = false;
+
+  @override
+  Widget build(BuildContext context) {
     final venue = ref.watch(selectedVenueProvider);
     final seatInfo = ref.watch(writingSeatInfosControllerProvider);
     final currentRating = ref.watch(writingRatingProvider);
@@ -29,23 +36,34 @@ class WritingRatingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTitle('이 자리 어떠셨어요?'),
-            _buildSubTitle('5점 만점에 몇 점이신가요? 신중한 평가 부탁드려요!'),
-            VISlider(
-              initialRating: currentRating,
-              onRatingChanged: (double rating) {
-                ref.read(writingRatingProvider.notifier).updateRating(rating);
-              },
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle('이 자리 어떠셨어요?'),
+                _buildSubTitle('5점 만점에 몇 점이신가요? 신중한 평가 부탁드려요!'),
+                VISlider(
+                  initialRating: currentRating,
+                  onRatingChanged: (double rating) {
+                    ref.read(writingRatingProvider.notifier).updateRating(rating);
+                  },
+                ),
+                const Spacer(),
+                _buildButton(context, ref, venue, seatInfo),
+              ],
             ),
-            const Spacer(),
-            _buildButton(context, ref, venue, seatInfo),
-          ],
-        ),
+          ),
+          if (_isUploading)
+            Container(
+              color: Colors.black.withOpacity(0.3),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -61,6 +79,8 @@ class WritingRatingScreen extends ConsumerWidget {
   Widget _buildButton(BuildContext context, WidgetRef ref, venue, seatInfo) {
     return VIButton(
       onTap: () async {
+        if (_isUploading) return;
+        
         final images = ref.read(writingImageProviderProvider);
         final imagePaths = images.map((x) => x.path).toList();
         if (seatInfo['section'] == null || seatInfo['row'] == null) {
@@ -69,6 +89,10 @@ class WritingRatingScreen extends ConsumerWidget {
           );
           return;
         }
+
+        setState(() {
+          _isUploading = true;
+        });
 
         try {
           if (seatInfo['section'] != null && seatInfo['row'] != null) {
@@ -101,6 +125,9 @@ class WritingRatingScreen extends ConsumerWidget {
           }
         } catch (e) {
           if (context.mounted) {
+            setState(() {
+              _isUploading = false;
+            });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('리뷰 제출에 실패했습니다: $e')),
             );
