@@ -67,6 +67,7 @@ class ReviewListController extends _$ReviewListController {
       floor: currentState?.selectedFloor,
       // seat_row는 서버에서 문자열로 처리되므로 그대로 전달
       row: currentState?.selectedRow,
+      section: currentState?.selectedSection,
     );
     
     final reviewsResult = await ref.read(venueRepositoryProvider).fetchReviews(params);
@@ -145,6 +146,30 @@ class ReviewListController extends _$ReviewListController {
     }
   }
 
+  void setSection(String section) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+    
+    // 상태 먼저 업데이트
+    final newState = currentState.copyWith(selectedSection: section);
+    state = AsyncData(newState);
+    
+    // 새로운 필터 조건으로 리뷰 데이터 다시 가져오기
+    try {
+      final reviewsResult = await fetchReviews();
+      final reviews = await reviewsResult.match(
+        onSuccess: (data) => data,
+        onFailure: (error) => throw Exception('Review API 호출 실패: $error'),
+      );
+      
+      final updatedState = newState.copyWith(reviews: AsyncData(reviews.list));
+      state = AsyncData(updatedState);
+    } catch (error) {
+      final errorState = newState.copyWith(reviews: AsyncError(error, StackTrace.current));
+      state = AsyncData(errorState);
+    }
+  }
+
   void removeFilterChip(FilterChipData chip) async {
     final currentState = state.value;
     if (currentState == null) return;
@@ -154,6 +179,7 @@ class ReviewListController extends _$ReviewListController {
       sortType: chip.type == FilterType.sort ? ReviewSortType.defaultSort : currentState.sortType,
       selectedFloor: chip.type == FilterType.seat ? null : currentState.selectedFloor,
       selectedRow: chip.type == FilterType.seat ? null : currentState.selectedRow,
+      selectedSection: chip.type == FilterType.section ? null : currentState.selectedSection,
     );
     state = AsyncData(newState);
     

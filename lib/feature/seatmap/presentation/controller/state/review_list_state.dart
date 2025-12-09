@@ -19,6 +19,7 @@ class ReviewListState with _$ReviewListState {
     required AsyncValue<List<SeatInfo>> seatInfo,
     String? selectedFloor,
     String? selectedRow,
+    String? selectedSection,
   }) = _ReviewListState;
 }
 
@@ -44,6 +45,13 @@ extension ReviewListStateX on ReviewListState {
       chips.add(FilterChipData(
         label: seatLabel,
         type: FilterType.seat,
+      ));
+    }
+
+    if (selectedSection != null) {
+      chips.add(FilterChipData(
+        label: "$selectedSection구역",
+        type: FilterType.section,
       ));
     }
 

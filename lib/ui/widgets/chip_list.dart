@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:viewith/ui/app_design.dart';
 import 'package:viewith/ui/gen/assets.gen.dart';
 
-enum FilterType { sort, seat }
+enum FilterType { sort, seat, section }
 
 class FilterChipData {
   final String label;

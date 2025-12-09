@@ -146,7 +146,36 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen> {
         sourceType: SvgSource.url,
         mode: SeatMapReadOnly(reviewCount: value.sectionReviewCountMap),
         onSectionSelected: (id) {
-          print(id);
+          // id에서 섹션 정보 추출 (예: "SEAT_B1" -> "B1", "FLOOR_B" -> "B")
+          final sectionMatch = RegExp(r'(?:SEAT_|FLOOR_)([A-Z0-9]+)(?:_TEXT)?').firstMatch(id);
+          if (sectionMatch != null) {
+            final section = sectionMatch.group(1);
+            if (section != null) {
+              // sectionReviewCountMap에서 해당 섹션의 리뷰 갯수 확인
+              // 전체 id 형식("SEAT_B1", "FLOOR_B") 또는 섹션만("B1", "B")으로 확인
+              final reviewCount = value.sectionReviewCountMap[id] ?? 
+                                  value.sectionReviewCountMap[section] ?? 0;
+              
+              // 리뷰 갯수가 1 이상인 경우에만 필터 적용
+              if (reviewCount >= 1) {
+                ref.read(reviewListControllerProvider(widget.id).notifier).setSection(section);
+              } else {
+                // 빈 구역인 경우 토스트 메시지 표시
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '아직 작성된 후기가 없어요.',
+                      style: AppDesign.typo.body2(color: AppDesign.colors.white),
+                    ),
+                    backgroundColor: AppDesign.colors.gray900,
+                    behavior: SnackBarBehavior.floating,
+                    duration: const Duration(seconds: 2),
+                    margin: const EdgeInsets.all(16),
+                  ),
+                );
+              }
+            }
+          }
         },
       ),
     );
